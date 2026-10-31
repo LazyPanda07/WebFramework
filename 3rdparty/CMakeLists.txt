@@ -19,3 +19,7 @@ if (NOT "${COMPILE_TARGET}" STREQUAL "Android")
 		add_subdirectory(DotNetRuntime)
 	endif()
 endif()
+
+if (${WITH_ZLIB})
+	add_subdirectory(zlib)
+endif()

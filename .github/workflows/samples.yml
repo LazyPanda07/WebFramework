@@ -477,8 +477,10 @@ jobs:
         '@ | Set-Content -Path "find_fxr.bat" -Encoding ASCII
 
     - name: Run sample with /${{ matrix.samples[4] }} endpoint
+      shell: cmd
       working-directory: samples/build/bin
       run: |
+          dir
           call find_fxr.bat
           start ${{ matrix.run }}
           while (-not (Test-NetConnection -ComputerName localhost -Port 8080 -InformationLevel Quiet)) { sleep 1 }

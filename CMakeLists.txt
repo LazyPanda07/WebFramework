@@ -13,6 +13,7 @@ set(
 	hiredis
 	rabbitmq::rabbitmq-static
 	jwt-cpp::jwt-cpp
+	zlibstatic
 	ssl
 	crypto
 	CACHE INTERNAL ""
@@ -27,6 +28,7 @@ option(WITH_STACKTRACE "Build with Boost::stacktrace" OFF)
 option(WITH_PYTHON_EXECUTORS "Build with Python Executors" ON)
 option(WITH_DOTNET_EXECUTORS "Build with .NET Executors" ON)
 option(WITH_UNITY_BUILD "Build few .cpp at once" ON)
+option(WITH_ZLIB "Build with zlib" ON)
 option(AS_DEPENDENCY "Change install paths for FetchContent or add_subdirectory usage" OFF)
 
 project(WebFramework VERSION 3.4.2)
@@ -127,10 +129,16 @@ add_library(
 	WebFramework/src/ServeLoops/ServeLoop.cpp
 	WebFramework/src/ServeLoops/HttpServeLoop.cpp
 	WebFramework/src/ServeLoops/WebSocketServeLoop.cpp
+	WebFramework/src/Encoders/Encoder.cpp
+	WebFramework/src/Encoders/GzipEncoder.cpp
 )
 
 if (${WITH_STACKTRACE})
 	add_definitions(-D__WITH_STACKTRACE__)
+endif()
+
+if (${WITH_ZLIB})
+	add_definitions(-D__WITH_ZLIB__)
 endif()
 
 if (UNIX)
@@ -323,6 +331,7 @@ install(
 		file(REMOVE_RECURSE "${CMAKE_INSTALL_PREFIX}/lib/vendor")
 		file(REMOVE_RECURSE "${CMAKE_INSTALL_PREFIX}/lib/cmake")
 		file(REMOVE_RECURSE "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig")
+		file(REMOVE_RECURSE "${CMAKE_INSTALL_PREFIX}/share")
 	]]
 )
 install(

@@ -12,6 +12,8 @@
 #include <Log.h>
 #include <HttpParser.h>
 
+#include "Framework/WebFramework.h"
+
 namespace framework
 {
 	std::string HttpResponseImplementation::getFullDate()
@@ -49,6 +51,11 @@ namespace framework
 		this->builder = builder;
 
 		return *this;
+	}
+
+	void HttpResponseImplementation::setBody(std::string&& body) noexcept
+	{
+		this->body = std::move(body);
 	}
 
 	void HttpResponseImplementation::setHTTPVersion(const char* version)
@@ -139,6 +146,16 @@ namespace framework
 		return isValid;
 	}
 
+	const char* HttpResponseImplementation::getBody() const
+	{
+		return body.data();
+	}
+
+	size_t HttpResponseImplementation::getBodySize() const
+	{
+		return body.size();
+	}
+
 	HttpResponseImplementation::operator bool() const
 	{
 		return this->getIsValid();
@@ -146,6 +163,8 @@ namespace framework
 
 	streams::IOSocketStream& operator << (streams::IOSocketStream& stream, HttpResponseImplementation& response)
 	{
+		static std::string webFrameworkVersion = std::format("WebFramework {}", WebFramework::getVersion());
+
 		if (!response)
 		{
 			return stream;
@@ -156,7 +175,7 @@ namespace framework
 		response.builder.headers
 		(
 			"Date", HttpResponseImplementation::getFullDate(),
-			"Server", "WebFramework"
+			"Server", webFrameworkVersion
 		);
 
 		if (response.body.size())

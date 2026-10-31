@@ -100,6 +100,9 @@ namespace framework
 		void initJwt(const json::JsonObject& webFrameworkSettings);
 
 	public:
+		static constexpr std::string_view getVersion();
+
+	public:
 		WebFramework(const utility::Config& webFrameworkConfig);
 
 		WebFramework(const std::filesystem::path& webFrameworkConfigPath);
@@ -130,4 +133,14 @@ namespace framework
 
 		~WebFramework();
 	};
+}
+
+namespace framework
+{
+	inline constexpr std::string_view WebFramework::getVersion()
+	{
+		constexpr std::string_view version = "3.4.2";
+
+		return version;
+	}
 }

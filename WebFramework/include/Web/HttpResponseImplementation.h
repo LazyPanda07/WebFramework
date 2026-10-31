@@ -34,6 +34,8 @@ namespace framework
 
 		HttpResponseImplementation& operator = (const web::HttpBuilder& builder);
 
+		void setBody(std::string&& body) noexcept;
+
 		void setHTTPVersion(const char* version) override;
 
 		void setResponseCode(int64_t code) override;
@@ -55,6 +57,10 @@ namespace framework
 		void setIsValid(bool isValid) override;
 
 		bool getIsValid() const override;
+
+		const char* getBody() const override;
+
+		size_t getBodySize() const override;
 
 		explicit operator bool() const;
 

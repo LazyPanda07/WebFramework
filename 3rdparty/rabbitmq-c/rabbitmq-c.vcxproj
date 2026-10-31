@@ -126,7 +126,7 @@
 
 if not exist "$(ProjectDir)build" mkdir "$(ProjectDir)build"
 
-cd $(ProjectDir)build &amp;&amp; cmake -DCMAKE_BINARY_DIR=$(ProjectDir)build -DCMAKE_BUILD_TYPE=Release .. &amp;&amp; cmake --build . -j --config Release</Command>
+cd $(ProjectDir)build &amp;&amp; cmake -DCMAKE_BINARY_DIR=$(ProjectDir)build -DCMAKE_BUILD_TYPE=$(Configuration) .. &amp;&amp; cmake --build . -j --config $(Configuration)</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -149,7 +149,7 @@ cd $(ProjectDir)build &amp;&amp; cmake -DCMAKE_BINARY_DIR=$(ProjectDir)build -DC
 
 if not exist "$(ProjectDir)build" mkdir "$(ProjectDir)build"
 
-cd $(ProjectDir)build &amp;&amp; cmake -DCMAKE_BINARY_DIR=$(ProjectDir)build -DCMAKE_BUILD_TYPE=Release .. &amp;&amp; cmake --build . -j --config Release</Command>
+cd $(ProjectDir)build &amp;&amp; cmake -DCMAKE_BINARY_DIR=$(ProjectDir)build -DCMAKE_BUILD_TYPE=$(Configuration) .. &amp;&amp; cmake --build . -j --config $(Configuration)</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

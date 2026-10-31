@@ -1,6 +1,7 @@
 #include "ServeLoops/HttpServeLoop.h"
 
 #include "Utility/LargeFileHandlers/MultithreadedHandler.h"
+#include "Encoders/Encoder.h"
 
 namespace framework::serve_loop
 {
@@ -38,6 +39,23 @@ namespace framework::serve_loop
 			std::bind(serveRequest, std::ref(request), std::ref(response), std::ref(executors), std::ref(events), std::placeholders::_1),
 			[this](ExecutorServer::ServiceState& _)
 			{
+				if (size_t bodySize = response.getBodySize())
+				{
+					constexpr std::string_view acceptEncodingHeader = "Accept-Encoding";
+
+					if (const char* header = request.getHeaderValue(acceptEncodingHeader.data(), false))
+					{
+						std::unique_ptr<encoders::Encoder> encoder = encoders::Encoder::getSupportedEncoder(header);
+
+						if (encoder)
+						{
+							std::string_view body(response.getBody(), bodySize);
+
+							response.setBody(encoder->encode(body));
+						}
+					}
+				}
+
 				stream << response;
 			}
 		};

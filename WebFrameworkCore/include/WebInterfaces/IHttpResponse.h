@@ -33,6 +33,10 @@ namespace framework::interfaces
 
 		virtual bool getIsValid() const = 0;
 
+		virtual const char* getBody() const = 0;
+
+		virtual size_t getBodySize() const = 0;
+
 		virtual ~IHttpResponse() = default;
 	};
 }
