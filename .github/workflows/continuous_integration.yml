@@ -499,7 +499,7 @@ jobs:
         executors:
             - { api: CXX, python-version: "", dotnet: false }
             - { api: CC, python-version: "", dotnet: false }
-            - { api: Python, python-version: "3.1", dotnet: false }
+            - { api: Python, python-version: "3.15", dotnet: false }
             - { api: Python, python-version: "3.14", dotnet: false }
             - { api: Python, python-version: "3.13", dotnet: false }
             - { api: CSharp, python-version: "", dotnet: true }

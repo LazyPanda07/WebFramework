@@ -84,6 +84,7 @@ namespace framework
 			dynamicResources.registerDynamicFunction(functionName, apiType, functionClass);
 		}
 #endif
+
 #ifdef __WITH_DOTNET_EXECUTORS__
 		if (apiType == json_settings::csharpExecutorKey)
 		{
@@ -302,6 +303,8 @@ namespace framework
 
 	void HttpRequestImplementation::streamFile(const char* filePath, interfaces::IHttpResponse* response, const char* fileName, size_t chunkSize)
 	{
+		static std::string webFrameworkVersion = std::format("WebFramework {}", WebFramework::getVersion());
+
 		std::unique_ptr<std::istream> fileStream = staticResources.getFileStream(filePath);
 		std::streamsize fileSize = fileStream->tellg();
 
@@ -315,7 +318,7 @@ namespace framework
 			headers
 			(
 				"Date", HttpResponseImplementation::getFullDate(),
-				"Server", "WebFramework-Server",
+				"Server", webFrameworkVersion,
 				"Content-Type", "application/octet-stream",
 				"Content-Disposition", std::format(R"(attachment; filename="{}")", fileName),
 				"Connection", "keep-alive",
@@ -368,13 +371,15 @@ namespace framework
 		web::HttpBuilder builder;
 
 		{
+			static std::string webFrameworkVersion = std::format("WebFramework {}", WebFramework::getVersion());
+
 			size_t chunkSize = 0;
 			const char* chunk = getChunk(chunkGenerator, &chunkSize);
 
 			builder = web::HttpBuilder().chunk(std::string_view(chunk, chunkSize)).partialChunks().responseCode(web::ResponseCodes::ok).headers
 			(
 				"Date", HttpResponseImplementation::getFullDate(),
-				"Server", "WebFramework-Server",
+				"Server", webFrameworkVersion,
 				"Connection", "keep-alive"
 			);
 		}
