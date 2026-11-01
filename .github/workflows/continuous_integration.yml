@@ -14,7 +14,7 @@ env:
   LINUX_CMAKE_GENERATOR: "Ninja"
   LINUX_ARM_CMAKE_GENERATOR: "Ninja"
   DEFAULT_CMAKE_GENERATOR: "Ninja"
-  PYTHON_VERSION: 3.14
+  PYTHON_VERSION: 3.15
 
   
 permissions:
@@ -27,15 +27,15 @@ jobs:
       matrix:
         build-cc-api: [ON, OFF]
         python-config:
-          - { with-python-executors: ON, build-python-api: ON, python-version: 3.12 }
           - { with-python-executors: ON, build-python-api: ON, python-version: 3.13 }
           - { with-python-executors: ON, build-python-api: ON, python-version: 3.14 }
-          - { with-python-executors: ON, build-python-api: OFF, python-version: 3.12 }
+          - { with-python-executors: ON, build-python-api: ON, python-version: 3.15 }
           - { with-python-executors: ON, build-python-api: OFF, python-version: 3.13 }
           - { with-python-executors: ON, build-python-api: OFF, python-version: 3.14 }
-          - { with-python-executors: OFF, build-python-api: ON, python-version: 3.12 }
+          - { with-python-executors: ON, build-python-api: OFF, python-version: 3.15 }
           - { with-python-executors: OFF, build-python-api: ON, python-version: 3.13 }
           - { with-python-executors: OFF, build-python-api: ON, python-version: 3.14 }
+          - { with-python-executors: OFF, build-python-api: ON, python-version: 3.15 }
           - { with-python-executors: OFF, build-python-api: OFF, python-version: "" }
         with-dotnet-executors: [ON, OFF]
         build-csharp-api: [ON, OFF]
@@ -68,15 +68,15 @@ jobs:
       matrix:
         build-cc-api: [ON, OFF]
         python-config:
-          - { with-python-executors: ON, build-python-api: ON, python-version: 3.12 }
           - { with-python-executors: ON, build-python-api: ON, python-version: 3.13 }
           - { with-python-executors: ON, build-python-api: ON, python-version: 3.14 }
-          - { with-python-executors: ON, build-python-api: OFF, python-version: 3.12 }
+          - { with-python-executors: ON, build-python-api: ON, python-version: 3.15 }
           - { with-python-executors: ON, build-python-api: OFF, python-version: 3.13 }
           - { with-python-executors: ON, build-python-api: OFF, python-version: 3.14 }
-          - { with-python-executors: OFF, build-python-api: ON, python-version: 3.12 }
+          - { with-python-executors: ON, build-python-api: OFF, python-version: 3.15 }
           - { with-python-executors: OFF, build-python-api: ON, python-version: 3.13 }
           - { with-python-executors: OFF, build-python-api: ON, python-version: 3.14 }
+          - { with-python-executors: OFF, build-python-api: ON, python-version: 3.15 }
           - { with-python-executors: OFF, build-python-api: OFF, python-version: "" }
         with-dotnet-executors: [ON, OFF]
         build-csharp-api: [ON, OFF]
@@ -102,15 +102,15 @@ jobs:
       matrix:
         build-cc-api: [ON, OFF]
         python-config:
-          - { with-python-executors: ON, build-python-api: ON, python-version: 3.12 }
           - { with-python-executors: ON, build-python-api: ON, python-version: 3.13 }
           - { with-python-executors: ON, build-python-api: ON, python-version: 3.14 }
-          - { with-python-executors: ON, build-python-api: OFF, python-version: 3.12 }
+          - { with-python-executors: ON, build-python-api: ON, python-version: 3.15 }
           - { with-python-executors: ON, build-python-api: OFF, python-version: 3.13 }
           - { with-python-executors: ON, build-python-api: OFF, python-version: 3.14 }
-          - { with-python-executors: OFF, build-python-api: ON, python-version: 3.12 }
+          - { with-python-executors: ON, build-python-api: OFF, python-version: 3.15 }
           - { with-python-executors: OFF, build-python-api: ON, python-version: 3.13 }
           - { with-python-executors: OFF, build-python-api: ON, python-version: 3.14 }
+          - { with-python-executors: OFF, build-python-api: ON, python-version: 3.15 }
           - { with-python-executors: OFF, build-python-api: OFF, python-version: "" }
         with-dotnet-executors: [ON, OFF]
         build-csharp-api: [ON, OFF]
@@ -308,7 +308,7 @@ jobs:
     - name: Download WebFramework
       uses: actions/download-artifact@v8
       with:
-        name: Windows-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=ON-3.14-WITH_DOTNET_EXECUTORS=OFF-BUILD_CSHARP_API=ON-BUILD_CC_API=ON
+        name: Windows-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=ON-3.15-WITH_DOTNET_EXECUTORS=OFF-BUILD_CSHARP_API=ON-BUILD_CC_API=ON
         path: WebFrameworkLibrary
 
     - name: Build tests
@@ -339,7 +339,7 @@ jobs:
     - name: Download WebFramework
       uses: actions/download-artifact@v8
       with:
-        name: Linux-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=ON-3.14-WITH_DOTNET_EXECUTORS=OFF-BUILD_CSHARP_API=ON-BUILD_CC_API=ON
+        name: Linux-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=ON-3.15-WITH_DOTNET_EXECUTORS=OFF-BUILD_CSHARP_API=ON-BUILD_CC_API=ON
         path: WebFrameworkLibrary
 
     - name: Build tests
@@ -368,7 +368,7 @@ jobs:
     - name: Download WebFramework
       uses: actions/download-artifact@v8
       with:
-        name: LinuxARM-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=ON-3.14-WITH_DOTNET_EXECUTORS=OFF-BUILD_CSHARP_API=ON-BUILD_CC_API=ON
+        name: LinuxARM-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=ON-3.15-WITH_DOTNET_EXECUTORS=OFF-BUILD_CSHARP_API=ON-BUILD_CC_API=ON
         path: WebFrameworkLibrary
 
     - name: Install uuid-dev
@@ -401,9 +401,9 @@ jobs:
         executors:
           - { api: CXX, python-version: "", dotnet: false }
           - { api: CC, python-version: "", dotnet: false }
+          - { api: Python, python-version: "3.15", dotnet: false }
           - { api: Python, python-version: "3.14", dotnet: false }
           - { api: Python, python-version: "3.13", dotnet: false }
-          - { api: Python, python-version: "3.12", dotnet: false }
           - { api: CSharp, python-version: "", dotnet: true }
 
     uses: ./.github/workflows/reusable_run_test.yml
@@ -425,9 +425,9 @@ jobs:
         executors:
           - { api: CXX, python-version: "", dotnet: false }
           - { api: CC, python-version: "", dotnet: false }
+          - { api: Python, python-version: "3.15", dotnet: false }
           - { api: Python, python-version: "3.14", dotnet: false }
           - { api: Python, python-version: "3.13", dotnet: false }
-          - { api: Python, python-version: "3.12", dotnet: false }
           - { api: CSharp, python-version: "", dotnet: true }
 
     uses: ./.github/workflows/reusable_run_test.yml
@@ -449,9 +449,9 @@ jobs:
         executors:
             - { api: CXX, python-version: "", dotnet: false }
             - { api: CC, python-version: "", dotnet: false }
+            - { api: Python, python-version: "3.15", dotnet: false }
             - { api: Python, python-version: "3.14", dotnet: false }
             - { api: Python, python-version: "3.13", dotnet: false }
-            - { api: Python, python-version: "3.12", dotnet: false }
             - { api: CSharp, python-version: "", dotnet: true }
 
     uses: ./.github/workflows/reusable_run_test.yml
@@ -474,9 +474,9 @@ jobs:
         executors:
             - { api: CXX, python-version: "", dotnet: false }
             - { api: CC, python-version: "", dotnet: false }
+            - { api: Python, python-version: "3.15", dotnet: false }
             - { api: Python, python-version: "3.14", dotnet: false }
             - { api: Python, python-version: "3.13", dotnet: false }
-            - { api: Python, python-version: "3.12", dotnet: false }
             - { api: CSharp, python-version: "", dotnet: true }
 
     uses: ./.github/workflows/reusable_run_test.yml
@@ -499,9 +499,9 @@ jobs:
         executors:
             - { api: CXX, python-version: "", dotnet: false }
             - { api: CC, python-version: "", dotnet: false }
+            - { api: Python, python-version: "3.1", dotnet: false }
             - { api: Python, python-version: "3.14", dotnet: false }
             - { api: Python, python-version: "3.13", dotnet: false }
-            - { api: Python, python-version: "3.12", dotnet: false }
             - { api: CSharp, python-version: "", dotnet: true }
 
     uses: ./.github/workflows/reusable_run_test.yml
@@ -523,9 +523,9 @@ jobs:
         executors:
             - { api: CXX, python-version: "", dotnet: false }
             - { api: CC, python-version: "", dotnet: false }
+            - { api: Python, python-version: "3.15", dotnet: false }
             - { api: Python, python-version: "3.14", dotnet: false }
             - { api: Python, python-version: "3.13", dotnet: false }
-            - { api: Python, python-version: "3.12", dotnet: false }
             - { api: CSharp, python-version: "", dotnet: true }
 
     uses: ./.github/workflows/reusable_run_test.yml
@@ -543,9 +543,9 @@ jobs:
     strategy:
       matrix:
         config:
-          - { os: windows-latest, image: "", web-framework-name: Windows-WITH_PYTHON_EXECUTORS=ON-BUILD_PYTHON_API=ON-3.14-WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=ON-BUILD_CC_API=ON }
-          - { os: ubuntu-latest, image: ghcr.io/lazypanda07/ubuntu-cxx23:26.04, web-framework-name: Linux-WITH_PYTHON_EXECUTORS=ON-BUILD_PYTHON_API=ON-3.14-WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=ON-BUILD_CC_API=ON }
-          - { os: ubuntu-26.04-arm, image: "", web-framework-name: LinuxARM-WITH_PYTHON_EXECUTORS=ON-BUILD_PYTHON_API=ON-3.14-WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=ON-BUILD_CC_API=ON }
+          - { os: windows-latest, image: "", web-framework-name: Windows-WITH_PYTHON_EXECUTORS=ON-BUILD_PYTHON_API=ON-3.15-WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=ON-BUILD_CC_API=ON }
+          - { os: ubuntu-latest, image: ghcr.io/lazypanda07/ubuntu-cxx23:26.04, web-framework-name: Linux-WITH_PYTHON_EXECUTORS=ON-BUILD_PYTHON_API=ON-3.15-WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=ON-BUILD_CC_API=ON }
+          - { os: ubuntu-26.04-arm, image: "", web-framework-name: LinuxARM-WITH_PYTHON_EXECUTORS=ON-BUILD_PYTHON_API=ON-3.15-WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=ON-BUILD_CC_API=ON }
         
     runs-on: ${{ matrix.config.os }}
     container:

@@ -10,8 +10,8 @@ on:
   
 
 env:
-  FLUTTER_VERSION: 3.47.5
-  PYTHON_VERSION: 3.14
+  FLUTTER_VERSION: 3.47.9
+  PYTHON_VERSION: 3.15
 
 
 permissions:
@@ -365,7 +365,7 @@ jobs:
     strategy:
       matrix:
         python: 
-          - { version: 3.14 }
+          - { version: 3.15 }
 
     uses: ./.github/workflows/reusable_build_web_framework.yml
     with:
@@ -385,7 +385,7 @@ jobs:
     strategy:
       matrix:
         python: 
-          - { version: 3.14 }
+          - { version: 3.15 }
 
     uses: ./.github/workflows/reusable_build_web_framework.yml
     with:

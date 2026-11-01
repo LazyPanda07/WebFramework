@@ -100,8 +100,8 @@ jobs:
       if: ${{ inputs.python-version == '' && contains(inputs.test-script, 'python') }}
       shell: bash
       run: |
-        echo "DOWNLOAD_ARTIFACT_NAME=${DOWNLOAD_ARTIFACT_NAME}-WITH_PYTHON_EXECUTORS=ON-BUILD_PYTHON_API=ON-3.14" >> ${GITHUB_ENV}
-        echo "actual-python-version=3.14" >> ${GITHUB_ENV}
+        echo "DOWNLOAD_ARTIFACT_NAME=${DOWNLOAD_ARTIFACT_NAME}-WITH_PYTHON_EXECUTORS=ON-BUILD_PYTHON_API=ON-3.15" >> ${GITHUB_ENV}
+        echo "actual-python-version=3.15" >> ${GITHUB_ENV}
 
     - name: Prepare download artifact name if no Python and no test script using
       if: ${{ inputs.python-version == '' && !contains(inputs.test-script, 'python') }}
@@ -200,8 +200,13 @@ jobs:
         python -m pip install WebFrameworkLibrary/api/python_api/dist/*.whl
         echo "runtimes=--runtimes python" >> ${GITHUB_ENV}
 
-    - name: Install wait-for-service[redis]
+    - name: Install wait-for-service[redis] in Windows
+      if: ${{ inputs.os == 'windows-latest' }}
       run: python -m pip install wait-for-service[redis]
+
+    - name: Install wait-for-service[redis] in Linux
+      if: ${{ inputs.os == 'ubuntu-latest' || inputs.os == 'ubuntu-26.04-arm' }}
+      run: python3 -m pip install wait-for-service[redis]
 
     - name: Append .net runtime
       if: ${{ inputs.dotnet == true || contains(inputs.test-script, 'csharp') }}

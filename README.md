@@ -24,7 +24,7 @@ git clone https://github.com/LazyPanda07/WebFramework.git --recursive
 ## Build Requirements
 * CMake >= 3.27.0
 * Compiler with C++23 support(MSVC, GCC, Clang)
-* With Python embed requires ```Python >= 3.12```
+* With Python embed requires ```Python >= 3.13```
 * With .NET embed requires ```.NET 10.0```
 ### Windows
 * Windows >= 10
