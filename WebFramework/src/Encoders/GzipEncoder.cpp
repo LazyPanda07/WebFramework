@@ -24,7 +24,8 @@ namespace framework::encoders
 
 	std::string GzipEncoder::encode(std::string_view data)
 	{
-		constexpr size_t bufferSize = 2 * 1024; // 2 KiB
+		constexpr size_t kib = 1024;
+		constexpr size_t bufferSize = 4 * kib; // 4 KiB
 
 		int errorCode = 0;
 		std::vector<uint8_t> buffer(bufferSize);

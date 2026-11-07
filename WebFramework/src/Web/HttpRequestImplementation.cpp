@@ -225,6 +225,12 @@ namespace framework
 			{
 				size_t findKey = cookies.find('=', offset);
 				size_t findValue = cookies.find("; ", offset);
+
+				if (findKey == std::string::npos || findValue == std::string::npos)
+				{
+					break;
+				}
+
 				std::string::const_iterator startKey = cookies.begin() + offset;
 				std::string::const_iterator endKey = cookies.begin() + findKey;
 				std::string::const_iterator startValue = endKey + 1;
@@ -601,8 +607,7 @@ namespace framework
 		}
 
 		auto decodedToken = jwt::decode(token);
-		auto verifier = jwt::verify()
-			.allow_algorithm(jwt::algorithm::hs256(utility::getEnvironmentVariable(serverReference.getFrameworkInstance().getJwtSecretName())));
+		auto verifier = jwt::verify().allow_algorithm(jwt::algorithm::hs256(utility::getEnvironmentVariable(serverReference.getFrameworkInstance().getJwtSecretName())));
 		std::error_code code;
 
 		verifier.verify(decodedToken, code);

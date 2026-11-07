@@ -68,7 +68,7 @@ namespace framework::task_broker
 			utility::logAndThrowException<logging::message::rabbitmqLoginError, logging::category::taskBroker>(amqp_error_string2(reply.library_error));
 		}
 
-		RabbitMqTaskBroker::callAmqpFunction(amqp_channel_open, *this, connection, channel);
+		RabbitMqTaskBroker::callAmqpFunction(&amqp_channel_open, *this, connection, channel);
 	}
 
 	RabbitMqTaskBroker::Client::~Client()
@@ -121,8 +121,8 @@ namespace framework::task_broker
 		{
 			std::unique_lock<std::shared_mutex> lock(readWriteMutex);
 
-			RabbitMqTaskBroker::callAmqpFunction(amqp_queue_declare, producer, producer.connection, producer.channel, amqp_cstring_bytes(queue.data()), 0, 0, 0, 1, amqp_empty_table);
-			RabbitMqTaskBroker::callAmqpFunction(amqp_basic_consume, consumer, consumer.connection, consumer.channel, amqp_cstring_bytes(queue.data()), amqp_empty_bytes, 0, 1, 0, amqp_empty_table);
+			RabbitMqTaskBroker::callAmqpFunction(&amqp_queue_declare, producer, producer.connection, producer.channel, amqp_cstring_bytes(queue.data()), 0, 0, 0, 1, amqp_empty_table);
+			RabbitMqTaskBroker::callAmqpFunction(&amqp_basic_consume, consumer, consumer.connection, consumer.channel, amqp_cstring_bytes(queue.data()), amqp_empty_bytes, 0, 1, 0, amqp_empty_table);
 
 			queues.insert(queue);
 		}

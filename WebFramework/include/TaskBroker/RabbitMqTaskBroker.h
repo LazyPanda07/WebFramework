@@ -18,6 +18,7 @@ namespace framework::task_broker
 	private:
 		struct Client
 		{
+		public:
 			amqp_connection_state_t connection;
 			amqp_socket_t* socket;
 			amqp_channel_t channel;
