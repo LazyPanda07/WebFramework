@@ -273,6 +273,40 @@ jobs:
           samples/build/bin/configs/*.json
 
 
+  linux-hello-executor:
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/lazypanda07/ubuntu-cxx23:26.04
+
+    steps:
+    - uses: actions/checkout@v7
+      with:
+        submodules: recursive
+
+    - name: Build WebFramework
+      run: |
+          mkdir build
+          cd build
+          cmake -DCMAKE_BUILD_TYPE=MinSizeRel -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -G "Ninja" ..
+          cmake --build . -j
+          cmake --install .
+
+    - name: Build samples
+      run: |
+          cd samples
+          mkdir build
+          cd build
+          cmake -DCMAKE_BUILD_TYPE=MinSizeRel -DCXX_SAMPLE=ON -DCC_SAMPLE=ON -DPYTHON_SAMPLE=OFF -DCSHARP_SAMPLE=OFF -G "Ninja" ..
+          cmake --build . -j
+          cmake --install .
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v6
+      with:
+        name: HelloExecutorLinux
+        path: samples/build/bin/executors/*.so
+
+
   windows-flutter-build:
     runs-on: windows-latest
     needs: windows-build
@@ -359,6 +393,48 @@ jobs:
       with:
         name: AndroidFlutterSample
         path: API/web_framework_flutter_api/example/build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+
+
+  linux-flutter-build:
+    runs-on: ubuntu-latest
+    needs: linux-build
+
+    steps:
+    - uses: actions/checkout@v7
+      with:
+        submodules: recursive
+
+    - name: Install Flutter
+      uses: subosito/flutter-action@v2.16.0
+      with:
+        channel: stable
+        flutter-version: ${{ env.FLUTTER_VERSION }}
+        
+    - name: Download assets
+      uses: actions/download-artifact@v6
+      with:
+        name: Linux
+        path: Linux
+
+    - name: Move assets
+      run: |
+          mkdir -p API/web_framework_flutter_api/example/assets/configs
+          mkdir -p API/web_framework_flutter_api/example/assets/executors
+          mv Linux/configs/*.json API/web_framework_flutter_api/example/assets/configs
+          mv Linux/executors/*.* API/web_framework_flutter_api/example/assets/executors
+
+    - name: Build
+      working-directory: API/web_framework_flutter_api/example
+      run: flutter build linux --release
+
+    - name: Move WebFramework
+      run: mv Linux/*.so API/web_framework_flutter_api/example/build/linux/x64/runner/Release/
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v6
+      with:
+        name: LinuxFlutterSample
+        path: API/web_framework_flutter_api/example/build/linux/x64/runner/Release/
         
 
   windows-build-binaries:
@@ -554,6 +630,7 @@ jobs:
       android-build,
       windows-flutter-build,
       android-flutter-build,
+      linux-flutter-build,
       windows-tests,
       linux-tests,
       as-dependency-sample
@@ -587,6 +664,9 @@ jobs:
           mkdir samples_dir/linux
           mv Linux/* samples_dir/linux
 
+          mkdir samples_dir/windows_flutter
+          mv LinuxFlutterSample/* samples_dir/linux_flutter
+
           mkdir samples_dir/android_flutter
           mv AndroidFlutterSample/* samples_dir/android_flutter
 
@@ -598,6 +678,7 @@ jobs:
       run: |
         cd HelloExecutorWindows && zip -r ../hello_executor_windows.zip * && cd ..
         cd HelloExecutorAndroid && zip -r ../hello_executor_android.zip * && cd .. 
+        cd HelloExecutorLinux && zip -r ../hello_executor_linux.zip * && cd .. 
           
     - name: Publish
       if: ${{ env.CURRENT_BRANCH == 'main' }}

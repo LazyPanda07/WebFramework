@@ -28,3 +28,5 @@ flutter:
         pluginClass: WebFrameworkFlutterApiPlugin
       windows:
         pluginClass: WebFrameworkFlutterApiPluginCApi
+      linux:
+        pluginClass: WebFrameworkFlutterApiPluginClass
