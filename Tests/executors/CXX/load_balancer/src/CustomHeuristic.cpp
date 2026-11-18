@@ -4,8 +4,8 @@
 
 static uint64_t getId();
 
-CustomHeuristic::CustomHeuristic(std::string_view ip, std::string_view port, bool useHTTPS) :
-	LoadBalancerHeuristic(ip, port, useHTTPS),
+CustomHeuristic::CustomHeuristic(std::string_view ip, std::string_view port) :
+	LoadBalancerHeuristic(ip, port),
 	id(getId())
 {
 

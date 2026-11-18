@@ -1,6 +1,6 @@
 ﻿using Framework;
 
-public class CustomHeuristic(string ip, string port, bool useHTTPS) : LoadBalancerHeuristic(ip, port, useHTTPS)
+public class CustomHeuristic(string ip, string port) : LoadBalancerHeuristic(ip, port)
 {
 	private readonly ulong id = GetId();
 
