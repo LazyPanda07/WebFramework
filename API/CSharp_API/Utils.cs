@@ -385,7 +385,7 @@ public static partial class Utils
 	}
 
 	[UnmanagedCallersOnly(EntryPoint = "CreateHeuristic")]
-	public static IntPtr CreateHeuristic(IntPtr fullName, IntPtr ip, IntPtr port, int userHTTPS)
+	public static IntPtr CreateHeuristic(IntPtr fullName, IntPtr ip, IntPtr port)
 	{
 		string? typeName = Marshal.PtrToStringUTF8(fullName);
 
@@ -401,7 +401,7 @@ public static partial class Utils
 			return IntPtr.Zero;
 		}
 
-		object instance = Activator.CreateInstance(type, Marshal.PtrToStringUTF8(ip)!, Marshal.PtrToStringUTF8(port)!, Convert.ToBoolean(userHTTPS))!;
+		object instance = Activator.CreateInstance(type, Marshal.PtrToStringUTF8(ip)!, Marshal.PtrToStringUTF8(port)!)!;
 
 		GCHandle handle = GCHandle.Alloc(instance);
 
