@@ -184,7 +184,23 @@ std::unique_ptr<framework::DynamicFunction> IncludeFunction::create(const std::f
 
 std::string IncludeFunction::call(const json::JsonObject& arguments)
 {
-	const std::filesystem::path filePath(pathToTemplates / arguments["@include"]["includePath"].get<std::string>());
+	std::filesystem::path basePath = pathToTemplates;
+	std::filesystem::path fullPath;
+	bool useFullPath = false;
+
+	if (arguments["@include"].contains<std::string>("basePath"))
+	{
+		basePath = arguments["@include"]["basePath"].get<std::string>();
+	}
+
+	if (arguments["@include"].contains<std::string>("fullPath"))
+	{
+		fullPath = arguments["@include"]["fullPath"].get<std::string>();
+
+		useFullPath = true;
+	}
+
+	std::filesystem::path filePath = useFullPath ? fullPath : basePath / arguments["@include"]["includePath"].get<std::string>();
 
 	if (!std::filesystem::exists(filePath))
 	{
