@@ -36,6 +36,9 @@ namespace framework
 	private:
 		void applyExceptionSettings(const json::JsonObject& webFrameworkObject);
 
+	private:
+		void runStaticRenderer(std::string_view filePath, std::string& result, std::string* extension = nullptr);
+
 	public:
 		ResourceExecutor(const json::JsonParser& configuration, const utility::AdditionalServerSettings& additionalSettings, std::shared_ptr<threading::ThreadPool> threadPool);
 

@@ -40,11 +40,12 @@ static constexpr std::array<std::string_view, HtmlErrors::HtmlErrorsSize> htmlEr
 	framework::asset::getBadGatewayError()
 };
 
-static constexpr std::array<std::pair<std::string_view, std::string_view>, 8> contentTypes =
+static constexpr std::array<std::pair<std::string_view, std::string_view>, 9> contentTypes =
 {
 	std::make_pair(".css", "text/css"),
 	std::make_pair(".js", "application/javascript"),
 	std::make_pair(".html", "text/html"),
+	std::make_pair(".md", "text/html"),
 	std::make_pair(".woff2", "font/woff2"),
 	std::make_pair(".svg", "image/svg+xml"),
 	std::make_pair(".webp", "image/webp"),
@@ -101,6 +102,21 @@ namespace framework
 	void ResourceExecutor::applyExceptionSettings(const json::JsonObject& webFrameworkObject)
 	{
 		webFrameworkObject.tryGet<bool>(json_settings::enableExceptionMessagesKey, enableExceptionMessages);
+	}
+
+	void ResourceExecutor::runStaticRenderer(std::string_view filePath, std::string& result, std::string* extension)
+	{
+		std::string tempExtension = std::filesystem::path(filePath).extension().string();
+
+		if (auto renderer = staticRenderers.find(tempExtension); renderer != staticRenderers.end())
+		{
+			result = renderer->second->render(result);
+		}
+
+		if (extension)
+		{
+			*extension = std::move(tempExtension);
+		}
 	}
 
 	ResourceExecutor::ResourceExecutor(const json::JsonParser& configuration, const utility::AdditionalServerSettings& additionalSettings, std::shared_ptr<threading::ThreadPool> threadPool) :
@@ -251,18 +267,14 @@ namespace framework
 		}
 
 		std::string result = this->getFile(filePath);
+		std::string extension;
 
 		if (fileName.size())
 		{
 			response.addHeader("Content-Disposition", std::format(R"(attachment; filename="{}")", fileName).data());
 		}
 
-		std::string extension = std::filesystem::path(filePath).extension().string();
-
-		if (auto renderer = staticRenderers.find(extension); renderer != staticRenderers.end())
-		{
-			result = renderer->second->render(result);
-		}
+		this->runStaticRenderer(filePath, result, &extension);
 
 		addContentType(extension, response);
 
@@ -284,6 +296,7 @@ namespace framework
 		}
 
 		std::string result = this->getFile(filePath);
+		std::string extension;
 
 		wfdpRenderer.run(arguments, result);
 
@@ -292,7 +305,9 @@ namespace framework
 			response.addHeader("Content-Disposition", std::format(R"(attachment; filename="{}")", fileName).data());
 		}
 
-		addContentType(std::filesystem::path(filePath).extension().string(), response);
+		this->runStaticRenderer(filePath, result, &extension);
+
+		addContentType(extension, response);
 
 		response.setBody(result.data(), result.size());
 
@@ -314,10 +329,10 @@ namespace framework
 			{ json_settings::cxxExecutorKey,[](const std::any& function) { return std::make_unique<CXXDynamicFunction>(std::any_cast<void*>(function)); } },
 			{ json_settings::ccExecutorKey,[](const std::any& function) { return std::make_unique<CCDynamicFunction>(std::any_cast<void*>(function)); } },
 #ifdef __WITH_PYTHON_EXECUTORS__
-			{ json_settings::pythonExecutorKey, [](const std::any& function) { return std::make_unique<PythonDynamicFunction>(std::any_cast<void*>(function)); }},
+			{ json_settings::pythonExecutorKey, [](const std::any& function) { return std::make_unique<PythonDynamicFunction>(std::any_cast<void*>(function)); } },
 #endif
 #ifdef __WITH_DOTNET_EXECUTORS__
-			{ json_settings::csharpExecutorKey, [](const std::any& function) { return std::make_unique<CSharpDynamicFunction>(std::any_cast<char*>(function)); }},
+			{ json_settings::csharpExecutorKey, [](const std::any& function) { return std::make_unique<CSharpDynamicFunction>(std::any_cast<char*>(function)); } },
 #endif
 		};
 
