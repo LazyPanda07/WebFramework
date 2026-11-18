@@ -89,9 +89,9 @@ namespace framework
 * Macro for each LoadBalancerHeuristic subclass
 * Used for loading function that creates LoadBalancerHeuristic subclass
 */
-#define DEFINE_HEURISTIC(subclassName) WEB_FRAMEWORK_HEURISTIC_FUNCTIONS_API void* create##subclassName##CXXHeuristic(const char* ip, const char* port, bool useHTTPS)	\
+#define DEFINE_HEURISTIC(subclassName) WEB_FRAMEWORK_HEURISTIC_FUNCTIONS_API void* create##subclassName##CXXHeuristic(const char* ip, const char* port)	\
 {	\
-	return new subclassName(ip, port, useHTTPS);	\
+	return new subclassName(ip, port);	\
 }
 
 #pragma region ExportFunctions
