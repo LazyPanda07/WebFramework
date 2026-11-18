@@ -26,10 +26,10 @@ namespace framework::proxy
 		std::vector<ProxyData> proxyData;
 
 	private:
-		void clientConnection(const std::string& ip, SOCKET clientSocket, sockaddr addr, std::function<void()>& cleanup) override;
+		void clientConnection(const std::string& ip, SOCKET clientSocket, uint16_t port, sockaddr addr, std::function<void()>& cleanup) override;
 
 	public:
-		ProxyServer(std::string_view ip, std::string_view port, DWORD timeout, const json::JsonObject& proxySettings, WebFramework& frameworkInstance);
+		ProxyServer(std::string_view ip, const std::vector<std::string>& ports, DWORD timeout, const json::JsonObject& proxySettings, WebFramework& frameworkInstance);
 
 		~ProxyServer() = default;
 	};

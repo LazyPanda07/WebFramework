@@ -2,10 +2,9 @@
 
 namespace framework::load_balancer
 {
-	Connections::Connections(std::string_view ip, std::string_view port, bool useHTTPS) :
+	Connections::Connections(std::string_view ip, std::string_view port) :
 		ip(ip),
 		port(port),
-		useHTTPS(useHTTPS),
 		connections(0)
 	{
 
@@ -34,10 +33,5 @@ namespace framework::load_balancer
 	const std::string& Connections::getPort() const
 	{
 		return port;
-	}
-
-	bool Connections::getUseHTTPS() const
-	{
-		return useHTTPS;
 	}
 }

@@ -88,17 +88,17 @@ namespace framework::load_balancer
 	private:
 		void processing(size_t index);
 
-		std::unique_ptr<LoadBalancerHeuristic> createAPIHeuristic(std::string_view ip, std::string_view port, bool useHTTPS, std::string_view heuristicName, std::string_view apiType, utility::LoadSource loadSource) const;
+		std::unique_ptr<LoadBalancerHeuristic> createAPIHeuristic(std::string_view ip, std::string_view port, std::string_view heuristicName, std::string_view apiType, utility::LoadSource loadSource) const;
 
 	private:
-		void receiveConnections(std::function<void()> onStartServer, std::exception** outException) override;
+		void receiveConnections(SOCKET listenSocket, std::function<void()> onStartServer, std::exception** outException) override;
 
-		void clientConnection(const std::string& ip, SOCKET clientSocket, sockaddr addr, std::function<void()>& cleanup) override;
+		void clientConnection(const std::string& ip, SOCKET clientSocket, uint16_t port, sockaddr addr, std::function<void()>& cleanup) override;
 
 	public:
 		LoadBalancerServer
 		(
-			std::string_view ip, std::string_view port, DWORD timeout, bool serversHTTPS,
+			std::string_view ip, const std::vector<std::string>& ports, DWORD timeout, bool serversHTTPS,
 			const json::JsonObject& heuristic, utility::LoadSource loadSource,
 			const std::unordered_map<std::string, std::vector<int64_t>>& allServers,
 			std::shared_ptr<ResourceExecutor> resources,

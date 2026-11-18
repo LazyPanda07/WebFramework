@@ -4,8 +4,8 @@
 
 namespace framework
 {
-	PyLoadBalancerHeuristic::PyLoadBalancerHeuristic(std::string_view ip, std::string_view port, bool useHTTPS) :
-		LoadBalancerHeuristic(ip, port, useHTTPS)
+	PyLoadBalancerHeuristic::PyLoadBalancerHeuristic(std::string_view ip, std::string_view port) :
+		LoadBalancerHeuristic(ip, port)
 	{
 
 	}

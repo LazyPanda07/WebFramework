@@ -402,7 +402,7 @@ namespace framework
 		}
 	}
 
-	void WebFramework::initHTTPS(const json::JsonObject& webFrameworkSettings)
+	void WebFramework::initHttps(const json::JsonObject& webFrameworkSettings)
 	{
 		json::JsonObject https;
 
@@ -418,6 +418,16 @@ namespace framework
 
 			data.setPathToCertificate(basePath / https[json_settings::pathToCertificateKey].get<std::string>());
 			data.setPathToKey(basePath / https[json_settings::pathToKey].get<std::string>());
+
+			if (std::vector<json::JsonObject> temp; https.tryGet<std::vector<json::JsonObject>>(json_settings::httpsPortsKey, temp) && temp.size())
+			{
+				httpsPorts.clear();
+
+				for (const json::JsonObject& port : temp)
+				{
+					httpsPorts.emplace_back(port.get<uint16_t>());
+				}
+			}
 
 			if (Log::isValid())
 			{
@@ -464,11 +474,29 @@ namespace framework
 	{
 		const std::filesystem::path& basePath = config.getBasePath();
 		const json::JsonObject& webServerSettings = (*config).get<json::JsonObject>(json_settings::webServerObject);
-		const std::string& ip = webServerSettings[json_settings::ipKey].get<std::string>();
-		std::string port = std::to_string(webServerSettings[json_settings::portKey].get<int64_t>());
 		DWORD timeout = 0;
 		utility::AdditionalServerSettings additionalSettings = utility::AdditionalServerSettings::createSettings(webFrameworkSettings, basePath);
 		int64_t resourcesThreads = 1;
+		const std::string& ip = webServerSettings[json_settings::ipKey].get<std::string>();
+		std::vector<std::string> ports;
+
+		{
+			const json::JsonObject& portObject = webServerSettings[json_settings::portKey];
+
+			if (portObject.is<uint16_t>())
+			{
+				ports.emplace_back(std::to_string(httpsPorts.emplace_back(portObject.get<uint16_t>())));
+			}
+			else
+			{
+				const std::vector<json::JsonObject>& portsObject = portObject.get<std::vector<json::JsonObject>>();
+
+				for (const json::JsonObject& temp : portsObject)
+				{
+					ports.emplace_back(std::to_string(httpsPorts.emplace_back(portObject.get<uint16_t>())));
+				}
+			}
+		}
 
 		webServerType = webFrameworkSettings[json_settings::webServerTypeKey].get<std::string>();
 
@@ -492,7 +520,7 @@ namespace framework
 					*config,
 					std::move(executorsSettings),
 					ip,
-					port,
+					ports,
 					timeout,
 					pathToSources,
 					additionalSettings,
@@ -515,7 +543,7 @@ namespace framework
 					*config,
 					std::move(executorsSettings),
 					ip,
-					port,
+					ports,
 					timeout,
 					pathToSources,
 					additionalSettings,
@@ -558,7 +586,7 @@ namespace framework
 			server = std::make_unique<load_balancer::LoadBalancerServer>
 				(
 					ip,
-					port,
+					ports,
 					timeout,
 					serversHTTPS,
 					heuristic,
@@ -572,7 +600,7 @@ namespace framework
 		}
 		else if (webServerType == json_settings_values::proxyWebServerTypeValue)
 		{
-			server = std::make_unique<proxy::ProxyServer>(ip, port, timeout, (*config).get<json::JsonObject>(json_settings::proxyObject), *this);
+			server = std::make_unique<proxy::ProxyServer>(ip, ports, timeout, (*config).get<json::JsonObject>(json_settings::proxyObject), *this);
 		}
 		else
 		{
@@ -626,7 +654,7 @@ namespace framework
 		this->initAPIs(webFrameworkSettings);
 		this->initDatabase(webFrameworkSettings);
 		this->initExecutors(webFrameworkSettings, executorsSettings, pathToSources);
-		this->initHTTPS(webFrameworkSettings);
+		this->initHttps(webFrameworkSettings);
 		this->initServer(webFrameworkSettings, std::move(executorsSettings), pathToSources);
 		this->initJwt(webFrameworkSettings);
 
@@ -717,9 +745,16 @@ namespace framework
 		return jwtSecretName;
 	}
 
-	const std::optional<WebFramework::HttpsData>& WebFramework::getHttpsData() const
+	const std::optional<WebFramework::HttpsData>& WebFramework::getHttpsData(uint16_t port, bool forceGet) const
 	{
-		return httpsData;
+		static std::optional<HttpsData> emptyData;
+
+		if (forceGet || std::ranges::contains(httpsPorts, port))
+		{
+			return httpsData;
+		}
+
+		return emptyData;
 	}
 
 	DatabasesManager& WebFramework::getDatabasesManager()

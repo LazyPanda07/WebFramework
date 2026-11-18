@@ -277,7 +277,7 @@ namespace framework
 		/// Get server's port
 		/// </summary>
 		/// <returns>server's port</returns>
-		uint16_t getServerPort() const override;
+		uint16_t getServerPort(uint64_t index) const override;
 
 		const char* getRouteStringParameter(const char* routeParameterName) const override;
 

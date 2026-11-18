@@ -346,10 +346,11 @@ web_framework_exception_t wf_get_client_port(http_request_t implementation, uint
 /**
  * @brief Get server port
  * @param implementation http_request_t instance
+ * @param index Port index from config or 0 if port is single value
  * @param port Server port
  * @return Error if occurred
  */
-web_framework_exception_t wf_get_server_port(http_request_t implementation, uint16_t* port);
+web_framework_exception_t wf_get_server_port(http_request_t implementation, uint64_t index, uint16_t* port);
 
 /**
  * @brief Tries to get database or create if can't get

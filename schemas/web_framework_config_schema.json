@@ -14,10 +14,22 @@
           "pattern": "^((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9]))$"
         },
         "port": {
-          "type": "integer",
           "description": "Server port",
-          "minimum": 0,
-          "maximum": 65535
+          "oneOf": [
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 65535
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 65535
+              }
+            }
+          ]
         },
         "timeout": {
           "type": "integer",
@@ -253,6 +265,13 @@
             "pathToKey": {
               "type": "string",
               "description": "Path to HTTPS key"
+            },
+            "httpsPorts": {
+              "type": "array",
+              "description": "Optional list of explicit ports with HTTPS support. By default works on all ports from WebServer",
+              "items": {
+                "type": "integer"
+              }
             }
           },
           "required": [ "useHTTPS", "pathToCertificate", "pathToKey" ]

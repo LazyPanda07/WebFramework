@@ -5,7 +5,7 @@
 
 namespace framework::load_balancer
 {
-	CXXHeuristic::CXXHeuristic(std::string_view ip, std::string_view port, bool useHTTPS, std::string_view heuristicName, HMODULE handle)
+	CXXHeuristic::CXXHeuristic(std::string_view ip, std::string_view port, std::string_view heuristicName, HMODULE handle)
 	{
 		CreateHeuristicFunction creator = utility::load<CreateHeuristicFunction>(handle, std::format("create{}CXXHeuristic", heuristicName));
 
@@ -14,7 +14,7 @@ namespace framework::load_balancer
 			utility::logAndThrowException<logging::message::cantFindCXXHeuristic, logging::category::cxxHeuristic>(heuristicName);
 		}
 
-		implementation = creator(ip.data(), port.data(), useHTTPS);
+		implementation = creator(ip.data(), port.data());
 
 		if (!implementation)
 		{
@@ -26,7 +26,6 @@ namespace framework::load_balancer
 		onEndFunction = utility::load<OnEndSignature>(handle, "webFrameworkCXXHeuristicOnEnd", true);
 		getIpFunction = utility::load<GetIpSignature>(handle, "webFrameworkCXXHeuristicGetIp", true);
 		getPortFunction = utility::load<GetPortSignature>(handle, "webFrameworkCXXHeuristicGetPort", true);
-		getUseHTTPSFunction = utility::load<GetUseHTTPSSignature>(handle, "webFrameworkCXXHeuristicGetUseHTTPS", true);
 		deleteHeuristicFunction = utility::load<DeleteHeuristicSignature>(handle, "webFrameworkCXXDeleteHeuristic", true);
 
 		this->ip = getIpFunction(implementation);
@@ -56,11 +55,6 @@ namespace framework::load_balancer
 	const std::string& CXXHeuristic::getPort() const
 	{
 		return port;
-	}
-
-	bool CXXHeuristic::getUseHTTPS() const
-	{
-		return getUseHTTPSFunction(implementation);
 	}
 
 	CXXHeuristic::~CXXHeuristic()

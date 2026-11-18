@@ -43,16 +43,10 @@ namespace framework::load_balancer
 		 */
 		virtual const std::string& getPort() const = 0;
 
-		/**
-		 * @brief Is server using HTTPS
-		 * @return
-		 */
-		virtual bool getUseHTTPS() const = 0;
-
 		virtual ~LoadBalancerHeuristic() = default;
 	};
 
-	using CreateHeuristicFunction = void* (*)(const char* ip, const char* port, bool useHTTPS);
+	using CreateHeuristicFunction = void* (*)(const char* ip, const char* port);
 }
 
 #ifdef __LINUX__
@@ -60,17 +54,17 @@ namespace framework::load_balancer
 * Macro for each LoadBalancerHeuristic subclass
 * Used for loading function that creates LoadBalancerHeuristic subclass
 */
-#define DEFINE_HEURISTIC(subclassName) extern "C" __attribute__((visibility("default"))) void* create##subclassName##Heuristic(std::string_view ip, std::string_view port, bool useHTTPS)	\
+#define DEFINE_HEURISTIC(subclassName) extern "C" __attribute__((visibility("default"))) void* create##subclassName##Heuristic(std::string_view ip, std::string_view port)	\
 {	\
-	return new subclassName(ip, port, useHTTPS);	\
+	return new subclassName(ip, port);	\
 }
 #else
 /**
 * Macro for each LoadBalancerHeuristic subclass
 * Used for loading function that creates LoadBalancerHeuristic subclass
 */
-#define DEFINE_HEURISTIC(subclassName) extern "C" __declspec(dllexport) void* create##subclassName##Heuristic(std::string_view ip, std::string_view port, bool useHTTPS)	\
+#define DEFINE_HEURISTIC(subclassName) extern "C" __declspec(dllexport) void* create##subclassName##Heuristic(std::string_view ip, std::string_view port)	\
 {	\
-	return new subclassName(ip, port, useHTTPS);	\
+	return new subclassName(ip, port);	\
 }
 #endif

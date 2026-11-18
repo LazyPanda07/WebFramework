@@ -21,9 +21,9 @@
 
 namespace framework
 {
-	void MultithreadedWebServer::clientConnection(const std::string& ip, SOCKET clientSocket, sockaddr addr, std::function<void()>& cleanup)
+	void MultithreadedWebServer::clientConnection(const std::string& ip, SOCKET clientSocket, uint16_t port, sockaddr addr, std::function<void()>& cleanup)
 	{
-		const std::optional<WebFramework::HttpsData>& httpsData = frameworkInstance.getHttpsData();
+		const std::optional<WebFramework::HttpsData>& httpsData = frameworkInstance.getHttpsData(port);
 		SSL* ssl = nullptr;
 
 		try
@@ -92,7 +92,7 @@ namespace framework
 		const json::JsonParser& configuration,
 		std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings>&& executorsSettings,
 		std::string_view ip,
-		std::string_view port,
+		const std::vector<std::string>& ports,
 		DWORD timeout,
 		const std::vector<std::string>& pathToSources,
 		const utility::AdditionalServerSettings& additionalSettings,
@@ -101,7 +101,7 @@ namespace framework
 	) :
 		BaseTCPServer
 		(
-			port,
+			ports,
 			ip,
 			timeout,
 			true,

@@ -555,9 +555,9 @@ namespace framework
 		return web::BaseTCPServer::getClientPortV4(clientAddr);
 	}
 
-	uint16_t HttpRequestImplementation::getServerPort() const
+	uint16_t HttpRequestImplementation::getServerPort(uint64_t index) const
 	{
-		return serverReference.getServerPortV4();
+		return serverReference.getServerPort(index);
 	}
 
 	const char* HttpRequestImplementation::getRouteStringParameter(const char* routeParameterName) const

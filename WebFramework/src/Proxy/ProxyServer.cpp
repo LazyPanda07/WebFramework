@@ -18,9 +18,9 @@ namespace framework::proxy
 
 	}
 
-	void ProxyServer::clientConnection(const std::string& ip, SOCKET clientSocket, sockaddr addr, std::function<void()>& cleanup) //-V688
+	void ProxyServer::clientConnection(const std::string& ip, SOCKET clientSocket, uint16_t port, sockaddr addr, std::function<void()>& cleanup) //-V688
 	{
-		const std::optional<WebFramework::HttpsData>& httpsData = frameworkInstance.getHttpsData();
+		const std::optional<WebFramework::HttpsData>& httpsData = frameworkInstance.getHttpsData(port);
 		SSL* ssl = nullptr;
 
 		try
@@ -99,10 +99,10 @@ namespace framework::proxy
 		}
 	}
 
-	ProxyServer::ProxyServer(std::string_view ip, std::string_view port, DWORD timeout, const json::JsonObject& proxySettings, WebFramework& frameworkInstance) :
+	ProxyServer::ProxyServer(std::string_view ip, const std::vector<std::string>& ports, DWORD timeout, const json::JsonObject& proxySettings, WebFramework& frameworkInstance) :
 		BaseTCPServer
 		(
-			port,
+			ports,
 			ip,
 			timeout,
 			true,

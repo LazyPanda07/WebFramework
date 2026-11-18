@@ -11,11 +11,10 @@ namespace framework::load_balancer
 	private:
 		std::string ip;
 		std::string port;
-		bool useHTTPS;
 		std::atomic_uint64_t connections;
 
 	public:
-		Connections(std::string_view ip, std::string_view port, bool useHTTPS);
+		Connections(std::string_view ip, std::string_view port);
 
 		uint64_t operator ()() const override;
 
@@ -26,8 +25,6 @@ namespace framework::load_balancer
 		const std::string& getIp() const override;
 
 		const std::string& getPort() const override;
-
-		bool getUseHTTPS() const override;
 
 		~Connections() = default;
 	};

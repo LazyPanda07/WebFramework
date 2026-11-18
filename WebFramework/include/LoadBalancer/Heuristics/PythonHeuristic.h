@@ -15,11 +15,10 @@ namespace framework::load_balancer
 	private:
 		std::string ip;
 		std::string port;
-		bool useHTTPS;
 		pybind11::object* implementation;
 
 	public:
-		PythonHeuristic(std::string_view ip, std::string_view port, bool useHTTPS, std::string_view heuristicName, const utility::LoadSource& source);
+		PythonHeuristic(std::string_view ip, std::string_view port, std::string_view heuristicName, const utility::LoadSource& source);
 
 		uint64_t operator ()() const override;
 
@@ -30,8 +29,6 @@ namespace framework::load_balancer
 		const std::string& getIp() const override;
 
 		const std::string& getPort() const override;
-
-		bool getUseHTTPS() const override;
 
 		~PythonHeuristic();
 	};

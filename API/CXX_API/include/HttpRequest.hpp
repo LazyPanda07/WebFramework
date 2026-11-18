@@ -308,11 +308,12 @@ namespace framework
 		/// <returns>client's port</returns>
 		uint16_t getClientPort() const;
 
-		/// <summary>
-		/// Get server's port
-		/// </summary>
-		/// <returns>server's port</returns>
-		uint16_t getServerPort() const;
+		/**
+		 * @brief 
+		 * @param index Port index from config or 0 if port is single value
+		 * @return 
+		 */
+		uint16_t getServerPort(size_t index = 0) const;
 
 		template<DatabaseImplementation T = DefaultDatabase>
 		Database getOrCreateDatabase(std::string_view databaseName);
@@ -884,9 +885,9 @@ namespace framework
 		return implementation->getClientPort();
 	}
 
-	inline uint16_t HttpRequest::getServerPort() const
+	inline uint16_t HttpRequest::getServerPort(size_t index) const
 	{
-		return implementation->getServerPort();
+		return implementation->getServerPort(index);
 	}
 
 	template<DatabaseImplementation T>

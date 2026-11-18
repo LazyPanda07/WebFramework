@@ -504,11 +504,11 @@ uint16_t getClientPort(HttpRequestObject request, Exception* exception)
 	return 0;
 }
 
-uint16_t getServerPort(HttpRequestObject request, Exception* exception)
+uint16_t getServerPort(HttpRequestObject request, uint64_t index, Exception* exception)
 {
 	try
 	{
-		return static_cast<framework::interfaces::IHttpRequest*>(request)->getServerPort();
+		return static_cast<framework::interfaces::IHttpRequest*>(request)->getServerPort(index);
 	}
 	catch (const framework::exceptions::AlreadyLoggedException& e)
 	{

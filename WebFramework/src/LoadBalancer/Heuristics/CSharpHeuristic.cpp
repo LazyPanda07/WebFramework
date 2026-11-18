@@ -9,16 +9,15 @@
 
 namespace framework::load_balancer
 {
-	CSharpHeuristic::CSharpHeuristic(std::string_view ip, std::string_view port, bool useHTTPS, std::string_view heuristicName, const utility::LoadSource& source) :
+	CSharpHeuristic::CSharpHeuristic(std::string_view ip, std::string_view port, std::string_view heuristicName, const utility::LoadSource& source) :
 		ip(ip),
 		port(port),
-		useHTTPS(useHTTPS),
 		implementation(nullptr)
 	{
 		runtime::DotNetRuntime::NativeString moduleName = runtime::DotNetRuntime::getModuleName(std::get<std::filesystem::path>(source));
 		runtime::DotNetRuntime& runtime = runtime::RuntimesManager::get().getRuntime<runtime::DotNetRuntime>();
 
-		implementation = runtime.getCreateHeuristic()(std::format("{}, {}", heuristicName, moduleName.string()).data(), ip.data(), port.data(), useHTTPS);
+		implementation = runtime.getCreateHeuristic()(std::format("{}, {}", heuristicName, moduleName.string()).data(), ip.data(), port.data());
 
 		if (!implementation)
 		{
@@ -49,11 +48,6 @@ namespace framework::load_balancer
 	const std::string& CSharpHeuristic::getPort() const
 	{
 		return port;
-	}
-
-	bool CSharpHeuristic::getUseHTTPS() const
-	{
-		return useHTTPS;
 	}
 
 	CSharpHeuristic::~CSharpHeuristic()

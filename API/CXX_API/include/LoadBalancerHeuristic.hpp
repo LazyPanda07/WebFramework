@@ -13,10 +13,9 @@ namespace framework
 	private:
 		std::string ip;
 		std::string port;
-		bool useHTTPS;
 
 	public:
-		LoadBalancerHeuristic(std::string_view ip, std::string_view port, bool useHTTPS);
+		LoadBalancerHeuristic(std::string_view ip, std::string_view port);
 
 		/**
 		 * @brief Calculate load score(choose server with lowest score)
@@ -46,22 +45,15 @@ namespace framework
 		 */
 		const std::string& getPort() const;
 
-		/**
-		 * @brief Is server using HTTPS
-		 * @return
-		 */
-		bool getUseHTTPS() const;
-
 		virtual ~LoadBalancerHeuristic() = default;
 	};
 }
 
 namespace framework
 {
-	inline LoadBalancerHeuristic::LoadBalancerHeuristic(std::string_view ip, std::string_view port, bool useHTTPS) :
+	inline LoadBalancerHeuristic::LoadBalancerHeuristic(std::string_view ip, std::string_view port) :
 		ip(ip),
-		port(port),
-		useHTTPS(useHTTPS)
+		port(port)
 	{
 
 	}
@@ -84,11 +76,6 @@ namespace framework
 	inline const std::string& LoadBalancerHeuristic::getPort() const
 	{
 		return port;
-	}
-
-	inline bool LoadBalancerHeuristic::getUseHTTPS() const
-	{
-		return useHTTPS;
 	}
 }
 
@@ -131,11 +118,6 @@ WEB_FRAMEWORK_HEURISTIC_FUNCTIONS_API inline const char* webFrameworkCXXHeuristi
 WEB_FRAMEWORK_HEURISTIC_FUNCTIONS_API inline const char* webFrameworkCXXHeuristicGetPort(void* implementation)
 {
 	return static_cast<framework::LoadBalancerHeuristic*>(implementation)->getPort().data();
-}
-
-WEB_FRAMEWORK_HEURISTIC_FUNCTIONS_API inline bool webFrameworkCXXHeuristicGetUseHTTPS(void* implementation)
-{
-	return static_cast<framework::LoadBalancerHeuristic*>(implementation)->getUseHTTPS();
 }
 
 WEB_FRAMEWORK_HEURISTIC_FUNCTIONS_API inline void webFrameworkCXXDeleteHeuristic(void* implementation)

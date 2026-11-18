@@ -302,24 +302,24 @@ namespace framework::load_balancer
 		}
 	}
 
-	std::unique_ptr<LoadBalancerHeuristic> LoadBalancerServer::createAPIHeuristic(std::string_view ip, std::string_view port, bool useHTTPS, std::string_view heuristicName, std::string_view apiType, utility::LoadSource loadSource) const
+	std::unique_ptr<LoadBalancerHeuristic> LoadBalancerServer::createAPIHeuristic(std::string_view ip, std::string_view port, std::string_view heuristicName, std::string_view apiType, utility::LoadSource loadSource) const
 	{
-		static const std::unordered_map<std::string_view, std::function<std::unique_ptr<LoadBalancerHeuristic>(std::string_view, std::string_view, bool)>> apiHeuristics =
+		static const std::unordered_map<std::string_view, std::function<std::unique_ptr<LoadBalancerHeuristic>(std::string_view, std::string_view)>> apiHeuristics =
 		{
-			{ "", [](std::string_view ip, std::string_view port, bool useHTTPS) { return make_unique<Connections>(ip, port, useHTTPS); } },
-			{ json_settings::cxxExecutorKey, [heuristicName, &loadSource](std::string_view ip, std::string_view port, bool useHTTPS) { return std::make_unique<CXXHeuristic>(ip, port, useHTTPS, heuristicName, std::get<HMODULE>(loadSource)); } },
-			{ json_settings::ccExecutorKey, [heuristicName, &loadSource](std::string_view ip, std::string_view port, bool useHTTPS) { return std::make_unique<CCHeuristic>(ip, port, useHTTPS, heuristicName, std::get<HMODULE>(loadSource)); } },
+			{ "", [](std::string_view ip, std::string_view port) { return make_unique<Connections>(ip, port); } },
+			{ json_settings::cxxExecutorKey, [heuristicName, &loadSource](std::string_view ip, std::string_view port) { return std::make_unique<CXXHeuristic>(ip, port, heuristicName, std::get<HMODULE>(loadSource)); } },
+			{ json_settings::ccExecutorKey, [heuristicName, &loadSource](std::string_view ip, std::string_view port) { return std::make_unique<CCHeuristic>(ip, port, heuristicName, std::get<HMODULE>(loadSource)); } },
 #ifdef __WITH_PYTHON_EXECUTORS__
-			{ json_settings::pythonExecutorKey, [heuristicName, &loadSource](std::string_view ip, std::string_view port, bool useHTTPS) { return std::make_unique<PythonHeuristic>(ip, port, useHTTPS, heuristicName, loadSource); } },
+			{ json_settings::pythonExecutorKey, [heuristicName, &loadSource](std::string_view ip, std::string_view port) { return std::make_unique<PythonHeuristic>(ip, port, heuristicName, loadSource); } },
 #endif
 #ifdef __WITH_DOTNET_EXECUTORS__
-			{ json_settings::csharpExecutorKey, [heuristicName, &loadSource](std::string_view ip, std::string_view port, bool useHTTPS) { return std::make_unique<CSharpHeuristic>(ip, port, useHTTPS, heuristicName, loadSource); }}
+			{ json_settings::csharpExecutorKey, [heuristicName, &loadSource](std::string_view ip, std::string_view port) { return std::make_unique<CSharpHeuristic>(ip, port, heuristicName, loadSource); }}
 #endif
 		};
 
 		if (auto it = apiHeuristics.find(apiType); it != apiHeuristics.end())
 		{
-			return (it->second)(ip, port, useHTTPS);
+			return (it->second)(ip, port);
 		}
 
 		utility::logAndThrowException<logging::message::cantFindHeuristicType, logging::category::loadBalancer>(apiType);
@@ -327,7 +327,7 @@ namespace framework::load_balancer
 		return nullptr;
 	}
 
-	void LoadBalancerServer::receiveConnections(std::function<void()> onStartServer, std::exception** outException)
+	void LoadBalancerServer::receiveConnections(SOCKET listenSocket, std::function<void()> onStartServer, std::exception** outException)
 	{
 		threads.reserve(requestQueues.size());
 
@@ -336,10 +336,10 @@ namespace framework::load_balancer
 			threads.emplace_back(std::async(std::launch::async, &LoadBalancerServer::processing, this, i));
 		}
 
-		BaseTCPServer::receiveConnections(onStartServer, outException);
+		BaseTCPServer::receiveConnections(listenSocket, onStartServer, outException);
 	}
 
-	void LoadBalancerServer::clientConnection(const std::string& ip, SOCKET clientSocket, sockaddr addr, std::function<void()>& cleanup)
+	void LoadBalancerServer::clientConnection(const std::string& ip, SOCKET clientSocket, uint16_t port, sockaddr addr, std::function<void()>& cleanup)
 	{
 		static std::mutex minElementMutex;
 
@@ -368,7 +368,7 @@ namespace framework::load_balancer
 			heuristic->onStart();
 		}
 
-		const std::optional<WebFramework::HttpsData>& httpsData = frameworkInstance.getHttpsData();
+		const std::optional<WebFramework::HttpsData>& httpsData = frameworkInstance.getHttpsData(port);
 		SSL* ssl = nullptr;
 
 		try
@@ -443,7 +443,7 @@ namespace framework::load_balancer
 
 	LoadBalancerServer::LoadBalancerServer
 	(
-		std::string_view ip, std::string_view port, DWORD timeout, bool serversHTTPS,
+		std::string_view ip, const std::vector<std::string>& ports, DWORD timeout, bool serversHTTPS,
 		const json::JsonObject& heuristic, utility::LoadSource loadSource,
 		const std::unordered_map<std::string, std::vector<int64_t>>& allServers,
 		std::shared_ptr<ResourceExecutor> resources,
@@ -453,7 +453,7 @@ namespace framework::load_balancer
 	) :
 		BaseTCPServer
 		(
-			port,
+			ports,
 			ip,
 			timeout,
 			true,
@@ -468,7 +468,6 @@ namespace framework::load_balancer
 		serversHTTPS(serversHTTPS)
 	{
 		const std::string& heuristicName = heuristic["name"].get<std::string>();
-		const std::optional<WebFramework::HttpsData>& httpsData = frameworkInstance.getHttpsData();
 		std::string apiType = heuristic[json_settings::apiTypeKey].get<std::string>();
 
 		if (heuristicName == "Connections")
@@ -489,7 +488,7 @@ namespace framework::load_balancer
 				this->allServers.emplace_back
 				(
 					utility::ConnectionData(ip, portString, timeout),
-					this->createAPIHeuristic(ip, portString, static_cast<bool>(httpsData), heuristicName, apiType, loadSource)
+					this->createAPIHeuristic(ip, portString, heuristicName, apiType, loadSource)
 				);
 			}
 		}

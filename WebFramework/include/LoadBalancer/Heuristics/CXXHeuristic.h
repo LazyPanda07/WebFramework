@@ -28,11 +28,10 @@ namespace framework::load_balancer
 		OnEndSignature onEndFunction;
 		GetIpSignature getIpFunction;
 		GetPortSignature getPortFunction;
-		GetUseHTTPSSignature getUseHTTPSFunction;
 		DeleteHeuristicSignature deleteHeuristicFunction;
 
 	public:
-		CXXHeuristic(std::string_view ip, std::string_view port, bool useHTTPS, std::string_view heuristicName, HMODULE handle);
+		CXXHeuristic(std::string_view ip, std::string_view port, std::string_view heuristicName, HMODULE handle);
 
 		uint64_t operator ()() const override;
 
@@ -43,8 +42,6 @@ namespace framework::load_balancer
 		const std::string& getIp() const override;
 
 		const std::string& getPort() const override;
-
-		bool getUseHTTPS() const override;
 
 		~CXXHeuristic();
 	};

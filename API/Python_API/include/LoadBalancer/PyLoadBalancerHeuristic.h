@@ -7,7 +7,7 @@ namespace framework
 	class PyLoadBalancerHeuristic : public LoadBalancerHeuristic
 	{
 	public:
-		PyLoadBalancerHeuristic(std::string_view ip, std::string_view port, bool useHTTPS);
+		PyLoadBalancerHeuristic(std::string_view ip, std::string_view port);
 
 		uint64_t operator ()() const override;
 

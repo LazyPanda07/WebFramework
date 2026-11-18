@@ -36,6 +36,7 @@ namespace json_settings
 	inline constexpr std::string_view useHTTPSKey = "useHTTPS";
 	inline constexpr std::string_view pathToCertificateKey = "pathToCertificate";
 	inline constexpr std::string_view pathToKey = "pathToKey";
+	inline constexpr std::string_view httpsPortsKey = "httpsPorts";
 	inline constexpr std::string_view largeBodySizeThresholdKey = "largeBodySizeThreshold";
 	inline constexpr std::string_view largeBodyPacketSizeKey = "largeBodyPacketSize";
 	inline constexpr std::string_view databasesKey = "databases";

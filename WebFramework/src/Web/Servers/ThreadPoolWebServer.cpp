@@ -169,9 +169,9 @@ namespace framework
 		}
 	}
 
-	void ThreadPoolWebServer::clientConnection(const std::string& ip, SOCKET clientSocket, sockaddr address, std::function<void()>& cleanup) //-V688
+	void ThreadPoolWebServer::clientConnection(const std::string& ip, SOCKET clientSocket, uint16_t port, sockaddr address, std::function<void()>& cleanup) //-V688
 	{
-		const std::optional<WebFramework::HttpsData>& httpsData = frameworkInstance.getHttpsData();
+		const std::optional<WebFramework::HttpsData>& httpsData = frameworkInstance.getHttpsData(port);
 		SSL* ssl = nullptr;
 
 		try
@@ -235,7 +235,7 @@ namespace framework
 		const json::JsonParser& configuration,
 		std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings>&& executorsSettings,
 		std::string_view ip,
-		std::string_view port,
+		const std::vector<std::string>& ports,
 		DWORD timeout,
 		const std::vector<std::string>& pathToSources,
 		const utility::AdditionalServerSettings& additionalSettings,
@@ -245,7 +245,7 @@ namespace framework
 	) :
 		BaseTCPServer
 		(
-			port,
+			ports,
 			ip,
 			timeout,
 			false,

@@ -73,7 +73,7 @@ namespace framework
 
 	void BaseWebServer::updateCertificates()
 	{
-		const std::optional<WebFramework::HttpsData>& httpsData = frameworkInstance.getHttpsData();
+		const std::optional<WebFramework::HttpsData>& httpsData = frameworkInstance.getHttpsData(0, true);
 
 		if (!httpsData)
 		{

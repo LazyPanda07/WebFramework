@@ -33,11 +33,6 @@ WEB_FRAMEWORK_HEURISTIC_FUNCTIONS_API const char* webFrameworkCCHeuristicGetPort
 	return ((structName*)heuristic)->port;	\
 }	\
 	\
-WEB_FRAMEWORK_HEURISTIC_FUNCTIONS_API bool webFrameworkCCHeuristicGetUseHTTPS##structName(void* heuristic)	\
-{	\
-	return ((structName*)heuristic)->useHTTPS;	\
-}	\
-	\
 WEB_FRAMEWORK_HEURISTIC_FUNCTIONS_API void webFrameworkCCDeleteHeuristic##structName(void* heuristic)	\
 {	\
 	free((structName*)heuristic);	\

@@ -52,7 +52,7 @@ EXPORT void* getServerIpV4(HttpRequestObject request, Exception* exception);
 
 EXPORT uint16_t getClientPort(HttpRequestObject request, Exception* exception);
 
-EXPORT uint16_t getServerPort(HttpRequestObject request, Exception* exception);
+EXPORT uint16_t getServerPort(HttpRequestObject request, uint64_t index, Exception* exception);
 
 EXPORT void registerDynamicFunctionClass(HttpRequestObject request, const char* functionName, const char* apiType, void* functionClass, Exception* exception);
 

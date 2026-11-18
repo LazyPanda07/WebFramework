@@ -38,7 +38,7 @@ namespace framework::runtime
 		using CreateWebSocketExecutorSignature = void* (*)(const char* executorName);
 		using CreateTaskExecutorSignature = void* (*)(const char* executorName);
 		using CreateDynamicFunctionSignature = void* (*)(const char* dynamicFunctionName);
-		using CreateHeuristicFunctionSignature = void* (*)(const char* heuristicName, const char* ip, const char* port, bool useHTTPS);
+		using CreateHeuristicFunctionSignature = void* (*)(const char* heuristicName, const char* ip, const char* port);
 		using CreateHttpRequestSignature = void* (*)(void* implementation);
 		using CreateHttpResponceSignature = void* (*)(void* implementation);
 		using CreateExecutorSettingsSignature = void* (*)(const void* implementation);

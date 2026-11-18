@@ -63,6 +63,7 @@ namespace framework
 		std::string webServerType;
 		std::string jwtSecretName;
 		std::optional<HttpsData> httpsData;
+		std::vector<uint16_t> httpsPorts;
 		DatabasesManager databasesManager;
 		task_broker::TaskBrokersManager taskBrokerManager;
 		task_broker::TaskExecutorsManager taskExecutorsManager;
@@ -86,7 +87,7 @@ namespace framework
 
 		void initTaskExecutors(const json::JsonObject& taskBrokerObject);
 
-		void initHTTPS(const json::JsonObject& webFrameworkSettings);
+		void initHttps(const json::JsonObject& webFrameworkSettings);
 
 		void initDatabase(const json::JsonObject& webFrameworkSettings);
 
@@ -123,7 +124,7 @@ namespace framework
 
 		std::string_view getJwtSecretName() const;
 
-		const std::optional<HttpsData>& getHttpsData() const;
+		const std::optional<HttpsData>& getHttpsData(uint16_t port, bool forceGet = false) const;
 
 		DatabasesManager& getDatabasesManager();
 

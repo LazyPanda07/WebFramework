@@ -12,7 +12,7 @@ namespace framework
 		public ExecutorServer
 	{
 	private:
-		void clientConnection(const std::string& ip, SOCKET clientSocket, sockaddr addr, std::function<void()>& cleanup) override;
+		void clientConnection(const std::string& ip, SOCKET clientSocket, uint16_t port, sockaddr addr, std::function<void()>& cleanup) override;
 
 	public:
 		MultithreadedWebServer
@@ -20,7 +20,7 @@ namespace framework
 			const json::JsonParser& configuration,
 			std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings>&& executorsSettings,
 			std::string_view ip,
-			std::string_view port,
+			const std::vector<std::string>& ports,
 			DWORD timeout,
 			const std::vector<std::string>& pathToSources,
 			const utility::AdditionalServerSettings& additionalSettings,

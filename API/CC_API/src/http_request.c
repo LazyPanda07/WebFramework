@@ -609,13 +609,13 @@ web_framework_exception_t wf_get_client_port(http_request_t implementation, uint
 	return exception;
 }
 
-web_framework_exception_t wf_get_server_port(http_request_t implementation, uint16_t* port)
+web_framework_exception_t wf_get_server_port(http_request_t implementation, uint64_t index, uint16_t* port)
 {
 	web_framework_exception_t exception = NULL;
 
-	typedef uint16_t(*getServerPort)(void* implementation, void** exception);
+	typedef uint16_t(*getServerPort)(void* implementation, uint64_t index, void** exception);
 
-	*port = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getServerPort, &exception);
+	*port = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getServerPort, index, &exception);
 
 	return exception;
 }
