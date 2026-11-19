@@ -36,6 +36,13 @@ namespace framework::serve_loop
 		{
 			[this, &largeBodyHandler = stream.getNetwork<web::http::HttpNetwork>().getLargeBodyHandler()](ExecutorServer::ServiceState& state)
 			{
+				if (largeBodyHandler.isRunning())
+				{
+					state = ExecutorServer::ServiceState::skipResponse;
+
+					return;
+				}
+
 				stream >> request;
 
 				if (stream.eof()) // request may be empty
