@@ -34,9 +34,9 @@ namespace framework::serve_loop
 
 		chain =
 		{
-			[this, &largeBodyHandler = stream.getNetwork<web::http::HttpNetwork>().getLargeBodyHandler()](ExecutorServer::ServiceState& state)
+			[this, isMultithreaded = webServerType == json_settings_values::multiThreadedWebServerTypeValue, &largeBodyHandler = stream.getNetwork<web::http::HttpNetwork>().getLargeBodyHandler()](ExecutorServer::ServiceState& state)
 			{
-				if (largeBodyHandler.isRunning())
+				if (!isMultithreaded && largeBodyHandler.isRunning())
 				{
 					state = ExecutorServer::ServiceState::skipResponse;
 
