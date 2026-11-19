@@ -15,6 +15,7 @@ target_link_libraries(
 	GTest::gtest_main
 	unit_test_utils
 	Networks
+	${3RDPARTY_LIBRARIES}
 )
 
 install(TARGETS ${PROJECT_NAME} DESTINATION .)
