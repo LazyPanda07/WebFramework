@@ -1,0 +1,8 @@
+{
+  "$schema": "https://raw.githubusercontent.com/LazyPanda07/WebFramework/refs/heads/main/schemas/executors_schema.json",
+  "MultiplePorts": {
+    "api": "cxx",
+    "loadType": "initialization",
+    "route": "multiple_ports"
+  }
+}

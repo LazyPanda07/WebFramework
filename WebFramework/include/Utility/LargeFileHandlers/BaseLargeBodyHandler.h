@@ -26,6 +26,7 @@ namespace framework::utility
 		HttpResponseImplementation response;
 		Executor* executor;
 		void(Executor::* method)(interfaces::IHttpRequest&, interfaces::IHttpResponse&);
+		uint16_t port;
 
 	private:
 		bool handleChunk(std::string_view data) override;
@@ -39,7 +40,8 @@ namespace framework::utility
 		(
 			web::Network& network, SessionsManager& session, BaseWebServer& serverReference, interfaces::IStaticFile& staticResources, interfaces::IDynamicFile& dynamicResources,
 			sockaddr clientAddr, streams::IOSocketStream& stream,
-			ExecutorsManager& executorsManager, ExecutorsManager::StatefulExecutors& executors
+			ExecutorsManager& executorsManager, ExecutorsManager::StatefulExecutors& executors,
+			uint16_t port
 		);
 
 		~BaseLargeBodyHandler() = default;

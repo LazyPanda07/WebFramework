@@ -4,7 +4,6 @@
 #include "Exceptions/SslException.h"
 #include "Exceptions/APIException.h"
 #include "Http/HttpsNetwork.h"
-#include "Utility/LargeFileHandlers/ThreadPoolHandler.h"
 #include "Utility/Utils.h"
 #include "Framework/WebFramework.h"
 
@@ -16,7 +15,8 @@ namespace framework
 		std::function<void()>&& cleanup,
 		const serve_loop::HttpServeLoop::HttpServeTaskSignature& serveTask,
 		ThreadPoolWebServer& server,
-		DWORD timeout
+		DWORD timeout,
+		uint16_t port
 	) :
 		cleanup(std::move(cleanup)),
 		isBusy(false),
@@ -85,7 +85,9 @@ namespace framework
 				*server.executorsManager,
 				address,
 				server.additionalSettings,
-				events
+				events,
+				port,
+				json_settings_values::threadPoolWebServerTypeValue
 			);
 	}
 
@@ -206,7 +208,8 @@ namespace framework
 					std::move(cleanup),
 					&ExecutorServer::serveTask,
 					*this,
-					timeout
+					timeout,
+					port
 				)
 			);
 		}

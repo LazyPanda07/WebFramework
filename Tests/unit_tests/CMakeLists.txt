@@ -51,3 +51,7 @@ endif()
 if (${BUILD_TASK_EXECUTORS})
 	add_subdirectory(task_broker)
 endif()
+
+if (${BUILD_MULTIPLE_PORTS})
+	add_subdirectory(multiple_ports)
+endif()

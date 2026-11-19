@@ -353,6 +353,14 @@ web_framework_exception_t wf_get_client_port(http_request_t implementation, uint
 web_framework_exception_t wf_get_server_port(http_request_t implementation, uint64_t index, uint16_t* port);
 
 /**
+ * @brief Get server current port
+ * @param implementation http_request_t instance
+ * @param port Server port
+ * @return Error if occurred
+ */
+web_framework_exception_t wf_get_current_port(http_request_t implementation, uint16_t* port);
+
+/**
  * @brief Tries to get database or create if can't get
  * @param implementation http_request_t instance
  * @param databaseName database_t name

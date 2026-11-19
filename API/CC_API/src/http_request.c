@@ -620,6 +620,17 @@ web_framework_exception_t wf_get_server_port(http_request_t implementation, uint
 	return exception;
 }
 
+web_framework_exception_t wf_get_current_port(http_request_t implementation, uint16_t* port)
+{
+	web_framework_exception_t exception = NULL;
+
+	typedef uint16_t(*getCurrentPort)(void* implementation, void** exception);
+
+	*port = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getCurrentPort, &exception);
+
+	return exception;
+}
+
 web_framework_exception_t wf_get_or_create_database_request(http_request_t implementation, const char* databaseName, const char* implementationName, database_t* result)
 {
 	web_framework_exception_t exception = NULL;

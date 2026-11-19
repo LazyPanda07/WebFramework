@@ -1,6 +1,7 @@
 #include "ServeLoops/HttpServeLoop.h"
 
 #include "Utility/LargeFileHandlers/MultithreadedHandler.h"
+#include "Utility/LargeFileHandlers/ThreadPoolHandler.h"
 #include "Encoders/Encoder.h"
 
 namespace framework::serve_loop
@@ -13,12 +14,22 @@ namespace framework::serve_loop
 		ExecutorsManager& executorsManager,
 		sockaddr address,
 		const utility::AdditionalServerSettings& additionalSettings,
-		std::queue<std::unique_ptr<event::ServeEvent>>& events
+		std::queue<std::unique_ptr<event::ServeEvent>>& events,
+		uint16_t port,
+		std::string_view webServerType
 	)
 	{
 		web::http::HttpNetwork& network = stream.getNetwork<web::http::HttpNetwork>();
 
-		network.setLargeBodyHandler<utility::MultithreadedHandler>(additionalSettings.largeBodyPacketSize, network, manager, server, resources, resources, address, stream, executorsManager, executors);
+		if (webServerType == json_settings_values::multiThreadedWebServerTypeValue)
+		{
+			network.setLargeBodyHandler<utility::MultithreadedHandler>(additionalSettings.largeBodyPacketSize, network, manager, server, resources, resources, address, stream, executorsManager, executors, port);
+		}
+		else if (webServerType == json_settings_values::threadPoolWebServerTypeValue)
+		{
+			network.setLargeBodyHandler<utility::ThreadPoolHandler>(additionalSettings.largeBodyPacketSize, network, manager, server, resources, resources, address, stream, executorsManager, executors, port);
+		}
+
 		network.setLargeBodySizeThreshold(additionalSettings.largeBodySizeThreshold);
 
 		chain =
@@ -104,12 +115,14 @@ namespace framework::serve_loop
 		ExecutorsManager& executorsManager,
 		sockaddr address,
 		const utility::AdditionalServerSettings& additionalSettings,
-		std::queue<std::unique_ptr<event::ServeEvent>>& events
+		std::queue<std::unique_ptr<event::ServeEvent>>& events,
+		uint16_t port,
+		std::string_view webServerType
 	) :
 		ServeLoop(std::move(stream), resources),
 		serveTask(serveTask),
-		request(manager, server, resources, resources, address, this->stream)
+		request(manager, server, resources, resources, address, this->stream, port)
 	{
-		this->init(serveRequest, manager, server, executorsManager, address, additionalSettings, events);
+		this->init(serveRequest, manager, server, executorsManager, address, additionalSettings, events, port, webServerType);
 	}
 }

@@ -1,0 +1,38 @@
+{
+  "$schema": "https://raw.githubusercontent.com/LazyPanda07/WebFramework/refs/heads/main/schemas/web_framework_config_schema.json",
+  "WebServer": {
+    "ip": "127.0.0.1",
+    "port": [
+      14500,
+      14700
+    ],
+    "timeout": 0
+  },
+  "WebFramework": {
+    "assetsPath": "assets",
+    "templatesPath": "templates",
+    "webServerType": "multiThreaded",
+    "settingsPaths": [
+      "multiple_ports_web.json"
+    ],
+    "loadSources": [
+      "current"
+    ],
+    "HTTPS": {
+      "useHTTPS": true,
+      "pathToCertificate": "certificates/cert.pem",
+      "pathToKey": "certificates/key.pem",
+      "httpsPorts": [
+        14700
+      ]
+    }
+  },
+  "Logging": {
+    "usingLogging": true,
+    "dateFormat": "DMY",
+    "logFileSize": 134217728
+  },
+  "ThreadPoolServer": {
+    "threadCount": 8
+  }
+}

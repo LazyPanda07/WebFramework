@@ -34,7 +34,8 @@ namespace framework
 				std::function<void()>&& cleanup,
 				const serve_loop::HttpServeLoop::HttpServeTaskSignature& serveTask,
 				ThreadPoolWebServer& server,
-				DWORD timeout
+				DWORD timeout,
+				uint16_t port
 			);
 
 			Client(const Client&) = delete;

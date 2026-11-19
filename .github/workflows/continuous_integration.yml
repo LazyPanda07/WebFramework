@@ -619,7 +619,73 @@ jobs:
         rabbitmq-server & sleep 1
         wait-for-service amqp://localhost:5672
         source run_task_broker_tests.sh
+       
         
+  multiple-ports-tests:
+    needs: [windows-build, linux-build, linux-aarch64-build]
+    strategy:
+      matrix:
+        config:
+          - { os: windows-latest, image: "", web-framework-name: Windows-WITH_PYTHON_EXECUTORS=ON-BUILD_PYTHON_API=ON-3.15-WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=ON-BUILD_CC_API=ON, serverType: "multiThreaded" }
+          - { os: windows-latest, image: "", web-framework-name: Windows-WITH_PYTHON_EXECUTORS=ON-BUILD_PYTHON_API=ON-3.15-WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=ON-BUILD_CC_API=ON, serverType: "threadPool" }
+          - { os: ubuntu-latest, image: ghcr.io/lazypanda07/ubuntu-cxx23:26.04, web-framework-name: Linux-WITH_PYTHON_EXECUTORS=ON-BUILD_PYTHON_API=ON-3.15-WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=ON-BUILD_CC_API=ON, serverType: "multiThreaded" }
+          - { os: ubuntu-latest, image: ghcr.io/lazypanda07/ubuntu-cxx23:26.04, web-framework-name: Linux-WITH_PYTHON_EXECUTORS=ON-BUILD_PYTHON_API=ON-3.15-WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=ON-BUILD_CC_API=ON, serverType: "threadPool" }
+          - { os: ubuntu-26.04-arm, image: "", web-framework-name: LinuxARM-WITH_PYTHON_EXECUTORS=ON-BUILD_PYTHON_API=ON-3.15-WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=ON-BUILD_CC_API=ON, serverType: "multiThreaded" }
+          - { os: ubuntu-26.04-arm, image: "", web-framework-name: LinuxARM-WITH_PYTHON_EXECUTORS=ON-BUILD_PYTHON_API=ON-3.15-WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=ON-BUILD_CC_API=ON, serverType: "threadPool" }
+        
+    runs-on: ${{ matrix.config.os }}
+    container:
+      image: ${{ matrix.config.image }}
+
+    steps:
+    - uses: actions/checkout@v7
+      with:
+        submodules: recursive
+
+    - name: Enable CL
+      if: ${{ matrix.config.os == 'windows-latest' }}
+      uses: ilammy/msvc-dev-cmd@v1.13.0
+
+    - name: Install dependencies
+      if: ${{ matrix.config.os == 'ubuntu-26.04-arm' }}
+      run: |
+        sudo apt update
+        sudo apt install -y uuid-dev
+
+    - name: Install Python
+      uses: actions/setup-python@v6
+      with:
+        python-version: "${{ env.PYTHON_VERSION }}"
+
+    - name: Install build with pip
+      run: python -m pip install build
+
+    - name: Download WebFramework
+      uses: actions/download-artifact@v7
+      with:
+        name: ${{ matrix.config.web-framework-name }}
+        path: WebFrameworkLibrary
+        
+    - name: Build tests
+      working-directory: Tests
+      run: |
+        mkdir build
+        cd build
+        cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_MULTIPLE_PORTS=ON -DBUILD_TASK_EXECUTORS=OFF -DBUILD_EXECUTORS=NONE -G ${{ env.DEFAULT_CMAKE_GENERATOR }} ..
+        cmake --build . -j --config Release
+        cmake --install . --config Release
+        
+    - name: Run Windows tests
+      if: ${{ matrix.config.os == 'windows-latest' }}
+      working-directory: Tests/build/bin
+      run: .\run_multiple_ports_tests ${{ matrix.config.serverType }}
+
+    - name: Run Linux tests
+      if: ${{ matrix.config.os != 'windows-latest' }}
+      working-directory: Tests/build/bin
+      shell: bash
+      run: source run_multiple_ports_tests.sh ${{ matrix.config.serverType }}
+
 
   publish:
     needs: [

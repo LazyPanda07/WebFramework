@@ -112,6 +112,9 @@ public sealed partial class HttpRequest(nint implementation)
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
 	private static partial ushort getServerPort(IntPtr implementation, UInt64 index, ref IntPtr exception);
 
+	[LibraryImport(DLLHandler.LIBRARY_NAME)]
+	private static partial ushort getCurrentPort(IntPtr implementation, ref IntPtr exception);
+
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
 	private static partial void registerDynamicFunctionClass(IntPtr implementation, string functionName, string apiType, IntPtr functionClassName, ref IntPtr exception);
 
@@ -512,6 +515,19 @@ public sealed partial class HttpRequest(nint implementation)
 	{
 		IntPtr exception = IntPtr.Zero;
 		ushort result = getServerPort(implementation, (ulong)index, ref exception);
+
+		if (exception != IntPtr.Zero)
+		{
+			throw new WebFrameworkException(exception);
+		}
+
+		return result;
+	}
+
+	public ushort GetCurrentPort()
+	{
+		IntPtr exception = IntPtr.Zero;
+		ushort result = getCurrentPort(implementation, ref exception);
 
 		if (exception != IntPtr.Zero)
 		{

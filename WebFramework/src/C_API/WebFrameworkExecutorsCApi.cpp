@@ -526,6 +526,28 @@ uint16_t getServerPort(HttpRequestObject request, uint64_t index, Exception* exc
 	return 0;
 }
 
+uint16_t getCurrentPort(HttpRequestObject request, Exception* exception)
+{
+	try
+	{
+		return static_cast<framework::interfaces::IHttpRequest*>(request)->getCurrentPort();
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return 0;
+}
+
 void registerDynamicFunctionClass(HttpRequestObject request, const char* functionName, const char* apiType, void* functionClass, Exception* exception)
 {
 	try

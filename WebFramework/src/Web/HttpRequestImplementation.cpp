@@ -93,13 +93,14 @@ namespace framework
 #endif
 	}
 
-	HttpRequestImplementation::HttpRequestImplementation(SessionsManager& session, BaseWebServer& serverReference, interfaces::IStaticFile& staticResources, interfaces::IDynamicFile& dynamicResources, sockaddr clientAddr, streams::IOSocketStream& stream) :
+	HttpRequestImplementation::HttpRequestImplementation(SessionsManager& session, BaseWebServer& serverReference, interfaces::IStaticFile& staticResources, interfaces::IDynamicFile& dynamicResources, sockaddr clientAddr, streams::IOSocketStream& stream, uint16_t port) :
 		session(session),
 		serverReference(serverReference),
 		stream(stream),
 		clientAddr(clientAddr),
 		staticResources(staticResources),
-		dynamicResources(dynamicResources)
+		dynamicResources(dynamicResources),
+		port(port)
 	{
 
 	}
@@ -558,6 +559,11 @@ namespace framework
 	uint16_t HttpRequestImplementation::getServerPort(uint64_t index) const
 	{
 		return serverReference.getServerPort(index);
+	}
+
+	uint16_t HttpRequestImplementation::getCurrentPort() const
+	{
+		return port;
 	}
 
 	const char* HttpRequestImplementation::getRouteStringParameter(const char* routeParameterName) const

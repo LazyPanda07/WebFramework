@@ -62,6 +62,7 @@ namespace framework
 		interfaces::CLargeData largeData;
 		ExceptionData exceptionData;
 		mutable std::vector<interfaces::IDatabase*> databases;
+		uint16_t port;
 
 	private:
 		static bool isWebFrameworkDynamicPages(std::string_view filePath);
@@ -75,7 +76,7 @@ namespace framework
 		static void registerDynamicFunctionClassStatic(const char* functionName, const char* apiType, void* functionClass, interfaces::IDynamicFile& dynamicResources);
 
 	public:
-		HttpRequestImplementation(SessionsManager& session, BaseWebServer& serverReference, interfaces::IStaticFile& staticResources, interfaces::IDynamicFile& dynamicResources, sockaddr clientAddr, streams::IOSocketStream& stream);
+		HttpRequestImplementation(SessionsManager& session, BaseWebServer& serverReference, interfaces::IStaticFile& staticResources, interfaces::IDynamicFile& dynamicResources, sockaddr clientAddr, streams::IOSocketStream& stream, uint16_t port);
 
 		HttpRequestImplementation(HttpRequestImplementation&&) noexcept = default;
 
@@ -278,6 +279,8 @@ namespace framework
 		/// </summary>
 		/// <returns>server's port</returns>
 		uint16_t getServerPort(uint64_t index) const override;
+
+		uint16_t getCurrentPort() const override;
 
 		const char* getRouteStringParameter(const char* routeParameterName) const override;
 

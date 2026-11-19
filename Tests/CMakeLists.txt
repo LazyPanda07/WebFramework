@@ -34,6 +34,7 @@ option(BUILD_TESTS "" ON)
 option(WITH_ADDRESS_SANITIZER "" OFF)
 option(WITHOUT_REDIS_TESTS "" OFF)
 option(BUILD_TASK_EXECUTORS "" OFF)
+option(BUILD_MULTIPLE_PORTS "" OFF)
 set(ALLOWED_BUILD_EXECUTORS_VALUES "CXX" "CC" "Python" "CSharp" "NONE")
 set(RUNTIMES "")
 enum_option(BUILD_EXECUTORS CXX ALLOWED_BUILD_EXECUTORS_VALUES "Build executors with specific language API")
@@ -122,6 +123,10 @@ endif()
 
 if (${BUILD_TASK_EXECUTORS})
     add_subdirectory(task_executors)
+endif()
+
+if (${BUILD_MULTIPLE_PORTS})
+    add_subdirectory(multiple_ports)
 endif()
 
 if (${BUILD_TESTS})

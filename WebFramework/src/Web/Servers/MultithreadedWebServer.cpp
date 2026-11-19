@@ -75,7 +75,9 @@ namespace framework
 			*executorsManager,
 			addr,
 			additionalSettings,
-			events
+			events,
+			port,
+			json_settings_values::multiThreadedWebServerTypeValue
 		);
 
 		while (isRunning)

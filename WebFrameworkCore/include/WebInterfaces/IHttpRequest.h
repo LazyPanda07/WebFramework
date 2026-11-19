@@ -156,6 +156,8 @@ namespace framework::interfaces
 
 		virtual uint16_t getServerPort(uint64_t index) const = 0;
 
+		virtual uint16_t getCurrentPort() const = 0;
+
 		virtual const char* getRouteStringParameter(const char* routeParameterName) const = 0;
 
 		virtual int64_t getRouteIntegerParameter(const char* routeParameterName) const = 0;

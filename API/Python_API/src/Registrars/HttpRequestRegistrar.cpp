@@ -151,6 +151,7 @@ file_name : str
 			.def("get_server_ip_v4", &framework::HttpRequest::getServerIpV4)
 			.def("get_client_port", &framework::HttpRequest::getClientPort)
 			.def("get_server_port", &framework::HttpRequest::getServerPort, "index"_a = 0)
+			.def("get_current_port", &framework::HttpRequest::getCurrentPort)
 			.def("get_string_route_parameter", &framework::HttpRequest::getRouteParameter<std::string>, "route_parameter_name"_a)
 			.def("get_bool_route_parameter", &framework::HttpRequest::getRouteParameter<bool>, "route_parameter_name"_a)
 			.def("get_int_route_parameter", &framework::HttpRequest::getRouteParameter<int64_t>, "route_parameter_name"_a)

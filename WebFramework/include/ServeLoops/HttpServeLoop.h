@@ -30,7 +30,9 @@ namespace framework::serve_loop
 			ExecutorsManager& executorsManager,
 			sockaddr address,
 			const utility::AdditionalServerSettings& additionalSettings,
-			std::queue<std::unique_ptr<event::ServeEvent>>& events
+			std::queue<std::unique_ptr<event::ServeEvent>>& events,
+			uint16_t port,
+			std::string_view webServerType
 		);
 
 	private:
@@ -48,7 +50,9 @@ namespace framework::serve_loop
 			ExecutorsManager& executorsManager,
 			sockaddr address,
 			const utility::AdditionalServerSettings& additionalSettings,
-			std::queue<std::unique_ptr<event::ServeEvent>>& events
+			std::queue<std::unique_ptr<event::ServeEvent>>& events,
+			uint16_t port,
+			std::string_view webServerType
 		);
 
 		~HttpServeLoop() = default;
