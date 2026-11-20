@@ -103,12 +103,13 @@ void web_framework_flutter_api_plugin_register_with_registrar(FlPluginRegistrar 
 
 std::filesystem::path getCurrentPath() {
     std::vector<char> buffer(4096);
-
     ssize_t len = readlink("/proc/self/exe", buffer.data(), buffer.size());
 
     if (len == -1 || static_cast<size_t>(len) == buffer.size()) {
         return {};
     }
 
-    return std::string(buffer.data(), len);
+    std::filesystem::path realPath(buffer.data());
+
+    return realPath.remove_filename();
 }
