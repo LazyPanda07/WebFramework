@@ -557,8 +557,9 @@ jobs:
         set PATH=%FXR_PATH%;%PATH%
         '@ | Set-Content -Path "find_fxr.bat" -Encoding ASCII
 
-    - name: Create wait.bat
+    - name: Create wait.bat script
       shell: pwsh
+      working-directory: samples/build/bin
       run: |
         @'
         @echo off

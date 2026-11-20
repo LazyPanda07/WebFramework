@@ -7,6 +7,7 @@
 
 #include <cstring>
 #include <filesystem>
+#include <vector>
 
 #include "web_framework_flutter_api_plugin_private.h"
 
