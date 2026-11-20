@@ -1,13 +1,6 @@
 #include "Web/HttpResponseImplementation.h"
 
 #include <chrono>
-#include <ctime>
-
-#ifdef __LINUX__
-#include <strings.h>
-#else
-#include <string.h>
-#endif
 
 #include <Log.h>
 #include <HttpParser.h>
@@ -18,27 +11,16 @@ namespace framework
 {
 	std::string HttpResponseImplementation::getFullDate()
 	{
-		constexpr size_t resultSize = 64;
-
-		std::time_t seconds = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
-		std::tm time;
-
-#ifdef __LINUX__
-		gmtime_r(&seconds, &time);
-#else
-		gmtime_s(&time, &seconds);
-#endif
-
-		char result[resultSize]{};
-
-		if (std::strftime(result, sizeof(result), "%a, %d %b %Y %H:%M:%S %Z", &time) == 0)
+		try
 		{
-			Log::error("Can't put time into buffer", "LogTime");
+			return std::format("{:%a, %d %b %Y %H:%M:%S} GMT", std::chrono::floor<std::chrono::seconds>(std::chrono::system_clock::now()));
+		}
+		catch (const std::format_error& e)
+		{
+			Log::error("Can't format HTTP date: {}", "LogTime", e.what());
 
 			return "";
 		}
-
-		return result;
 	}
 
 	HttpResponseImplementation::HttpResponseImplementation()

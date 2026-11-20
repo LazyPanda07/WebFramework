@@ -433,13 +433,13 @@ jobs:
       run: flutter build linux --release
 
     - name: Move WebFramework
-      run: mv Linux/*.so API/web_framework_flutter_api/example/build/linux/x64/runner/Release/
+      run: mv Linux/*.so API/web_framework_flutter_api/example/build/linux/x64/release/bundle/
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v6
       with:
         name: LinuxFlutterSample
-        path: API/web_framework_flutter_api/example/build/linux/x64/runner/Release/
+        path: API/web_framework_flutter_api/example/build/linux/x64/release/bundle/
         
 
   windows-build-binaries:

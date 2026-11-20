@@ -40,17 +40,23 @@ static constexpr std::array<std::string_view, HtmlErrors::HtmlErrorsSize> htmlEr
 	framework::asset::getBadGatewayError()
 };
 
-static constexpr std::array<std::pair<std::string_view, std::string_view>, 9> contentTypes =
+static constexpr std::array<std::pair<std::string_view, std::string_view>, 15> contentTypes =
 {
 	std::make_pair(".css", "text/css"),
 	std::make_pair(".js", "application/javascript"),
-	std::make_pair(".html", "text/html"),
-	std::make_pair(".md", "text/html"),
-	std::make_pair(".woff2", "font/woff2"),
+	std::make_pair(".html", "text/html; charset=utf-8"),
+	std::make_pair(".md", "text/html; charset=utf-8"),
+	std::make_pair(".avif", "image/avif"),
+	std::make_pair(".png", "image/png"),
+	std::make_pair(".jpeg", "image/jpeg"),
+	std::make_pair(".jpg", "image/jpeg"),
 	std::make_pair(".svg", "image/svg+xml"),
 	std::make_pair(".webp", "image/webp"),
+	std::make_pair(".woff2", "font/woff2"),
 	std::make_pair(".json", "application/json"),
-	std::make_pair(".txt", "text/plain")
+	std::make_pair(".txt", "text/plain; charset=utf-8"),
+	std::make_pair(".pdf", "applications/pdf"),
+	std::make_pair(".xml", "applications/xml")
 };
 
 static void addContentType(std::string_view extension, framework::interfaces::IHttpResponse& response);
