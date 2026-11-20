@@ -117,8 +117,6 @@ if (NOT "${BUILD_EXECUTORS}" STREQUAL "NONE")
     install(DIRECTORY scripts/ DESTINATION .)
     install(DIRECTORY templates DESTINATION .)
     install(DIRECTORY assets DESTINATION .)
-    
-    install(DIRECTORY ${WEB_FRAMEWORK_LIBRARY_DIR}/certificates DESTINATION .)
 endif()
 
 if (${BUILD_TASK_EXECUTORS})
@@ -135,6 +133,8 @@ if (${BUILD_TESTS})
 endif()
 
 add_subdirectory(unit_tests)
+
+install(DIRECTORY ${WEB_FRAMEWORK_LIBRARY_DIR}/certificates DESTINATION .)
 
 add_custom_target(
 	build_tests_localization ALL
