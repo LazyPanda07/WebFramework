@@ -493,7 +493,7 @@ namespace framework
 
 				for (const json::JsonObject& temp : portsObject)
 				{
-					ports.emplace_back(std::to_string(httpsPorts.emplace_back(portObject.get<uint16_t>())));
+					ports.emplace_back(std::to_string(httpsPorts.emplace_back(temp.get<uint16_t>())));
 				}
 			}
 		}
