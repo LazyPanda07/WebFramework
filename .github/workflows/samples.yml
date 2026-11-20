@@ -683,7 +683,7 @@ jobs:
           mkdir samples_dir/linux
           mv Linux/* samples_dir/linux
 
-          mkdir samples_dir/windows_flutter
+          mkdir samples_dir/linux_flutter
           mv LinuxFlutterSample/* samples_dir/linux_flutter
 
           mkdir samples_dir/android_flutter
