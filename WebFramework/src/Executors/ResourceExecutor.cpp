@@ -90,7 +90,7 @@ namespace framework
 				else
 				{
 					const std::string& path = binaryAsset[json_settings::pathKey].get<std::string>();
-					bool fullyLoad = true;
+					bool fullyLoad = false;
 
 					binaryAsset.tryGet<bool>(json_settings::fullyLoadKey, fullyLoad);
 

@@ -25,7 +25,7 @@ public static partial class WebFrameworkUtility
 	private delegate void ProgressCallback(float progress, [MarshalAs(UnmanagedType.LPUTF8Str)] string assetPath, IntPtr data);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static partial void generateBinaryAssetFile(string directoryPath, string outputPath, ProgressCallback progressCallback, IntPtr data, ref IntPtr exception);
+	private static partial void generateBinaryAssetFile(string directoryPath, string prefixPath, string outputPath, ProgressCallback progressCallback, IntPtr data, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
 	private static partial IntPtr createJwtWithString(IntPtr data, long expirationTimeInMinutes, string jwtSecretVariableName, ref IntPtr exception);
@@ -54,7 +54,7 @@ public static partial class WebFrameworkUtility
 		return array;
 	}
 
-	public static void GenerateBinaryAssetFile(string directoryPath, string outputPath, Action<float, string, object?>? progressCallback = null, object? data = null)
+	public static void GenerateBinaryAssetFile(string directoryPath, string outputPath, Action<float, string, object?>? progressCallback = null, object? data = null, string? prefixPath = null)
 	{
 		IntPtr exception = IntPtr.Zero;
 		GCHandle? handle = null;
@@ -67,6 +67,7 @@ public static partial class WebFrameworkUtility
 		generateBinaryAssetFile
 		(
 			directoryPath,
+			prefixPath ?? "",
 			outputPath,
 			(float progress, string assetPath, IntPtr data) =>
 			{

@@ -10,10 +10,11 @@ def generate_binary_asset():
     parser = argparse.ArgumentParser()
 
     parser.add_argument("directory_path", type=str)
+    parser.add_argument("prefix_path", type=str)
     parser.add_argument("output_path", type=str)
 
     args = parser.parse_args()
 
     initialize_web_framework()
 
-    generate_binary_asset_file(args.directory_path, args.output_path, callback)
+    generate_binary_asset_file(args.directory_path, args.output_path, callback, None, args.prefix_path)

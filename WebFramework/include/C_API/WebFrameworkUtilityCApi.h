@@ -311,7 +311,7 @@ EXPORT String generateWebFrameworkUUID(Exception* exception);
 
 EXPORT String generateSha256(const char* data, size_t size, Exception* exception);
 
-EXPORT void generateBinaryAssetFile(const char* directoryPath, const char* outputPath, void(*progressCallback)(float progress, const char* assetPath, void* data), void* data, Exception* exception);
+EXPORT void generateBinaryAssetFile(const char* directoryPath, const char* prefixPath, const char* outputPath, void(*progressCallback)(float progress, const char* assetPath, void* data), void* data, Exception* exception);
 
 EXPORT String createJwtWithString(JsonObject data, int64_t expirationTimeInMinutes, const char* jwtSecretVariableName, Exception* exception);
 

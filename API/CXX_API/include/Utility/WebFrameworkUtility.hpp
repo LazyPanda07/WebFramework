@@ -54,8 +54,9 @@ namespace framework::utility
 	 * @param outputPath Path where the generated binary asset file will be written.
 	 * @param progressCallback Optional callback invoked to report progress. The callback has the signature void(float progress, const char* assetPath, void* data); progress is typically in the range [0.0, 1.0], assetPath is a null-terminated string identifying the currently processed asset, and data is the user pointer provided to this function.
 	 * @param data Optional user-defined pointer that is passed through to progressCallback; defaults to nullptr.
+	 * @param prefixPath Optional Prefix path relative to assets directory
 	 */
-	void generateBinaryAssetFile(const std::filesystem::path& directoryPath, const std::filesystem::path& outputPath, void(*progressCallback)(float progress, const char* assetPath, void* data) = nullptr, void* data = nullptr);
+	void generateBinaryAssetFile(const std::filesystem::path& directoryPath, const std::filesystem::path& outputPath, void(*progressCallback)(float progress, const char* assetPath, void* data) = nullptr, void* data = nullptr, const std::string& prefixPath = "");
 }
 
 namespace framework::utility
@@ -144,9 +145,9 @@ namespace framework::utility
 		}
 	}
 
-	inline void generateBinaryAssetFile(const std::filesystem::path& directoryPath, const std::filesystem::path& outputPath, void(*progressCallback)(float progress, const char* assetPath, void* data), void* data)
+	inline void generateBinaryAssetFile(const std::filesystem::path& directoryPath, const std::filesystem::path& outputPath, void(*progressCallback)(float progress, const char* assetPath, void* data), void* data, const std::string& prefixPath)
 	{
-		using generateBinaryAssetFile = void (*)(const char* filePath, const char* outputPath, void(*progressCallback)(float progress, const char* assetPath, void* data), void* data, void** exception);
+		using generateBinaryAssetFile = void (*)(const char* filePath, const char* prefixPath, const char* outputPath, void(*progressCallback)(float progress, const char* assetPath, void* data), void* data, void** exception);
 		void* exception = nullptr;
 
 		if (!std::filesystem::exists(directoryPath))
@@ -159,7 +160,7 @@ namespace framework::utility
 			throw std::runtime_error(std::format("{} must be directory", directoryPath.string()));
 		}
 
-		DllHandler::getInstance().CALL_WEB_FRAMEWORK_FUNCTION(generateBinaryAssetFile, directoryPath.string().data(), outputPath.string().data(), progressCallback, data, &exception);
+		DllHandler::getInstance().CALL_WEB_FRAMEWORK_FUNCTION(generateBinaryAssetFile, directoryPath.string().data(), prefixPath.size() ? prefixPath.data() : nullptr, outputPath.string().data(), progressCallback, data, &exception);
 
 		if (exception)
 		{

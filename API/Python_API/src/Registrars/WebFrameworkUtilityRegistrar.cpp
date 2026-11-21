@@ -81,7 +81,7 @@ namespace registrar
 		m.def
 		(
 			"generate_binary_asset_file",
-			[](const std::filesystem::path& directoryPath, const std::filesystem::path& outputPath, const std::optional<std::function<void(float progress, std::string_view assetPath, py::object data)>>& progressCallback, const std::optional<py::object>& data)
+			[](const std::filesystem::path& directoryPath, const std::filesystem::path& outputPath, const std::optional<std::function<void(float progress, std::string_view assetPath, py::object data)>>& progressCallback, const std::optional<py::object>& data, const std::optional<std::string>& prefixPath)
 			{
 				auto callback = [](float progress, const char* assetPath, void* data)
 					{
@@ -120,10 +120,11 @@ namespace registrar
 					directoryPath,
 					outputPath,
 					callback,
-					pack
+					pack,
+					prefixPath ? *prefixPath : ""
 				);
 			},
-			"directory_path"_a, "output_path"_a, "progress_callback"_a.noconvert() = std::nullopt, "data"_a = std::nullopt
+			"directory_path"_a, "output_path"_a, "progress_callback"_a.noconvert() = std::nullopt, "data"_a = std::nullopt, "prefix_path"_a = std::nullopt
 		);
 
 		m.def

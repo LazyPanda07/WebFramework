@@ -3342,7 +3342,7 @@ String generateSha256(const char* data, size_t size, Exception* exception)
 	return nullptr;
 }
 
-void generateBinaryAssetFile(const char* directoryPath, const char* outputPath, void(*progressCallback)(float progress, const char* assetPath, void* data), void* data, Exception* exception)
+void generateBinaryAssetFile(const char* directoryPath, const char* prefixPath, const char* outputPath, void(*progressCallback)(float progress, const char* assetPath, void* data), void* data, Exception* exception)
 {
 	try
 	{
@@ -3366,7 +3366,13 @@ void generateBinaryAssetFile(const char* directoryPath, const char* outputPath, 
 				continue;
 			}
 
-			const auto& [assetRelativePath, assetPath] = assets.emplace_back(std::filesystem::relative(it.path(), directoryPath), it.path());
+			auto& [assetRelativePath, assetPath] = assets.emplace_back(std::filesystem::relative(it.path(), directoryPath), it.path());
+
+			if (prefixPath && strlen(prefixPath))
+			{
+				assetRelativePath = std::filesystem::path(prefixPath) / assetRelativePath;
+			}
+
 			std::string assetName = assetRelativePath.string();
 
 			assetNamesSize += assetName.size();
@@ -3393,6 +3399,8 @@ void generateBinaryAssetFile(const char* directoryPath, const char* outputPath, 
 			size_t assetNameSize = assetName.size();
 			uint64_t offset = accumulatedSize;
 			uint64_t size = std::filesystem::file_size(assetPath);
+
+			std::cout << assetName << std::endl;
 
 			stream.write(reinterpret_cast<const char*>(&assetNameSize), sizeof(assetNameSize));
 			stream.write(assetName.data(), assetNameSize);
