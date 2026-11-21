@@ -68,7 +68,7 @@ namespace framework
 		privateKey(nullptr),
 		frameworkInstance(frameworkInstance)
 	{
-		this->updateCertificates();
+		
 	}
 
 	void BaseWebServer::updateCertificates()
@@ -179,6 +179,13 @@ namespace framework
 		return frameworkInstance;
 	}
 
+	void BaseWebServer::start(bool wait, const std::function<void()>& onStartServer, std::exception** outException)
+	{
+		this->updateCertificates();
+
+		BaseTCPServer::start(wait, onStartServer, outException);
+	}
+
 	BaseWebServer::~BaseWebServer()
 	{
 		if (context)
@@ -195,7 +202,7 @@ namespace framework
 		{
 			X509_free(certificate);
 		}
-		
+
 		if (privateKey)
 		{
 			EVP_PKEY_free(privateKey);

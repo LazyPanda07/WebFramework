@@ -654,8 +654,8 @@ namespace framework
 		this->initAPIs(webFrameworkSettings);
 		this->initDatabase(webFrameworkSettings);
 		this->initExecutors(webFrameworkSettings, executorsSettings, pathToSources);
-		this->initHttps(webFrameworkSettings);
 		this->initServer(webFrameworkSettings, std::move(executorsSettings), pathToSources);
+		this->initHttps(webFrameworkSettings);
 		this->initJwt(webFrameworkSettings);
 
 		if (json::JsonObject taskBrokerObject; (*config).tryGet<json::JsonObject>(json_settings::taskBrokerObject, taskBrokerObject))
