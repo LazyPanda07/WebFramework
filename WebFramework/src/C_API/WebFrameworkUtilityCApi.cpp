@@ -3370,7 +3370,7 @@ void generateBinaryAssetFile(const char* directoryPath, const char* prefixPath, 
 
 			if (prefixPath && strlen(prefixPath))
 			{
-				assetRelativePath = std::filesystem::path(prefixPath) / assetRelativePath;
+				assetRelativePath = std::format("{}/{}", prefixPath, assetRelativePath.string());
 			}
 
 			std::string assetName = assetRelativePath.string();
