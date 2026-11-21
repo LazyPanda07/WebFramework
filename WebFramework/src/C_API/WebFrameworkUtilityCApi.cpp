@@ -3400,8 +3400,6 @@ void generateBinaryAssetFile(const char* directoryPath, const char* prefixPath, 
 			uint64_t offset = accumulatedSize;
 			uint64_t size = std::filesystem::file_size(assetPath);
 
-			std::cout << assetName << std::endl;
-
 			stream.write(reinterpret_cast<const char*>(&assetNameSize), sizeof(assetNameSize));
 			stream.write(assetName.data(), assetNameSize);
 			stream.write(reinterpret_cast<const char*>(&offset), sizeof(offset));
