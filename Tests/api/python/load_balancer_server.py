@@ -5,7 +5,7 @@ from typing import List
 from web_framework_api import *
 
 
-def print_running_state():
+def print_running_state(listen_port):
     print("Server is running...")
 
 

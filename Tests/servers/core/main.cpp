@@ -35,18 +35,18 @@ int main(int argc, char** argv) try
 			config.overrideConfiguration("$[]WebFramework.runtimes.1.enabled", true);
 		}
 	}
-	
+
 #ifdef __WITH_ADDRESS_SANITIZER__
 	config.overrideConfiguration("$[]WebFramework.runtimes.0.enabled", false);
 	config.overrideConfiguration("$[]WebFramework.runtimes.1.enabled", false);
 #endif
 
 	framework::WebFramework server(config);
-	
+
 	server.start
 	(
 		true,
-		[]() 
+		[](uint16_t listenPort)
 		{
 			std::cout << "Server is running..." << std::endl;
 		}

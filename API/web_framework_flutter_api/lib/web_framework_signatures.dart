@@ -109,7 +109,7 @@ typedef GetRawConfiguration = Pointer<Utf8> Function(
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-typedef OnStartServerC = Void Function();
+typedef OnStartServerC = Void Function(Uint16);
 typedef OnStartServerDart = void Function();
 typedef CreateWebFrameworkFromConfig = Pointer<Void> Function(
     Pointer<Void> config, Pointer<Pointer<Void>> exception);

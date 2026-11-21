@@ -108,7 +108,7 @@ class LoadBalancerServer
 
 					WebFramework server = new(serverConfig);
 
-					server.Start(true, () => Console.WriteLine("Server is running..."));
+					server.Start(true, (ushort listenPort) => Console.WriteLine("Server is running..."));
 				}
 			);
 

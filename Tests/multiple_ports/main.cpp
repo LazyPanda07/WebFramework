@@ -12,7 +12,7 @@ int main(int argc, char** argv)
 
 	framework::WebFramework server(config);
 
-	server.start(true, []() { std::cout << "Server is running..." << std::endl; });
+	server.start(true, [](uint16_t listenPort) { std::cout << "Server is running..." << std::endl; });
 
 	return 0;
 }

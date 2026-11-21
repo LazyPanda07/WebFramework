@@ -2,7 +2,7 @@
 
 #include <import.h>
 
-static void printServerState();
+static void print_server_state(uint16_t listen_port);
 
 int main(int argc, char** argv)
 {
@@ -45,7 +45,7 @@ int main(int argc, char** argv)
 		return -3;
 	}
 
-	exception = wf_start_web_framework_server(server, true, printServerState); // Start server and wait
+	exception = wf_start_web_framework_server(server, true, print_server_state); // Start server and wait
 
 	if (exception) // Check error
 	{
@@ -64,7 +64,7 @@ int main(int argc, char** argv)
 	return 0;
 }
 
-void printServerState()
+void print_server_state(uint16_t port)
 {
-	printf("Server is running at http://127.0.0.1:8080\n");
+	printf("Server is running at http://127.0.0.1:%d\n", (int)port);
 }

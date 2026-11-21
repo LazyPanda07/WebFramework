@@ -123,7 +123,7 @@ public sealed partial class WebFramework : IDisposable
 		}
 	}
 
-	public delegate void OnStartServer();
+	public delegate void OnStartServer(ushort listenPort);
 
 	/// <summary>
 	/// Start server

@@ -27,7 +27,7 @@ int main(int argc, char** argv) try
 	server.start
 	(
 		true,
-		[]()
+		[](uint16_t listenPort)
 		{
 			std::cout << "Server is running..." << std::endl;
 		}

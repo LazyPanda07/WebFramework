@@ -36,7 +36,7 @@ EXPORT Config createConfigFromString(const char* serverConfiguration, const char
 
 EXPORT void startWebFrameworkServerCXX(WebFramework server, bool wait, void* onStartServer, Exception* exception);
 
-EXPORT void startWebFrameworkServer(WebFramework server, bool wait, void (*onStartServer)(), Exception* exception);
+EXPORT void startWebFrameworkServer(WebFramework server, bool wait, void (*onStartServer)(uint16_t listenPort), Exception* exception);
 
 EXPORT void stopWebFrameworkServer(WebFramework server, bool wait, Exception* exception);
 

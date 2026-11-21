@@ -4,6 +4,7 @@
 #include <format>
 
 #include <Log.h>
+#include <BaseTCPServer.h>
 
 #include "Framework/WebFramework.h"
 #include "Framework/Config.h"
@@ -15,6 +16,8 @@
 #define CREATE_EXCEPTION() *exception = new std::runtime_error(e.what())
 #define LOG_AND_CREATE_EXCEPTION() LOG_EXCEPTION(); CREATE_EXCEPTION()
 #define UNEXPECTED_EXCEPTION() if (Log::isValid()) { Log::error("Somethind went wrong", "C_API"); } *exception = new std::runtime_error(std::format("Something went wrong in file: {} on line: {}", __FILE__, __LINE__));
+
+static uint16_t getPortFromSocket(SOCKET listenSocket);
 
 const char* getDataFromString(String string)
 {
@@ -144,9 +147,9 @@ void startWebFrameworkServerCXX(WebFramework server, bool wait, void* onStartSer
 {
 	try
 	{
-		std::function<void()>* lambda = static_cast<std::function<void()>*>(onStartServer);
+		std::function<void(uint16_t)>* lambda = static_cast<std::function<void(uint16_t)>*>(onStartServer);
 
-		static_cast<framework::WebFramework*>(server)->start(wait, [lambda](SOCKET) { (*lambda)(); });
+		static_cast<framework::WebFramework*>(server)->start(wait, [lambda](SOCKET listenSocket) { (*lambda)(getPortFromSocket(listenSocket)); });
 	}
 	catch (const framework::exceptions::AlreadyLoggedException& e)
 	{
@@ -162,11 +165,11 @@ void startWebFrameworkServerCXX(WebFramework server, bool wait, void* onStartSer
 	}
 }
 
-void startWebFrameworkServer(WebFramework server, bool wait, void (*onStartServer)(), Exception* exception)
+void startWebFrameworkServer(WebFramework server, bool wait, void (*onStartServer)(uint16_t listenPort), Exception* exception)
 {
 	try
 	{
-		static_cast<framework::WebFramework*>(server)->start(wait, [onStartServer](SOCKET) { onStartServer(); });
+		static_cast<framework::WebFramework*>(server)->start(wait, [onStartServer](SOCKET listenSocket) { onStartServer(getPortFromSocket(listenSocket)); });
 	}
 	catch (const framework::exceptions::AlreadyLoggedException& e)
 	{
@@ -586,4 +589,19 @@ void deleteWebFrameworkException(Exception exception)
 	{
 		delete static_cast<std::runtime_error*>(exception);
 	}
+}
+
+uint16_t getPortFromSocket(SOCKET listenSocket)
+{
+	sockaddr_in serverInfo = {};
+
+#ifdef __LINUX__
+	socklen_t len = sizeof(serverInfo);
+#else
+	int len = sizeof(serverInfo);
+#endif
+
+	getsockname(listenSocket, reinterpret_cast<sockaddr*>(&serverInfo), &len);
+
+	return ntohs(serverInfo.sin_port);
 }

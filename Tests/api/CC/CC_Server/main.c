@@ -9,7 +9,7 @@
 #include <Windows.h>
 #endif
 
-void printRunningState()
+void print_running_state(uint16_t listenPort)
 {
 	printf("Server is running...\n");
 	fflush(stdout);

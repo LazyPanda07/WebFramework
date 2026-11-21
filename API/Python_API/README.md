@@ -23,7 +23,7 @@ from web_framework_api.WebFramework import WebFramework  # Server
 from web_framework_api.utility.DLLHandler import initialize_web_framework  # WebFramework initialization 
 from web_framework_api.exceptions.WebFrameworkException import WebFrameworkException  # Exception
 
-def on_start():
+def on_start(listen_port):
   print("Server is running")
 
 if __name__ == '__main__':

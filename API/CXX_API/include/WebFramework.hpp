@@ -26,7 +26,7 @@ namespace framework
 	class WebFramework
 	{
 	private:
-		std::function<void()> onStartServer;
+		std::function<void(uint16_t)> onStartServer;
 		void* implementation;
 		bool weak;
 
@@ -73,7 +73,7 @@ namespace framework
 		 * @param wait Wait until server stop
 		 * @param onStartServer On start server callback
 		 */
-		void start(bool wait = false, const std::function<void()>& onStartServer = []() {});
+		void start(bool wait = false, const std::function<void(uint16_t listenPort)>& onStartServer = [](uint16_t) {});
 
 		/**
 		 * @brief Stop server
@@ -195,7 +195,7 @@ namespace framework
 		return *this;
 	}
 
-	inline void WebFramework::start(bool wait, const std::function<void()>& onStartServer)
+	inline void WebFramework::start(bool wait, const std::function<void(uint16_t listenPort)>& onStartServer)
 	{
 		DEFINE_CLASS_MEMBER_FUNCTION(startWebFrameworkServerCXX, void, bool wait, void* onStartServer, void** exception);
 		void* exception = nullptr;

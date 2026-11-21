@@ -36,7 +36,7 @@ web_framework_exception_t wf_create_web_framework_from_config(config_t config, w
  * @param onStartServer On start server callback
  * @return NULL if no errors. Call getErrorMessage for getting error message
  */
-web_framework_exception_t wf_start_web_framework_server(web_framework_t web_framework, bool wait, void (*onStartServer)());
+web_framework_exception_t wf_start_web_framework_server(web_framework_t web_framework, bool wait, void (*onStartServer)(uint16_t listenPort));
 
 /**
  * @brief Stop server

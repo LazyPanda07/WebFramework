@@ -32,7 +32,7 @@ int main(int argc, char** argv) try
 	server.start
 	(
 		true, 
-		[&config]()
+		[&config](uint16_t listenPort)
 		{ 
 			constexpr std::array<std::string_view, 4> endpoints =
 			{

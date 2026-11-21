@@ -32,7 +32,7 @@ namespace hello_csharp
 			{
 				using WebFramework server = new("config.json"); // Create server
 
-				server.Start(true, () => Console.WriteLine()); // Start server and wait
+				server.Start(true, (ushort listenPort) => Console.WriteLine()); // Start server and wait
 			}
 			catch (WebFrameworkException e)
 			{

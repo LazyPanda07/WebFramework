@@ -43,7 +43,7 @@ int main(int argc, char** argv) try
 
 	framework::WebFramework server(config, std::filesystem::current_path().string());
 
-	server.start(false, []() { started = true; });
+	server.start(false, [](uint16_t listenPort) { started = true; });
 
 	while (!started);
 

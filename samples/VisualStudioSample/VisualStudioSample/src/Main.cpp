@@ -1,4 +1,5 @@
 #include <iostream>
+#include <format>
 
 #include <import.hpp>
 
@@ -9,7 +10,7 @@ int main(int argc, const char** argv) try
 	framework::utility::Config config("config.json"); // Load config.json
 	framework::WebFramework server(config); // Create server
 
-	server.start(true, []() { std::cout << "Server is running at http://127.0.0.1:8080" << std::endl; }); // Start server and wait
+	server.start(true, [](uint16_t listenPort) { std::cout << std::format("Server is running at http://127.0.0.1:{}", listenPort) << std::endl; }); // Start server and wait
 
 	return 0;
 }

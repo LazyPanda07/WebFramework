@@ -1,7 +1,7 @@
 from web_framework_api import *
 
-def print_server_state():
-   print("Server is running at http://127.0.0.1:8080")
+def print_server_state(listen_port):
+   print(f"Server is running at http://127.0.0.1:{listen_port}")
 
 if __name__ == '__main__':
     try:

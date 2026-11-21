@@ -36,12 +36,12 @@ web_framework_exception_t wf_create_web_framework_from_config(config_t config, w
     return exception;
 }
 
-web_framework_exception_t wf_start_web_framework_server(web_framework_t web_framework, bool wait, void (*onStartServer)())
+web_framework_exception_t wf_start_web_framework_server(web_framework_t web_framework, bool wait, void (*onStartServer)(uint16_t listenPort))
 {
     web_framework_exception_t exception = NULL;
     void* implementation = web_framework.implementation;
 
-    typedef void (*startWebFrameworkServer)(void* implementation, bool wait, void (*onStartServer)(), void** exception);
+    typedef void (*startWebFrameworkServer)(void* implementation, bool wait, void (*onStartServer)(uint16_t listenPort), void** exception);
 
     CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(startWebFrameworkServer, wait, onStartServer, &exception);
 
