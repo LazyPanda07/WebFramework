@@ -108,7 +108,7 @@ namespace framework
 
 		WebFramework(const std::filesystem::path& webFrameworkConfigPath);
 
-		void start(bool wait = false, const std::function<void()>& onStartServer = []() {});
+		void start(bool wait = false, const std::function<void(SOCKET)>& onStartServer = [](SOCKET) {});
 		
 		void stop(bool wait = true);
 

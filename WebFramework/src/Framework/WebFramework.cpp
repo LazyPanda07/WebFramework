@@ -680,11 +680,14 @@ namespace framework
 
 	}
 
-	void WebFramework::start(bool wait, const std::function<void()>& onStartServer)
+	void WebFramework::start(bool wait, const std::function<void(SOCKET)>& onStartServer)
 	{
 		if (Log::isValid())
 		{
-			Log::info<logging::message::startingServer, logging::category::webFrameworkServer>(webServerType, server->getIp(), server->getPort());
+			for (size_t i = 0; i < server->getListenPorts(); i++)
+			{
+				Log::info<logging::message::startingServer, logging::category::webFrameworkServer>(webServerType, server->getIp(), server->getPort(i));
+			}
 		}
 
 		server->start(wait, onStartServer, serverException);
@@ -694,7 +697,10 @@ namespace framework
 	{
 		if (Log::isValid())
 		{
-			Log::info<logging::message::stoppingServer, logging::category::webFrameworkServer>(webServerType, server->getIp(), server->getPort());
+			for (size_t i = 0; i < server->getListenPorts(); i++)
+			{
+				Log::info<logging::message::stoppingServer, logging::category::webFrameworkServer>(webServerType, server->getIp(), server->getPort(i));
+			}
 		}
 
 		server->stop(wait);

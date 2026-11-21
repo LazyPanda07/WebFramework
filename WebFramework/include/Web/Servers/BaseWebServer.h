@@ -49,7 +49,7 @@ namespace framework
 
 		WebFramework& getFrameworkInstance();
 
-		void start(bool wait = false, const std::function<void()>& onStartServer = []() {}, std::exception** outException = nullptr) override;
+		void start(bool wait = false, const std::function<void(SOCKET)>& onStartServer = [](SOCKET) {}, std::exception** outException = nullptr) override;
 
 		virtual ~BaseWebServer();
 	};

@@ -179,7 +179,7 @@ namespace framework
 		return frameworkInstance;
 	}
 
-	void BaseWebServer::start(bool wait, const std::function<void()>& onStartServer, std::exception** outException)
+	void BaseWebServer::start(bool wait, const std::function<void(SOCKET)>& onStartServer, std::exception** outException)
 	{
 		this->updateCertificates();
 

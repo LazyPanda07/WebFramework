@@ -146,7 +146,7 @@ void startWebFrameworkServerCXX(WebFramework server, bool wait, void* onStartSer
 	{
 		std::function<void()>* lambda = static_cast<std::function<void()>*>(onStartServer);
 
-		static_cast<framework::WebFramework*>(server)->start(wait, *lambda);
+		static_cast<framework::WebFramework*>(server)->start(wait, [lambda](SOCKET) { (*lambda)(); });
 	}
 	catch (const framework::exceptions::AlreadyLoggedException& e)
 	{
@@ -166,7 +166,7 @@ void startWebFrameworkServer(WebFramework server, bool wait, void (*onStartServe
 {
 	try
 	{
-		static_cast<framework::WebFramework*>(server)->start(wait, onStartServer);
+		static_cast<framework::WebFramework*>(server)->start(wait, [onStartServer](SOCKET) { onStartServer(); });
 	}
 	catch (const framework::exceptions::AlreadyLoggedException& e)
 	{
