@@ -169,7 +169,14 @@ void startWebFrameworkServer(WebFramework server, bool wait, void (*onStartServe
 {
 	try
 	{
-		static_cast<framework::WebFramework*>(server)->start(wait, [onStartServer](SOCKET listenSocket) { onStartServer(getPortFromSocket(listenSocket)); });
+		if (onStartServer)
+		{
+			static_cast<framework::WebFramework*>(server)->start(wait, [onStartServer](SOCKET listenSocket) { onStartServer(getPortFromSocket(listenSocket)); });
+		}
+		else
+		{
+			static_cast<framework::WebFramework*>(server)->start(wait, [](SOCKET listenSocket) {});
+		}
 	}
 	catch (const framework::exceptions::AlreadyLoggedException& e)
 	{
