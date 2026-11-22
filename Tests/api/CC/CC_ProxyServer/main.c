@@ -83,7 +83,7 @@ int main(int argc, char** argv)
 		return -4;
 	}
 
-	exception = wf_start_web_framework_server(server, true, printRunningState);
+	exception = wf_start_web_framework_server(server, true, print_running_state);
 
 	if (exception)
 	{
