@@ -28,6 +28,7 @@
     <None Include="Windows/Localization.dll" Pack="true" PackagePath="runtimes/win-x64/native/" />
     <None Include="Windows/Log.dll" Pack="true" PackagePath="runtimes/win-x64/native/" />
     <None Include="Windows/sqlite3.dll" Pack="true" PackagePath="runtimes/win-x64/native/" />
+    <None Include="Windows/pq.dll" Pack="true" PackagePath="runtimes/win-x64/native/" />
 
     <None Include="Linux/libWebFramework.so" Pack="true" PackagePath="runtimes/linux-x64/native/" />
     <None Include="Linux/libFileManager.so" Pack="true" PackagePath="runtimes/linux-x64/native/" />

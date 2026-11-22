@@ -6,8 +6,9 @@
 
 #include <Databases/Database.hpp>
 #include <Databases/Implementations/DefaultDatabase.hpp>
-#include <Databases/Implementations/RedisDatabase.hpp>
 #include <Databases/Implementations/SqliteDatabase.hpp>
+#include <Databases/Implementations/PostgresDatabase.hpp>
+#include <Databases/Implementations/RedisDatabase.hpp>
 
 #include "PyDTO.h"
 
@@ -152,6 +153,9 @@ def create(row: Dict[str, SqlValue]) -> "<dto_class>")");
 
 		py::class_<framework::SqliteDatabase>(m, "SqliteDatabase")
 			.def_property_readonly_static("database_implementation_name", [](py::object self) { return std::string(framework::SqliteDatabase::databaseImplementationName); });
+
+		py::class_<framework::PostgresDatabase>(m, "PostgresDatabase")
+			.def_property_readonly_static("database_implementation_name", [](py::object self) { return std::string(framework::PostgresDatabase::databaseImplementationName); });
 
 		py::class_<framework::RedisDatabase>(m, "RedisDatabase")
 			.def_property_readonly_static("database_implementation_name", [](py::object self) { return std::string(framework::RedisDatabase::databaseImplementationName); });

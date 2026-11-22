@@ -11,6 +11,7 @@ set(
 	3RDPARTY_LIBS
 	sqlite3
 	hiredis
+	pq
 	rabbitmq::rabbitmq-static
 	jwt-cpp::jwt-cpp
 	ssl
@@ -151,6 +152,10 @@ if (${WITH_BROTLI})
 endif()
 
 if (UNIX)
+	list(APPEND 3RDPARTY_LIBS pgport_shlib pgcommon_shlib)
+endif()
+
+if (UNIX)
 	add_definitions(-D__LINUX__)
 	target_compile_options(
 		${PROJECT_NAME} PRIVATE
@@ -246,6 +251,7 @@ target_link_directories(
 	${PROJECT_NAME} PUBLIC
 	${SQLITE_LIBRARY_PATH}
 	${HIREDIS_LIBRARY_PATH}
+	${POSTGRES_LIBRARY_PATH}
 	${ADDITIONAL_LIB_DIRS}
 )
 

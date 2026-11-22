@@ -3,8 +3,9 @@
 #include "http_response.h"
 #include "databases/database.h"
 #include "databases/implementations/default_database.h"
-#include "databases/implementations/redis_database.h"
 #include "databases/implementations/sqlite_database.h"
+#include "databases/implementations/postgres_database.h"
+#include "databases/implementations/redis_database.h"
 
 typedef void* http_request_t;
 

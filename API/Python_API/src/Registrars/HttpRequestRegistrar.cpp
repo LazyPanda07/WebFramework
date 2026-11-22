@@ -217,6 +217,10 @@ file_name : str
 					{
 						return self.getOrCreateDatabase<framework::SqliteDatabase>(databaseName);
 					}
+					else if (databaseImplementationClass.is(py::type::of<framework::PostgresDatabase>()))
+					{
+						return self.getOrCreateDatabase<framework::PostgresDatabase>(databaseName);
+					}
 					else if (databaseImplementationClass.is(py::type::of<framework::RedisDatabase>()))
 					{
 						return self.getOrCreateDatabase<framework::RedisDatabase>(databaseName);
@@ -240,6 +244,10 @@ file_name : str
 					else if (databaseImplementationClass.is(py::type::of<framework::SqliteDatabase>()))
 					{
 						return self.getDatabase<framework::SqliteDatabase>(databaseName);
+					}
+					else if (databaseImplementationClass.is(py::type::of<framework::PostgresDatabase>()))
+					{
+						return self.getDatabase<framework::PostgresDatabase>(databaseName);
 					}
 					else if (databaseImplementationClass.is(py::type::of<framework::RedisDatabase>()))
 					{
@@ -265,6 +273,10 @@ file_name : str
 					{
 						return self.getOrCreateTable<framework::SqliteDatabase>(databaseName, tableName, createTableQuery);
 					}
+					else if (databaseImplementationClass.is(py::type::of<framework::PostgresDatabase>()))
+					{
+						return self.getOrCreateTable<framework::PostgresDatabase>(databaseName, tableName, createTableQuery);
+					}
 					else if (databaseImplementationClass.is(py::type::of<framework::RedisDatabase>()))
 					{
 						return self.getOrCreateTable<framework::RedisDatabase>(databaseName, tableName, createTableQuery);
@@ -288,6 +300,10 @@ file_name : str
 					else if (databaseImplementationClass.is(py::type::of<framework::SqliteDatabase>()))
 					{
 						return self.getTable<framework::SqliteDatabase>(databaseName, tableName);
+					}
+					else if (databaseImplementationClass.is(py::type::of<framework::PostgresDatabase>()))
+					{
+						return self.getTable<framework::PostgresDatabase>(databaseName, tableName);
 					}
 					else if (databaseImplementationClass.is(py::type::of<framework::RedisDatabase>()))
 					{

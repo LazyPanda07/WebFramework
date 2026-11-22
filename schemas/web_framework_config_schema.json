@@ -207,13 +207,13 @@
           "oneOf": [
             {
               "type": "string",
-              "enum": [ "sqlite", "redis" ]
+              "enum": [ "sqlite", "postgres", "redis" ]
             },
             {
               "type": "array",
               "items": {
                 "type": "string",
-                "enum": [ "sqlite", "redis" ]
+                "enum": [ "sqlite", "postgres", "redis" ]
               }
             }
           ]
@@ -367,7 +367,7 @@
                   "name": {
                     "type": "string",
                     "description": "Task broker name",
-                    "enum": [ "sqlite", "redis" ]
+                    "enum": [ "sqlite", "postgres", "redis" ]
                   },
                   "settings": {
                     "type": "object",

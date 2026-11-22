@@ -149,5 +149,8 @@
     <ClInclude Include="include\web_socket\web_socket_executor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\databases\implementations\postgres_database.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
