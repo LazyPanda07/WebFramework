@@ -75,7 +75,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(ProjectDir)..\Databases\vendor\sqlite3\lib\Windows\;$(ProjectDir)..\Databases\vendor\hiredis\lib\Windows\;$(ProjectDir)..\Databases\vendor\postgres\lib\Windows\;$(ProjectDir)..\Networks\vendor\OpenSSL\Windows\lib\;$(ProjectDir)..\3rdparty\cmark-gfm\build\_deps\build_cmark\lib\;$(ProjectDir)..\3rdparty\pybind11\build\_deps\python\lib\;$(ProjectDir)..\3rdparty\rabbitmq-c\build\_deps\rabbitmq-c-build\librabbitmq\$(Configuration)\;$(ProjectDir)..\3rdparty\zlib\build\_deps\zlib-build\$(Configuration)\;$(ProjectDir)..\3rdparty\brotli\build\_deps\brotli-build\$(Configuration)\</AdditionalLibraryDirectories>
-      <AdditionalDependencies>ssl.lib;crypto.lib;crypt32.lib;sqlite3.lib;hiredis.lib;pq.lib;cmark-gfm_static.lib;librabbitmq.4.lib;zs.lib;brotlicommon.lib;brotlidec.lib;brotlienc.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>ssl.lib;crypto.lib;crypt32.lib;sqlite3.lib;hiredis.lib;libpq.lib;cmark-gfm_static.lib;librabbitmq.4.lib;zs.lib;brotlicommon.lib;brotlidec.lib;brotlienc.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions>/ignore:4006 %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <Lib>
@@ -113,7 +113,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(ProjectDir)..\Databases\vendor\sqlite3\lib\Windows\;$(ProjectDir)..\Databases\vendor\hiredis\lib\Windows\;$(ProjectDir)..\Databases\vendor\postgres\lib\Windows\;$(ProjectDir)..\Networks\vendor\OpenSSL\Windows\lib\;$(ProjectDir)..\3rdparty\cmark-gfm\build\_deps\build_cmark\lib\;$(ProjectDir)..\3rdparty\pybind11\build\_deps\python\lib\;$(ProjectDir)..\3rdparty\rabbitmq-c\build\_deps\rabbitmq-c-build\librabbitmq\$(Configuration)\;$(ProjectDir)..\3rdparty\zlib\build\_deps\zlib-build\$(Configuration)\;$(ProjectDir)..\3rdparty\brotli\build\_deps\brotli-build\$(Configuration)\</AdditionalLibraryDirectories>
-      <AdditionalDependencies>ssl.lib;crypto.lib;crypt32.lib;sqlite3.lib;hiredis.lib;pq.lib;cmark-gfm_static.lib;librabbitmq.4.lib;zs.lib;brotlicommon.lib;brotlidec.lib;brotlienc.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>ssl.lib;crypto.lib;crypt32.lib;sqlite3.lib;hiredis.lib;libpq.lib;cmark-gfm_static.lib;librabbitmq.4.lib;zs.lib;brotlicommon.lib;brotlidec.lib;brotlienc.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions>/ignore:4006 %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <Lib>

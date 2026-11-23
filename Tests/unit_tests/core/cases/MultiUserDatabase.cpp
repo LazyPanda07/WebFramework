@@ -1,6 +1,7 @@
 #include <future>
 #include <random>
 #include <ctime>
+#include <format>
 
 #include <gtest/gtest.h>
 
@@ -29,56 +30,63 @@ static std::string generateRandomString()
 TEST(Database, MultiUser)
 {
 	static constexpr size_t requestsNumber = 25;
+	constexpr std::array<std::string_view, 1> databaseImplementations =
+	{
+		"sqlite"
+	};
 
-	std::vector<streams::IOSocketStream> clients;
-	std::vector<std::future<void>> awaiters;
-	auto requests = [](streams::IOSocketStream& stream)
-		{
-			std::string request;
-			std::string response;
-
-			for (size_t i = 0; i < requestsNumber; i++)
+	for (std::string_view name : databaseImplementations)
+	{
+		std::vector<streams::IOSocketStream> clients;
+		std::vector<std::future<void>> awaiters;
+		auto requests = [name](streams::IOSocketStream& stream)
 			{
-				request = web::HttpBuilder().putRequest().parameters("multi_user_database").build(json::JsonBuilder().append("data", generateRandomString()));
+				std::string request;
+				std::string response;
+
+				for (size_t i = 0; i < requestsNumber; i++)
+				{
+					request = web::HttpBuilder().putRequest().parameters(std::format("multi_user_database/{}", name)).build(json::JsonBuilder().append("data", generateRandomString()));
+
+					stream << request;
+
+					stream >> response;
+
+					ASSERT_EQ(web::HttpParser(response).getResponseCode(), web::ResponseCodes::noContent) << response;
+				}
+
+				request = web::HttpBuilder().getRequest().parameters(std::format("multi_user_database/{}", name)).build();
 
 				stream << request;
 
 				stream >> response;
 
-				ASSERT_EQ(web::HttpParser(response).getResponseCode(), web::ResponseCodes::noContent) << response;
-			}
+				web::HttpParser parser(response);
 
-			request = web::HttpBuilder().getRequest().parameters("multi_user_database").build();
+				ASSERT_EQ(parser.getResponseCode(), web::ResponseCodes::ok) << response;
 
-			stream << request;
+				ASSERT_EQ(parser.getJson().get<std::vector<json::JsonObject>>("data").size(), requestsNumber) << response;
+			};
 
-			stream >> response;
+		clients.reserve(clientsNumber);
+		awaiters.reserve(clientsNumber);
 
-			web::HttpParser parser(response);
-
-			ASSERT_EQ(parser.getResponseCode(), web::ResponseCodes::ok) << response;
-
-			ASSERT_EQ(parser.getJson().get<std::vector<json::JsonObject>>("data").size(), requestsNumber) << response;
-		};
-
-	clients.reserve(clientsNumber);
-	awaiters.reserve(clientsNumber);
-
-	for (size_t i = 0; i < clientsNumber; i++)
-	{
-		awaiters.emplace_back
-		(
-			std::async
+		for (size_t i = 0; i < clientsNumber; i++)
+		{
+			awaiters.emplace_back
 			(
-				std::launch::async,
-				requests,
-				std::ref(clients.emplace_back(utility::createSocketStream()))
-			)
-		);
-	}
+				std::async
+				(
+					std::launch::async,
+					requests,
+					std::ref(clients.emplace_back(utility::createSocketStream()))
+				)
+			);
+		}
 
-	for (std::future<void>& awaiter : awaiters)
-	{
-		awaiter.wait();
+		for (std::future<void>& awaiter : awaiters)
+		{
+			awaiter.wait();
+		}
 	}
 }

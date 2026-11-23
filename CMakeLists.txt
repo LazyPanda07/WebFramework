@@ -12,7 +12,6 @@ set(
 	3RDPARTY_LIBS
 	sqlite3
 	hiredis
-	pq
 	rabbitmq::rabbitmq-static
 	jwt-cpp::jwt-cpp
 	ssl
@@ -153,7 +152,9 @@ if (${WITH_BROTLI})
 endif()
 
 if (UNIX)
-	list(APPEND 3RDPARTY_LIBS pgport_shlib pgcommon_shlib)
+	list(APPEND 3RDPARTY_LIBS pq pgport_shlib pgcommon_shlib)
+elseif(WIN32)
+	list(APPEND 3RDPARTY_LIBS libpq)
 endif()
 
 if (UNIX)

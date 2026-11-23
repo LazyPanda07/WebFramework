@@ -16,6 +16,8 @@ public:
 	int64_t amount;
 };
 
+static framework::Database getDatabase(std::string_view databaseName, framework::HttpRequest& request);
+
 void CRUDExecutor::init(const framework::utility::ExecutorSettings& settings)
 {
 	settings.getOrCreateDatabase("test_database").getOrCreateTable
@@ -30,7 +32,7 @@ void CRUDExecutor::init(const framework::utility::ExecutorSettings& settings)
 
 void CRUDExecutor::doGet(framework::HttpRequest& request, framework::HttpResponse& response)
 {
-	framework::Database database = request.getDatabase("test_database");
+	framework::Database database = getDatabase("test_database", request);
 	framework::Table table = database.getTable("test_table");
 	std::vector<TableData> result = table.execute<TableData>("SELECT * FROM test_table WHERE name = ?", framework::utility::database::makeSqlValues("glue"));
 	std::vector<framework::JsonObject> data;
@@ -51,7 +53,7 @@ void CRUDExecutor::doGet(framework::HttpRequest& request, framework::HttpRespons
 
 void CRUDExecutor::doPut(framework::HttpRequest& request, framework::HttpResponse& response)
 {
-	framework::Database database = request.getDatabase("test_database");
+	framework::Database database = getDatabase("test_database", request);
 	framework::Table table = database.getTable("test_table");
 	std::mt19937_64 random(std::time(nullptr));
 
@@ -73,7 +75,7 @@ void CRUDExecutor::doPut(framework::HttpRequest& request, framework::HttpRespons
 
 void CRUDExecutor::doPatch(framework::HttpRequest& request, framework::HttpResponse& response)
 {
-	framework::Database database = request.getDatabase("test_database");
+	framework::Database database = getDatabase("test_database", request);
 	framework::Table table = database.getTable("test_table");
 
 	table.execute
@@ -84,10 +86,10 @@ void CRUDExecutor::doPatch(framework::HttpRequest& request, framework::HttpRespo
 		framework::utility::database::makeSqlValues("empty", -1)
 	);
 	std::vector<TableData> result = table.execute<TableData>
-	(
-		"SELECT * FROM test_table WHERE name = ?",
-		framework::utility::database::makeSqlValues("empty")
-	);
+		(
+			"SELECT * FROM test_table WHERE name = ?",
+			framework::utility::database::makeSqlValues("empty")
+		);
 
 	std::vector<framework::JsonObject> data;
 
@@ -107,7 +109,7 @@ void CRUDExecutor::doPatch(framework::HttpRequest& request, framework::HttpRespo
 
 void CRUDExecutor::doDelete(framework::HttpRequest& request, framework::HttpResponse& response)
 {
-	request.getDatabase("test_database").getTable("test_table").execute("DROP TABLE test_table", {});
+	getDatabase("test_database", request).getTable("test_table").execute("DROP TABLE test_table", {});
 }
 
 DEFINE_EXECUTOR(CRUDExecutor)
@@ -122,4 +124,22 @@ TableData TableData::create(const framework::SqlResult::Row& row)
 	};
 
 	return result;
+}
+
+framework::Database getDatabase(std::string_view databaseName, framework::HttpRequest& request)
+{
+	std::string databaseImplementation = request.getRouteParameter<std::string>("databaseImplementation");
+
+	if (databaseImplementation == framework::SqliteDatabase::databaseImplementationName)
+	{
+		return request.getDatabase<framework::SqliteDatabase>(databaseName);
+	}
+	else if (databaseImplementation == framework::PostgresDatabase::databaseImplementationName)
+	{
+		return request.getDatabase<framework::PostgresDatabase>(databaseName);
+	}
+
+	request.throwException(std::format("Wrong databaseImplementation: {}", databaseImplementation), framework::ResponseCodes::badRequest);
+
+	return request.getDatabase(databaseName);
 }

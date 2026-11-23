@@ -9,12 +9,12 @@
     "webSocketExecutorName": "WebSocketEcho"
   },
   "CRUDExecutor": {
-    "route": "database",
+    "route": "database/{string:databaseImplementation}",
     "loadType": "initialization",
     "api": "{API_TYPE}"
   },
   "MultiUserExecutor": {
-    "route": "multi_user_database",
+    "route": "multi_user_database/{string:databaseImplementation}",
     "loadType": "dynamic",
     "api": "{API_TYPE}"
   },

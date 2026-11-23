@@ -2,6 +2,8 @@
 
 #include <Utility/WebFrameworkUtility.hpp>
 
+static framework::Table getTable(std::string_view databaseName, std::string_view tableName, framework::HttpRequest& request);
+
 MultiUserExecutor::MultiUserExecutor() :
     userId(framework::utility::uuid::generateUuid())
 {
@@ -15,7 +17,7 @@ void MultiUserExecutor::init(const framework::utility::ExecutorSettings& setting
 
 void MultiUserExecutor::doGet(framework::HttpRequest& request, framework::HttpResponse& response)
 {
-	framework::Table table = request.getTable("test_database", "multi_user");
+	framework::Table table = getTable("test_database", "multi_user", request);
 
 	framework::SqlResult result = table.execute
 	(
@@ -40,7 +42,7 @@ void MultiUserExecutor::doGet(framework::HttpRequest& request, framework::HttpRe
 
 void MultiUserExecutor::doPut(framework::HttpRequest& request, framework::HttpResponse& response)
 {
-	framework::Table table = request.getTable("test_database", "multi_user");
+	framework::Table table = getTable("test_database", "multi_user", request);
 
 	table.execute
 	(
@@ -50,3 +52,21 @@ void MultiUserExecutor::doPut(framework::HttpRequest& request, framework::HttpRe
 }
 
 DEFINE_EXECUTOR(MultiUserExecutor)
+
+framework::Table getTable(std::string_view databaseName, std::string_view tableName, framework::HttpRequest& request)
+{
+	std::string databaseImplementation = request.getRouteParameter<std::string>("databaseImplementation");
+
+	if (databaseImplementation == framework::SqliteDatabase::databaseImplementationName)
+	{
+		return request.getTable<framework::SqliteDatabase>(databaseName, tableName);
+	}
+	else if (databaseImplementation == framework::PostgresDatabase::databaseImplementationName)
+	{
+		return request.getTable<framework::PostgresDatabase>(databaseName, tableName);
+	}
+
+	request.throwException(std::format("Wrong databaseImplementation: {}", databaseImplementation), framework::ResponseCodes::badRequest);
+
+	return request.getTable(databaseName, tableName);
+}

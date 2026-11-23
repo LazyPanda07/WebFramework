@@ -37,6 +37,10 @@ namespace registrar
 						"Log",
 						"sqlite3"
 					};
+					constexpr std::array<std::string_view, 1> windowsOnlyLibraryNames =
+					{
+						"libpq"
+					};
 
 					auto finishLibraryName = [](std::string_view libraryName) -> std::string
 						{
@@ -61,6 +65,15 @@ namespace registrar
 						libraries.emplace_back(LoadLibraryA(actualPath.string().data()));
 #endif
 					}
+
+#ifndef __LINUX__
+					for (std::string_view libraryName : windowsOnlyLibraryNames)
+					{
+						std::filesystem::path actualPath = basePath / finishLibraryName(libraryName);
+
+						libraries.emplace_back(LoadLibraryA(actualPath.string().data()));
+					}
+#endif
 
 #ifdef __LINUX__
 					framework::utility::initializeWebFramework(basePath / "libWebFramework.so");

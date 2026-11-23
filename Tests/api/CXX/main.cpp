@@ -92,11 +92,17 @@ TEST(API, Utility)
 	ASSERT_EQ(framework::utility::encoding::generateSha256("qwe"), "489CD5DBC708C7E541DE4D7CD91CE6D0F1613573B7FC5B40D3942CCB9555CF35");
 }
 
-int main(int argc, char** argv)
+int main(int argc, char** argv) try
 {
 	testing::InitGoogleTest(&argc, argv);
 
 	framework::utility::initializeWebFramework("WebFramework");
 
 	return RUN_ALL_TESTS();
+}
+catch (const std::exception& e)
+{
+	std::cerr << e.what() << std::endl;
+
+	return 1;
 }
