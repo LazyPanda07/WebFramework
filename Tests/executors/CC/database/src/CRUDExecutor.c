@@ -33,8 +33,11 @@ DEFINE_EXECUTOR_METHOD(CRUDExecutor, GET_METHOD, request, response)
 	sql_result_t result;
 	json_builder_t builder;
 	json_object_t data;
+	char* database_implementation = NULL;
 
-	wf_get_database_request(request, "test_database", DEFAULT_DATABASE_IMPLEMENTATION_NAME, &database);
+	wf_get_route_string_parameter(request, "databaseImplementation", &database_implementation);
+
+	wf_get_database_request(request, "test_database", database_implementation, &database);
 	wf_get_table(database, "test_table", &table);
 	wf_create_sql_value(&value);
 	wf_create_json_builder(&builder);
@@ -60,6 +63,9 @@ DEFINE_EXECUTOR_METHOD(CRUDExecutor, PUT_METHOD, request, response)
 	table_t table;
 	sql_result_t result;
 	sql_value_t* values = (sql_value_t*)malloc(2 * sizeof(sql_value_t));
+	char* database_implementation = NULL;
+
+	wf_get_route_string_parameter(request, "databaseImplementation", &database_implementation);
 
 	if (!values)
 	{
@@ -70,7 +76,7 @@ DEFINE_EXECUTOR_METHOD(CRUDExecutor, PUT_METHOD, request, response)
 
 	srand(time(NULL));
 
-	wf_get_database_request(request, "test_database", DEFAULT_DATABASE_IMPLEMENTATION_NAME, &database);
+	wf_get_database_request(request, "test_database", database_implementation, &database);
 	wf_get_table(database, "test_table", &table);
 
 	wf_create_sql_value(&(values[0]));
@@ -99,6 +105,9 @@ DEFINE_EXECUTOR_METHOD(CRUDExecutor, PATCH_METHOD, request, response)
 	sql_value_t* values = (sql_value_t*)malloc(2 * sizeof(sql_value_t));
 	json_builder_t builder;
 	json_object_t data;
+	char* database_implementation = NULL;
+
+	wf_get_route_string_parameter(request, "databaseImplementation", &database_implementation);
 
 	if (!values)
 	{
@@ -107,7 +116,7 @@ DEFINE_EXECUTOR_METHOD(CRUDExecutor, PATCH_METHOD, request, response)
 		return;
 	}
 
-	wf_get_database_request(request, "test_database", DEFAULT_DATABASE_IMPLEMENTATION_NAME, &database);
+	wf_get_database_request(request, "test_database", database_implementation, &database);
 	wf_get_table(database, "test_table", &table);
 	wf_create_json_builder(&builder);
 

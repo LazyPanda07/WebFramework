@@ -23,6 +23,24 @@ struct TableData : IDTO<TableData>
 
 public class CRUDExecutor : StatelessExecutor
 {
+	private static Database GetDatabase(string databaseName, HttpRequest request)
+	{
+		string databaseImplementation = request.GetRouteParameter<string>("databaseImplementation");
+
+		if (databaseImplementation == SqliteDatabase.ImplementationName)
+		{
+			return request.GetDatabase<SqliteDatabase>(databaseName);
+		}
+		else if (databaseImplementation == PostgresDatabase.ImplementationName)
+		{
+			return request.GetDatabase<PostgresDatabase>(databaseName);
+		}
+
+		throw new NotImplementedException($"Wrong databaseImplementation: {databaseImplementation}");
+
+		return request.GetDatabase(databaseName);
+	}
+
 	public override void Init(ExecutorSettings settings)
 	{
 		settings.GetOrCreateDatabase("test_database").GetOrCreateTable
@@ -41,14 +59,14 @@ public class CRUDExecutor : StatelessExecutor
 		(
 			new
 			{
-				data = request.GetTable("test_database", "test_table").ExecuteQuery<TableData>("SELECT * FROM test_table WHERE name = ?", WebFrameworkUtility.MakeSqlValues("glue"))
+				data = GetDatabase("test_database", request).GetTable("test_table").ExecuteQuery<TableData>("SELECT * FROM test_table WHERE name = ?", WebFrameworkUtility.MakeSqlValues("glue"))
 			}
 		);
 	}
 
 	public override void DoPut(HttpRequest request, HttpResponse response)
 	{
-		Database database = request.GetDatabase("test_database");
+		Database database = GetDatabase("test_database", request);
 		Table table = database.GetTable("test_table");
 		Random random = new((int)DateTime.Now.Ticks);
 
@@ -70,7 +88,7 @@ public class CRUDExecutor : StatelessExecutor
 
 	public override void DoPatch(HttpRequest request, HttpResponse response)
 	{
-		Database database = request.GetDatabase("test_database");
+		Database database = GetDatabase("test_database", request);
 		Table table = database.GetTable("test_table");
 
 		table.ExecuteQuery
@@ -92,6 +110,6 @@ public class CRUDExecutor : StatelessExecutor
 
 	public override void DoDelete(HttpRequest request, HttpResponse response)
 	{
-		request.GetDatabase("test_database").GetTable("test_table").ExecuteQuery("DROP TABLE test_table");
+		GetDatabase("test_database", request).GetTable("test_table").ExecuteQuery("DROP TABLE test_table");
 	}
 }

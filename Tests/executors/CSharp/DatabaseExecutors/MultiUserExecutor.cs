@@ -1,9 +1,28 @@
 ﻿using Framework;
+using Framework.Databases;
 using Framework.Utility;
 
 public class MultiUserExecutor : HeavyOperationStatefulExecutor
 {
 	private readonly string userId;
+
+	private static Table GetTable(string databaseName, string tableName, HttpRequest request)
+	{
+		string databaseImplementation = request.GetRouteParameter<string>("databaseImplementation");
+
+		if (databaseImplementation == SqliteDatabase.ImplementationName)
+		{
+			return request.GetTable<SqliteDatabase>(databaseName, tableName);
+		}
+		else if (databaseImplementation == PostgresDatabase.ImplementationName)
+		{
+			return request.GetTable<PostgresDatabase>(databaseName, tableName);
+		}
+
+		throw new NotImplementedException($"Wrong databaseImplementation: {databaseImplementation}");
+
+		return request.GetTable(databaseName, tableName);
+	}
 
 	public MultiUserExecutor()
 	{
@@ -17,7 +36,7 @@ public class MultiUserExecutor : HeavyOperationStatefulExecutor
 
 	public override void DoGet(HttpRequest request, HttpResponse response)
 	{
-		Table table = request.GetTable("test_database", "multi_user");
+		Table table = GetTable("test_database", "multi_user", request);
 
 		SqlResult result = table.ExecuteQuery
 		(
@@ -50,7 +69,7 @@ public class MultiUserExecutor : HeavyOperationStatefulExecutor
 
 	public override void DoPut(HttpRequest request, HttpResponse response)
 	{
-		Table table = request.GetTable("test_database", "test_table");
+		Table table = GetTable("test_database", "test_table", request);
 
 		table.ExecuteQuery
 		(

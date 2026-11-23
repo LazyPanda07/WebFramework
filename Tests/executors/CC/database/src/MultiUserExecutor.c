@@ -33,8 +33,11 @@ DEFINE_EXECUTOR_METHOD(MultiUserExecutor, GET_METHOD, request, response)
 	sql_result_t result;
 	json_builder_t builder;
 	json_object_t data;
+	char* database_implementation = NULL;
+
+	wf_get_route_string_parameter(request, "databaseImplementation", &database_implementation);
 	
-	wf_get_table_request(request, "test_database", DEFAULT_DATABASE_IMPLEMENTATION_NAME, "multi_user", &table);
+	wf_get_table_request(request, "test_database", database_implementation, "multi_user", &table);
 	wf_create_sql_value(&value);
 	wf_create_json_builder(&builder);
 
@@ -62,6 +65,9 @@ DEFINE_EXECUTOR_METHOD(MultiUserExecutor, PUT_METHOD, request, response)
 	sql_result_t result;
 	json_parser_t parser;
 	char* data = NULL;
+	char* database_implementation = NULL;
+
+	wf_get_route_string_parameter(request, "databaseImplementation", &database_implementation);
 
 	if (!values)
 	{
@@ -70,7 +76,7 @@ DEFINE_EXECUTOR_METHOD(MultiUserExecutor, PUT_METHOD, request, response)
 		return;
 	}
 
-	wf_get_table_request(request, "test_database", DEFAULT_DATABASE_IMPLEMENTATION_NAME, "multi_user", &table);
+	wf_get_table_request(request, "test_database", database_implementation, "multi_user", &table);
 	wf_create_sql_value(&values[0]);
 	wf_create_sql_value(&values[1]);
 	wf_get_request_json(request, &parser);

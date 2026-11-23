@@ -22,6 +22,19 @@ class TableData:
         self.amount = amount
 
 
+def get_database_class(request: HttpRequest):
+    database_implementation = request.get_string_route_parameter("databaseImplementation")
+
+    if database_implementation == SqliteDatabase.database_implementation_name:
+        return SqliteDatabase
+    elif database_implementation == PostgresDatabase.database_implementation_name:
+        return PostgresDatabase
+
+    request.throw_exception(f"Wrong databaseImplementation: {database_implementation}", ResponseCodes.BAD_REQUEST)
+
+    return DefaultDatabase
+
+
 class CRUDExecutor(StatelessExecutor):
     def init(self, settings):
         settings.get_or_create_database("test_database").get_or_create_table(
@@ -34,12 +47,13 @@ class CRUDExecutor(StatelessExecutor):
 
     def do_get(self, request, response):
         response.set_body({
-            "data": request.get_table("test_database", "test_table").execute("SELECT * FROM test_table WHERE name = ?",
-                                                                             TableData, make_sql_values("glue"))
+            "data": request.get_table("test_database", "test_table", get_database_class(request)).execute(
+                "SELECT * FROM test_table WHERE name = ?",
+                TableData, make_sql_values("glue"))
         })
 
     def do_put(self, request, response):
-        database = request.get_database("test_database")
+        database = request.get_database("test_database", get_database_class(request))
         table = database.get_table("test_table")
 
         random.seed(time.time())
@@ -56,7 +70,7 @@ class CRUDExecutor(StatelessExecutor):
             )
 
     def do_patch(self, request, response):
-        database = request.get_database("test_database")
+        database = request.get_database("test_database", get_database_class(request))
         table = database.get_table("test_table")
 
         table.execute(
@@ -71,7 +85,8 @@ class CRUDExecutor(StatelessExecutor):
         })
 
     def do_delete(self, request, response):
-        request.get_database("test_database").get_table("test_table").execute("DROP TABLE test_table")
+        request.get_database("test_database", get_database_class(request)).get_table("test_table").execute(
+            "DROP TABLE test_table")
 
 
 class MultiUserExecutor(HeavyOperationStatefulExecutor):
@@ -84,7 +99,7 @@ class MultiUserExecutor(HeavyOperationStatefulExecutor):
                                                                              "CREATE TABLE IF NOT EXISTS multi_user (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id TEXT NOT NULL, data TEXT NOT NULL)")
 
     def do_get(self, request, response):
-        table = request.get_table("test_database", "multi_user")
+        table = request.get_table("test_database", "multi_user", get_database_class(request))
         data = []
 
         result = table.execute(
@@ -104,7 +119,7 @@ class MultiUserExecutor(HeavyOperationStatefulExecutor):
         })
 
     def do_put(self, request, response):
-        table = request.get_table("test_database", "multi_user")
+        table = request.get_table("test_database", "multi_user", get_database_class(request))
 
         table.execute(
             "INSERT INTO multi_user (user_id, data) VALUES(?, ?)",
