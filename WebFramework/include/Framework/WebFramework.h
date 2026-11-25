@@ -67,9 +67,11 @@ namespace framework
 		DatabasesManager databasesManager;
 		task_broker::TaskBrokersManager taskBrokerManager;
 		task_broker::TaskExecutorsManager taskExecutorsManager;
+		bool adaptSqlPlaceholders;
 #ifdef __WITH_STACKTRACE__
 		utility::CrashHandler crashHandler;
 #endif
+
 	private:
 		uint64_t parseLoggingFlags(const json::JsonObject& loggingSettings) const;
 
@@ -131,6 +133,8 @@ namespace framework
 		task_broker::TaskBrokersManager& getTaskBrokerManager();
 
 		task_broker::TaskExecutorsManager& getTaskExecutorsManager();
+
+		bool getAdaptSqlPlaceholders() const;
 
 		~WebFramework();
 	};

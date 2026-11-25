@@ -34,7 +34,7 @@ public class MultiUserExecutor : HeavyOperationStatefulExecutor
 		if (withoutPostgresTests == "OFF")
 		{
 			string host = Environment.GetEnvironmentVariable("POSTGRES_HOST") ?? "127.0.0.1";
-			string password = Environment.GetEnvironmentVariable("POSTGRES_PASSWORD") ?? "secret";
+			string password = Environment.GetEnvironmentVariable("POSTGRES_PASSWORD") ?? "root";
 
 			settings.ConstructDatabase<PostgresDatabase>("test_database", $"host={host} port=5432 dbname=test_database user=postgres password={password}").GetOrCreateTable
 			(

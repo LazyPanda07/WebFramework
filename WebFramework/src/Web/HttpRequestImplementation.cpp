@@ -644,17 +644,23 @@ namespace framework
 
 	interfaces::IDatabase* HttpRequestImplementation::getOrCreateDatabase(const char* databaseName, const char* databaseImplementationName)
 	{
-		return databases.emplace_back(new DatabaseImplementation(serverReference.getFrameworkInstance().getDatabasesManager().getOrCreateDatabase(databaseName, databaseImplementationName)));
+		WebFramework& instance = serverReference.getFrameworkInstance();
+
+		return databases.emplace_back(new DatabaseImplementation(instance.getDatabasesManager().getOrCreateDatabase(databaseName, databaseImplementationName), instance.getAdaptSqlPlaceholders()));
 	}
 
 	interfaces::IDatabase* HttpRequestImplementation::constructDatabase(const char* databaseName, const char* constructData, const char* databaseImplementationName)
 	{
-		return databases.emplace_back(new DatabaseImplementation(serverReference.getFrameworkInstance().getDatabasesManager().constructDatabase(databaseName, constructData, databaseImplementationName)));
+		WebFramework& instance = serverReference.getFrameworkInstance();
+
+		return databases.emplace_back(new DatabaseImplementation(instance.getDatabasesManager().constructDatabase(databaseName, constructData, databaseImplementationName), instance.getAdaptSqlPlaceholders()));
 	}
 
 	interfaces::IDatabase* HttpRequestImplementation::getDatabase(const char* databaseName, const char* databaseImplementationName) const
 	{
-		return databases.emplace_back(new DatabaseImplementation(serverReference.getFrameworkInstance().getDatabasesManager().getDatabase(databaseName, databaseImplementationName)));
+		WebFramework& instance = serverReference.getFrameworkInstance();
+
+		return databases.emplace_back(new DatabaseImplementation(instance.getDatabasesManager().getDatabase(databaseName, databaseImplementationName), instance.getAdaptSqlPlaceholders()));
 	}
 
 	HttpRequestImplementation::~HttpRequestImplementation()

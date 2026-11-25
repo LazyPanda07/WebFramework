@@ -14,7 +14,7 @@ void MultiUserExecutor::init(const framework::utility::ExecutorSettings& setting
 {
 #ifndef WITHOUT_POSTGRES_TESTS
 	std::string host = "127.0.0.1";
-	std::string password = "secret";
+	std::string password = "root";
 
 	if (char* overrideHost = std::getenv("POSTGRES_HOST"))
 	{

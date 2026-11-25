@@ -13,9 +13,10 @@ namespace framework
 	private:
 		std::shared_ptr<database::Database> database;
 		mutable std::vector<interfaces::ITable*> tables;
+		bool adaptSqlPlaceholders;
 
 	public:
-		DatabaseImplementation(std::shared_ptr<database::Database> database);
+		DatabaseImplementation(std::shared_ptr<database::Database> database, bool adaptSqlPlaceholders);
 
 		bool contains(const char* tableName, interfaces::ITable** outTable = nullptr) const override;
 

@@ -1388,7 +1388,10 @@ DatabaseObject getOrCreateDatabaseExecutorSettings(ExecutorSettings executorsSet
 	{
 		framework::utility::JSONSettingsParser::ExecutorSettings& settings = *static_cast<framework::utility::JSONSettingsParser::ExecutorSettings*>(executorsSettings);
 
-		return settings.databases.emplace_back(new framework::DatabaseImplementation(settings.frameworkInstance.getDatabasesManager().getOrCreateDatabase(databaseName, implementationName)));
+		return settings.databases.emplace_back
+		(
+			new framework::DatabaseImplementation(settings.frameworkInstance.getDatabasesManager().getOrCreateDatabase(databaseName, implementationName), settings.frameworkInstance.getAdaptSqlPlaceholders())
+		);
 	}
 	catch (const framework::exceptions::AlreadyLoggedException& e)
 	{
@@ -1412,7 +1415,10 @@ DatabaseObject constructDatabaseExecutorSettings(ExecutorSettings executorsSetti
 	{
 		framework::utility::JSONSettingsParser::ExecutorSettings& settings = *static_cast<framework::utility::JSONSettingsParser::ExecutorSettings*>(executorsSettings);
 
-		return settings.databases.emplace_back(new framework::DatabaseImplementation(settings.frameworkInstance.getDatabasesManager().constructDatabase(databaseName, constructData, implementationName)));
+		return settings.databases.emplace_back
+		(
+			new framework::DatabaseImplementation(settings.frameworkInstance.getDatabasesManager().constructDatabase(databaseName, constructData, implementationName), settings.frameworkInstance.getAdaptSqlPlaceholders())
+		);
 	}
 	catch (const framework::exceptions::AlreadyLoggedException& e)
 	{
@@ -1436,7 +1442,10 @@ DatabaseObject getDatabaseExecutorSettings(ExecutorSettings executorsSettings, c
 	{
 		framework::utility::JSONSettingsParser::ExecutorSettings& settings = *static_cast<framework::utility::JSONSettingsParser::ExecutorSettings*>(executorsSettings);
 
-		return settings.databases.emplace_back(new framework::DatabaseImplementation(settings.frameworkInstance.getDatabasesManager().getDatabase(databaseName, implementationName)));
+		return settings.databases.emplace_back
+		(
+			new framework::DatabaseImplementation(settings.frameworkInstance.getDatabasesManager().getDatabase(databaseName, implementationName), settings.frameworkInstance.getAdaptSqlPlaceholders())
+		);
 	}
 	catch (const framework::exceptions::AlreadyLoggedException& e)
 	{
@@ -1460,7 +1469,10 @@ TableObject getOrCreateTableExecutorSettings(ExecutorSettings executorsSettings,
 	{
 		framework::utility::JSONSettingsParser::ExecutorSettings& settings = *static_cast<framework::utility::JSONSettingsParser::ExecutorSettings*>(executorsSettings);
 
-		return settings.databases.emplace_back(new framework::DatabaseImplementation(settings.frameworkInstance.getDatabasesManager().getOrCreateDatabase(databaseName, implementationName)))->getOrCreateTable(tableName, createTableQuery);
+		return settings.databases.emplace_back
+		(
+			new framework::DatabaseImplementation(settings.frameworkInstance.getDatabasesManager().getOrCreateDatabase(databaseName, implementationName), settings.frameworkInstance.getAdaptSqlPlaceholders())
+		)->getOrCreateTable(tableName, createTableQuery);
 	}
 	catch (const framework::exceptions::AlreadyLoggedException& e)
 	{
@@ -1484,7 +1496,10 @@ TableObject getTableExecutorSettings(ExecutorSettings executorsSettings, const c
 	{
 		framework::utility::JSONSettingsParser::ExecutorSettings& settings = *static_cast<framework::utility::JSONSettingsParser::ExecutorSettings*>(executorsSettings);
 
-		return settings.databases.emplace_back(new framework::DatabaseImplementation(settings.frameworkInstance.getDatabasesManager().getDatabase(databaseName, implementationName)))->get(tableName);
+		return settings.databases.emplace_back
+		(
+			new framework::DatabaseImplementation(settings.frameworkInstance.getDatabasesManager().getDatabase(databaseName, implementationName), settings.frameworkInstance.getAdaptSqlPlaceholders())
+		)->get(tableName);
 	}
 	catch (const framework::exceptions::AlreadyLoggedException& e)
 	{
@@ -1650,7 +1665,10 @@ DatabaseObject getOrCreateDatabaseTaskExecutorContext(TaskExecutorContextObject 
 	{
 		framework::task_broker::TaskExecutor::TaskExecutorContext& context = *static_cast<framework::task_broker::TaskExecutor::TaskExecutorContext*>(taskExecutorContext);
 
-		return context.databases.emplace_back(new framework::DatabaseImplementation(context.frameworkInstance.getDatabasesManager().getOrCreateDatabase(databaseName, implementationName)));
+		return context.databases.emplace_back
+		(
+			new framework::DatabaseImplementation(context.frameworkInstance.getDatabasesManager().getOrCreateDatabase(databaseName, implementationName), context.frameworkInstance.getAdaptSqlPlaceholders())
+		);
 	}
 	catch (const framework::exceptions::AlreadyLoggedException& e)
 	{
@@ -1674,7 +1692,10 @@ DatabaseObject getDatabaseTaskExecutorContext(TaskExecutorContextObject taskExec
 	{
 		framework::task_broker::TaskExecutor::TaskExecutorContext& context = *static_cast<framework::task_broker::TaskExecutor::TaskExecutorContext*>(taskExecutorContext);
 
-		return context.databases.emplace_back(new framework::DatabaseImplementation(context.frameworkInstance.getDatabasesManager().getDatabase(databaseName, implementationName)));
+		return context.databases.emplace_back
+		(
+			new framework::DatabaseImplementation(context.frameworkInstance.getDatabasesManager().getDatabase(databaseName, implementationName), context.frameworkInstance.getAdaptSqlPlaceholders())
+		);
 	}
 	catch (const framework::exceptions::AlreadyLoggedException& e)
 	{
@@ -1698,7 +1719,10 @@ TableObject getOrCreateTableTaskExecutorContext(TaskExecutorContextObject taskEx
 	{
 		framework::task_broker::TaskExecutor::TaskExecutorContext& context = *static_cast<framework::task_broker::TaskExecutor::TaskExecutorContext*>(taskExecutorContext);
 
-		return context.databases.emplace_back(new framework::DatabaseImplementation(context.frameworkInstance.getDatabasesManager().getOrCreateDatabase(databaseName, implementationName)))->getOrCreateTable(tableName, createTableQuery);
+		return context.databases.emplace_back
+		(
+			new framework::DatabaseImplementation(context.frameworkInstance.getDatabasesManager().getOrCreateDatabase(databaseName, implementationName), context.frameworkInstance.getAdaptSqlPlaceholders())
+		)->getOrCreateTable(tableName, createTableQuery);
 	}
 	catch (const framework::exceptions::AlreadyLoggedException& e)
 	{
@@ -1722,7 +1746,10 @@ TableObject getTableTaskExecutorContext(TaskExecutorContextObject taskExecutorCo
 	{
 		framework::task_broker::TaskExecutor::TaskExecutorContext& context = *static_cast<framework::task_broker::TaskExecutor::TaskExecutorContext*>(taskExecutorContext);
 
-		return context.databases.emplace_back(new framework::DatabaseImplementation(context.frameworkInstance.getDatabasesManager().getDatabase(databaseName, implementationName)))->get(tableName);
+		return context.databases.emplace_back
+		(
+			new framework::DatabaseImplementation(context.frameworkInstance.getDatabasesManager().getDatabase(databaseName, implementationName), context.frameworkInstance.getAdaptSqlPlaceholders())
+		)->get(tableName);
 	}
 	catch (const framework::exceptions::AlreadyLoggedException& e)
 	{

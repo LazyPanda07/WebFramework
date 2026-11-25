@@ -64,7 +64,7 @@ namespace framework
 		
 		if (auto it = databases.find(databaseName); it != databases.end())
 		{
-			it->second = database::createDatabase(name, constructData);
+			return database::createDatabase(name, constructData);
 		}
 		else
 		{

@@ -24,7 +24,7 @@ DEFINE_EXECUTOR_INIT(MultiUserExecutor)
 		database_t database;
 		table_t table;
 		const char* host = "127.0.0.1";
-		const char* password = "secret";
+		const char* password = "root";
 		char* overrideHost = getenv("POSTGRES_HOST");
 		char* overridePassword = getenv("POSTGRES_PASSWORD");
 

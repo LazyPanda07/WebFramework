@@ -2,14 +2,30 @@
 
 #include <stdexcept>
 
+#include <Implementations/SqliteTable.h>
+#include <Implementations/PostgresTable.h>
+
 #include "Databases/SQLResultImplementation.h"
+
+static std::string replaceSqliteToPostgres(std::string_view input);
+
+static std::string replacePostgresToSqlite(std::string_view input);
 
 namespace framework
 {
-	TableImplementation::TableImplementation(database::Table* table) :
-		table(table)
+	TableImplementation::TableImplementation(database::Table* table, bool adaptSqlPlaceholders) :
+		table(table),
+		adaptSqlPlaceholders(adaptSqlPlaceholders),
+		type(PreferredPlaceholders::none)
 	{
-
+		if (dynamic_cast<database::PostgresTable*>(table))
+		{
+			type = PreferredPlaceholders::postgres;
+		}
+		else if (dynamic_cast<database::SqliteTable*>(table))
+		{
+			type = PreferredPlaceholders::sqlite;
+		}
 	}
 
 	interfaces::ISQLResult* TableImplementation::execute(const char* query, const interfaces::ISQLValue** values, size_t size)
@@ -64,7 +80,39 @@ namespace framework
 			}
 		}
 
-		return new SQLResultImplementation(table->execute<database::RawQuery>(temp, query));
+		if (adaptSqlPlaceholders && type != PreferredPlaceholders::none)
+		{
+			std::string_view input(query);
+			std::string outputQuery;
+
+			switch (type)
+			{
+			case framework::TableImplementation::PreferredPlaceholders::sqlite:
+				if (input.contains("$1"))
+				{
+					outputQuery = replacePostgresToSqlite(input);
+				}
+
+				break;
+
+			case framework::TableImplementation::PreferredPlaceholders::postgres:
+				if (input.contains('?'))
+				{
+					outputQuery = replaceSqliteToPostgres(input);
+				}
+
+				break;
+
+			default:
+				break;
+			}
+
+			return new SQLResultImplementation(table->execute<database::RawQuery>(temp, outputQuery.empty() ? query : outputQuery.data()));
+		}
+		else
+		{
+			return new SQLResultImplementation(table->execute<database::RawQuery>(temp, query));
+		}
 	}
 
 	void TableImplementation::deleteResult(interfaces::ISQLResult* ptr) const
@@ -76,4 +124,14 @@ namespace framework
 	{
 		return table->getTableName().data();
 	}
+}
+
+std::string replaceSqliteToPostgres(std::string_view input)
+{
+
+}
+
+std::string replacePostgresToSqlite(std::string_view input)
+{
+
 }

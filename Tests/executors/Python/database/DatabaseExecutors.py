@@ -41,7 +41,7 @@ class CRUDExecutor(StatelessExecutor):
 
         if without_postgres_tests == "OFF":
             host = os.getenv("POSTGRES_HOST", "127.0.0.1")
-            password = os.getenv("POSTGRES_PASSWORD", "secret")
+            password = os.getenv("POSTGRES_PASSWORD", "root")
 
             settings.construct_database("test_database",
                                         f"host={host} port=5432 dbname=test_database user=postgres password={password}",
@@ -115,7 +115,7 @@ class MultiUserExecutor(HeavyOperationStatefulExecutor):
 
         if without_postgres_tests == "OFF":
             host = os.getenv("POSTGRES_HOST", "127.0.0.1")
-            password = os.getenv("POSTGRES_PASSWORD", "secret")
+            password = os.getenv("POSTGRES_PASSWORD", "root")
 
             settings.construct_database("test_database",
                                         f"host={host} port=5432 dbname=test_database user=postgres password={password}",
