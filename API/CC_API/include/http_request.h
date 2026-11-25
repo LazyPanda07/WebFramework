@@ -365,17 +365,28 @@ web_framework_exception_t wf_get_current_port(http_request_t implementation, uin
  * @brief Tries to get database or create if can't get
  * @param implementation http_request_t instance
  * @param databaseName database_t name
- * @param databaseName Macro from databases/implementations
+ * @param implementationName Macro from databases/implementations
  * @param result database_t instance
  * @return Error if occurred
  */
 web_framework_exception_t wf_get_or_create_database_request(http_request_t implementation, const char* database_name, const char* implementationName, database_t* result);
 
 /**
+ * @brief Always create a new database instance
+ * @param implementation http_request_t instance
+ * @param databaseName database_t name
+ * @param construct_data Connect string or other construction data for database
+ * @param implementationName Macro from databases/implementations
+ * @param result database_t instance
+ * @return Error if occurred
+ */
+web_framework_exception_t wf_construct_database_request(http_request_t implementation, const char* database_name, const char* construct_data, const char* implementationName, database_t* result);
+
+/**
  * @brief Get database
  * @param implementation http_request_t instance
  * @param databaseName database_t name
- * @param databaseName Macro from databases/implementations
+ * @param implementationName Macro from databases/implementations
  * @param result database_t instance
  * @return Error if occurred
  */
@@ -385,7 +396,7 @@ web_framework_exception_t wf_get_database_request(http_request_t implementation,
  * @brief Tries to get table from database or create if can't get
  * @param implementation http_request_t instance
  * @param databaseName database_t name
- * @param databaseName Macro from databases/implementations
+ * @param implementationName Macro from databases/implementations
  * @param tableName Name of table
  * @param createTableQuery Create table query if can't get table
  * @param result table_t instance
@@ -397,7 +408,7 @@ web_framework_exception_t wf_get_or_create_table_request(http_request_t implemen
  * @brief Get table from database
  * @param implementation http_request_t instance
  * @param databaseName database_t name
- * @param databaseName Macro from databases/implementations
+ * @param implementationName Macro from databases/implementations
  * @param tableName Name of table
  * @param result table_t instance
  * @return Error if occurred
@@ -429,7 +440,7 @@ web_framework_exception_t wf_get_route_double_parameter(http_request_t implement
  * @param result Route parameter value
  * @return Error if occurred
  */
-web_framework_exception_t wf_get_route_string_parameter(http_request_t implementation, const char* route_parameter_name, const char** result);
+web_framework_exception_t wf_get_route_string_parameter(http_request_t implementation, const char* route_parameter_name, char const** result);
 
 /**
  * @brief Retrieves a JWT string from the specified HTTP request implementation.

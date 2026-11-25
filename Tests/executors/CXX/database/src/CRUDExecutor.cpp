@@ -20,7 +20,31 @@ static framework::Database getDatabase(std::string_view databaseName, framework:
 
 void CRUDExecutor::init(const framework::utility::ExecutorSettings& settings)
 {
-	settings.getOrCreateDatabase("test_database").getOrCreateTable
+#ifndef WITHOUT_POSTGRES_TESTS
+	std::string host = "127.0.0.1";
+	std::string password = "secret";
+
+	if (char* overrideHost = std::getenv("POSTGRES_HOST"))
+	{
+		host = overrideHost;
+	}
+
+	if (char* overridePassword = std::getenv("POSTGRES_PASSWORD"))
+	{
+		password = overridePassword;
+	}
+
+	settings.consructDatabase<framework::PostgresDatabase>("test_database", std::format("host={} port=5432 dbname=test_database user=postgres password={}", host, password)).getOrCreateTable
+	(
+		"test_table",
+		"CREATE TABLE IF NOT EXISTS test_table ("
+		"id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY, "
+		"name VARCHAR(255) NOT NULL, "
+		"amount INTEGER NOT NULL)"
+	);
+#endif
+
+	settings.getOrCreateDatabase<framework::SqliteDatabase>("test_database").getOrCreateTable
 	(
 		"test_table",
 		"CREATE TABLE IF NOT EXISTS test_table ("

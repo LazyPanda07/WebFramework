@@ -37,7 +37,23 @@ def get_database_class(request: HttpRequest):
 
 class CRUDExecutor(StatelessExecutor):
     def init(self, settings):
-        settings.get_or_create_database("test_database").get_or_create_table(
+        without_postgres_tests = os.getenv("WITHOUT_POSTGRES_TESTS", "OFF")
+
+        if without_postgres_tests == "OFF":
+            host = os.getenv("POSTGRES_HOST", "127.0.0.1")
+            password = os.getenv("POSTGRES_PASSWORD", "secret")
+
+            settings.construct_database("test_database",
+                                        f"host={host} port=5432 dbname=test_database user=postgres password={password}",
+                                        PostgresDatabase).get_or_create_table(
+                "test_table",
+                "CREATE TABLE IF NOT EXISTS test_table ("
+                "id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY, "
+                "name VARCHAR(255) NOT NULL, "
+                "amount INTEGER NOT NULL)"
+            )
+
+        settings.get_or_create_database("test_database", SqliteDatabase).get_or_create_table(
             "test_table",
             "CREATE TABLE IF NOT EXISTS test_table ("
             "id INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -95,8 +111,21 @@ class MultiUserExecutor(HeavyOperationStatefulExecutor):
         self._user_id = str(uuid.uuid4())
 
     def init(self, settings):
-        settings.get_or_create_database("test_database").get_or_create_table("multi_user",
-                                                                             "CREATE TABLE IF NOT EXISTS multi_user (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id TEXT NOT NULL, data TEXT NOT NULL)")
+        without_postgres_tests = os.getenv("WITHOUT_POSTGRES_TESTS", "OFF")
+
+        if without_postgres_tests == "OFF":
+            host = os.getenv("POSTGRES_HOST", "127.0.0.1")
+            password = os.getenv("POSTGRES_PASSWORD", "secret")
+
+            settings.construct_database("test_database",
+                                        f"host={host} port=5432 dbname=test_database user=postgres password={password}",
+                                        PostgresDatabase).get_or_create_table(
+                "test_table",
+                "CREATE TABLE IF NOT EXISTS multi_user (id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY, user_id TEXT NOT NULL, data TEXT NOT NULL)"
+            )
+
+        settings.get_or_create_database("test_database", SqliteDatabase).get_or_create_table("multi_user",
+                                                                                             "CREATE TABLE IF NOT EXISTS multi_user (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id TEXT NOT NULL, data TEXT NOT NULL)")
 
     def do_get(self, request, response):
         table = request.get_table("test_database", "multi_user", get_database_class(request))
@@ -132,10 +161,11 @@ class RedisExecutor(StatelessExecutor):
         without_redis_tests = os.getenv("WITHOUT_REDIS_TESTS", "OFF")
 
         if without_redis_tests == "OFF":
-            settings.get_or_create_database("127.0.0.1:10010:password", RedisDatabase).get_or_create_table("", "")
+            settings.construct_database("test_database", "127.0.0.1:10010:password", RedisDatabase).get_or_create_table(
+                "", "")
 
     def do_get(self, request, response):
-        connect = request.get_table("127.0.0.1:10010:password", "", RedisDatabase)
+        connect = request.get_table("test_database", "", RedisDatabase)
         result = {
             "string": next(iter(connect.execute("GET", make_sql_values("string"))[0].values()), None).get(),
             "int": next(iter(connect.execute("GET", make_sql_values("int"))[0].values()), None).get(),
@@ -146,7 +176,7 @@ class RedisExecutor(StatelessExecutor):
         response.set_body(result)
 
     def do_put(self, request, response):
-        connect = request.get_table("127.0.0.1:10010:password", "", RedisDatabase)
+        connect = request.get_table("test_database", "", RedisDatabase)
 
         connect.execute("SET", make_sql_values("string", "qwe"))
         connect.execute("SET", make_sql_values("int", 5))

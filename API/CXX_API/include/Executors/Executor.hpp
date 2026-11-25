@@ -111,6 +111,9 @@ namespace framework
 			Database getOrCreateDatabase(std::string_view databaseName) const;
 
 			template<DatabaseImplementation T = DefaultDatabase>
+			Database constructDatabase(std::string_view databaseName, std::string_view constructData) const;
+
+			template<DatabaseImplementation T = DefaultDatabase>
 			Database getDatabase(std::string_view databaseName) const;
 
 			template<DatabaseImplementation T = DefaultDatabase>
@@ -373,6 +376,22 @@ namespace framework
 			void* exception = nullptr;
 
 			Database result(static_cast<interfaces::IDatabase*>(DllHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getOrCreateDatabaseExecutorSettings, databaseName.data(), T::databaseImplementationName.data(), &exception)));
+
+			if (exception)
+			{
+				throw exceptions::WebFrameworkException(exception);
+			}
+
+			return result;
+		}
+
+		template<DatabaseImplementation T>
+		inline Database ExecutorSettings::constructDatabase(std::string_view databaseName, std::string_view constructData) const
+		{
+			DEFINE_CLASS_MEMBER_FUNCTION(constructDatabaseExecutorSettings, void*, const char* databaseName, const char* constructData, const char* implementationName, void** exception);
+			void* exception = nullptr;
+
+			Database result(static_cast<interfaces::IDatabase*>(DllHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(constructDatabaseExecutorSettings, databaseName.data(), constructData.data(), T::databaseImplementationName.data(), &exception)));
 
 			if (exception)
 			{

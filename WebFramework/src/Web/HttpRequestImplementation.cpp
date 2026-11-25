@@ -647,6 +647,11 @@ namespace framework
 		return databases.emplace_back(new DatabaseImplementation(serverReference.getFrameworkInstance().getDatabasesManager().getOrCreateDatabase(databaseName, databaseImplementationName)));
 	}
 
+	interfaces::IDatabase* HttpRequestImplementation::constructDatabase(const char* databaseName, const char* constructData, const char* databaseImplementationName)
+	{
+		return databases.emplace_back(new DatabaseImplementation(serverReference.getFrameworkInstance().getDatabasesManager().constructDatabase(databaseName, constructData, databaseImplementationName)));
+	}
+
 	interfaces::IDatabase* HttpRequestImplementation::getDatabase(const char* databaseName, const char* databaseImplementationName) const
 	{
 		return databases.emplace_back(new DatabaseImplementation(serverReference.getFrameworkInstance().getDatabasesManager().getDatabase(databaseName, databaseImplementationName)));

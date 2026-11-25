@@ -211,6 +211,17 @@ web_framework_exception_t wf_get_or_create_database_executor_settings(executor_s
 	return exception;
 }
 
+web_framework_exception_t wf_construct_database_executor_settings(executor_settings_t implementation, const char* database_name, const char* construct_data, const char* implementationName, database_t* result)
+{
+	web_framework_exception_t exception = NULL;
+
+	typedef void* (*constructDatabaseExecutorSettings)(void* implementation, const char* databaseName, const char* consructData, const char* implementationName, void** exception);
+
+	*result = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(constructDatabaseExecutorSettings, database_name, construct_data, implementationName, &exception);
+
+	return exception;
+}
+
 web_framework_exception_t wf_get_database_executor_settings(executor_settings_t implementation, const char* database_name, const char* implementationName, database_t* result)
 {
 	web_framework_exception_t exception = NULL;

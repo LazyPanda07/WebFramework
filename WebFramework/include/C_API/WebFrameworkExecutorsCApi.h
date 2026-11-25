@@ -104,6 +104,8 @@ EXPORT WebFramework getWebFrameworkInstance(HttpRequestObject request, Exception
 
 EXPORT DatabaseObject getOrCreateDatabaseRequest(HttpRequestObject request, const char* databaseName, const char* implementationName, Exception* exception);
 
+EXPORT DatabaseObject constructDatabaseRequest(HttpRequestObject request, const char* databaseName, const char* constructData, const char* implementationName, Exception* exception);
+
 EXPORT DatabaseObject getDatabaseRequest(HttpRequestObject request, const char* databaseName, const char* implementationName, Exception* exception);
 
 EXPORT TableObject getOrCreateTableRequest(HttpRequestObject request, const char* databaseName, const char* implementationName, const char* tableName, const char* createTableQuery, Exception* exception);
@@ -135,6 +137,8 @@ EXPORT String getExecutorAPIType(ExecutorSettings executorsSettings, Exception* 
 EXPORT int getExecutorLoadType(ExecutorSettings executorsSettings, Exception* exception);
 
 EXPORT DatabaseObject getOrCreateDatabaseExecutorSettings(ExecutorSettings executorsSettings, const char* databaseName, const char* implementationName, Exception* exception);
+
+EXPORT DatabaseObject constructDatabaseExecutorSettings(ExecutorSettings executorsSettings, const char* databaseName, const char* constructData, const char* implementationName, Exception* exception);
 
 EXPORT DatabaseObject getDatabaseExecutorSettings(ExecutorSettings executorsSettings, const char* databaseName, const char* implementationName, Exception* exception);
 

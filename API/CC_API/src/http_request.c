@@ -642,6 +642,17 @@ web_framework_exception_t wf_get_or_create_database_request(http_request_t imple
 	return exception;
 }
 
+web_framework_exception_t wf_construct_database_request(http_request_t implementation, const char* database_name, const char* construct_data, const char* implementationName, database_t* result)
+{
+	web_framework_exception_t exception = NULL;
+
+	typedef void* (*constructDatabaseRequest)(void* implementation, const char* databaseName, const char* constructData, const char* implementationName, void** exception);
+
+	*result = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(constructDatabaseRequest, database_name, construct_data, implementationName, &exception);
+
+	return exception;
+}
+
 web_framework_exception_t wf_get_database_request(http_request_t implementation, const char* databaseName, const char* implementationName, database_t* result)
 {
 	web_framework_exception_t exception = NULL;
@@ -697,7 +708,7 @@ web_framework_exception_t wf_get_route_double_parameter(http_request_t implement
 	return exception;
 }
 
-web_framework_exception_t wf_get_route_string_parameter(http_request_t implementation, const char* routeParameterName, const char** result)
+web_framework_exception_t wf_get_route_string_parameter(http_request_t implementation, const char* routeParameterName, char const** result)
 {
 	web_framework_exception_t exception = NULL;
 

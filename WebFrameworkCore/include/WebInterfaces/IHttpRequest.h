@@ -172,6 +172,8 @@ namespace framework::interfaces
 
 		virtual IDatabase* getOrCreateDatabase(const char* databaseName, const char* databaseImplementationName) = 0;
 
+		virtual IDatabase* constructDatabase(const char* databaseName, const char* constructData, const char* databaseImplementationName) = 0;
+
 		virtual IDatabase* getDatabase(const char* databaseName, const char* databaseImplementationName) const = 0;
 
 		virtual ~IHttpRequest() = default;

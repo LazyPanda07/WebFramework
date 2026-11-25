@@ -9,20 +9,55 @@ DEFINE_DEFAULT_EXECUTOR(CRUDExecutor, STATELESS_EXECUTOR)
 
 DEFINE_EXECUTOR_INIT(CRUDExecutor)
 {
-	database_t database;
-	table_t table;
+#ifndef WITHOUT_POSTGRES_TESTS
+	{
+		database_t database;
+		table_t table;
+		const char* host = "127.0.0.1";
+		const char* password = "secret";
+		char* overrideHost = getenv("POSTGRES_HOST");
+		char* overridePassword = getenv("POSTGRES_PASSWORD");
 
-	wf_get_or_create_database_executor_settings(settings, "test_database", DEFAULT_DATABASE_IMPLEMENTATION_NAME, &database);
-	wf_get_or_create_table
-	(
-		database,
-		"test_table",
-		"CREATE TABLE IF NOT EXISTS test_table ("
-		"id INTEGER PRIMARY KEY AUTOINCREMENT, "
-		"name VARCHAR(255) NOT NULL, "
-		"amount INTEGER NOT NULL)",
-		&table
-	);
+		if (overrideHost)
+		{
+			host = overrideHost;
+		}
+
+		if (overridePassword)
+		{
+			password = overridePassword;
+		}
+
+		wf_construct_database_executor_settings(settings, "test_database", printf("host=%s port=5432 dbname=test_database user=postgres password=%s", host, password), POSTGRES_DATABASE_IMPLEMENTATION_NAME, &database);
+		wf_get_or_create_table
+		(
+			database,
+			"test_table",
+			"CREATE TABLE IF NOT EXISTS test_table ("
+			"id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY, "
+			"name VARCHAR(255) NOT NULL, "
+			"amount INTEGER NOT NULL)",
+			&table
+		);
+	}
+#endif
+
+	{
+		database_t database;
+		table_t table;
+
+		wf_get_or_create_database_executor_settings(settings, "test_database", SQLITE_DATABASE_IMPLEMENTATION_NAME, &database);
+		wf_get_or_create_table
+		(
+			database,
+			"test_table",
+			"CREATE TABLE IF NOT EXISTS test_table ("
+			"id INTEGER PRIMARY KEY AUTOINCREMENT, "
+			"name VARCHAR(255) NOT NULL, "
+			"amount INTEGER NOT NULL)",
+			&table
+		);
+	}
 }
 
 DEFINE_EXECUTOR_METHOD(CRUDExecutor, GET_METHOD, request, response)

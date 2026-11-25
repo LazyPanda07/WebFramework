@@ -1,6 +1,7 @@
 #include "gtest/gtest.h"
 
 #include <format>
+#include <array>
 
 #include <HttpBuilder.h>
 #include <HttpParser.h>
@@ -8,13 +9,25 @@
 
 #include "utilities.h"
 
-inline constexpr std::array<std::string_view, 1> databaseImplementations =
+inline constexpr size_t databases =
+#ifdef WITHOUT_POSTGRES_TESTS
+1;
+#else
+2;
+#endif
+
+inline constexpr std::array<std::string_view, databases> databaseImplementations =
 {
 	"sqlite"
+#ifndef WITHOUT_POSTGRES_TESTS
+	, "postgres"
+#endif
 };
 
 TEST(Database, Insert)
 {
+	std::cout << "Databases: " << databases << ' ' << databaseImplementations.size() << std::endl;
+
 	for (std::string_view name : databaseImplementations)
 	{
 		streams::IOSocketStream stream = utility::createSocketStream();

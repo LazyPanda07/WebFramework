@@ -60,8 +60,20 @@ jobs:
       actual-python-version: ''
       runtimes: ''
       windows-redis-version: 8.0.5
+      postgres-version: 17
+      POSTGRES_PASSWORD: root
 
     steps:
+    - name: Start Postgres on Windows
+      if: ${{ inputs.os == 'windows-latest' }}
+      run: |
+          Set-Service postgresql-x64-${{ env.postgres-version }} -StartupType Manual
+          Start-Service postgresql-x64-${{ env.postgres-version }}
+
+    - name: Start Postgres on Linux
+      if: ${{  }}
+      run: docker run -d -e POSTGRES_PASSWORD=${{ env.POSTGRES_PASSWORD }} -e POSTGRES_USER=test -e POSTGRES_DB=test_database -p 5432:5432 postgres:${{ env.postgres-version }}
+
     - name: Prepare download artifact name from Windows
       if: ${{ inputs.os == 'windows-latest' }}
       shell: bash
@@ -228,6 +240,23 @@ jobs:
             cp -rf WebFrameworkLibrary/dll/* Tests
           fi
           
+    - name: Check Postgres on Windows
+      if: ${{ inputs.os == 'windows-latest' }}
+      run: |
+        & "$env:PGBIN\pg_isready.exe" -h localhost -p 5432
+
+        if ($LASTEXITCODE -ne 0) {
+          throw "PostgreSQL is not ready"
+        }
+
+    - name: Initialize Postgres database on Windows
+      if: ${{ inputs.os == 'windows-latest' }}
+      shell: bash
+      run: |
+          export PGPASSWORD="${{ env.POSTGRES_PASSWORD }}"
+
+          "${PGBIN}/createdb" -h localhost -U postgres test_database
+
     - name: Run ${{ inputs.test-script }} ${{ inputs.web-framework-config }} tests on Windows
       if: ${{ inputs.os == 'windows-latest' }}
       shell: cmd

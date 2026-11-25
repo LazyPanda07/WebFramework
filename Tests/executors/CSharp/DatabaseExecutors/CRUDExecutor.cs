@@ -37,13 +37,28 @@ public class CRUDExecutor : StatelessExecutor
 		}
 
 		throw new NotImplementedException($"Wrong databaseImplementation: {databaseImplementation}");
-
-		return request.GetDatabase(databaseName);
 	}
 
 	public override void Init(ExecutorSettings settings)
 	{
-		settings.GetOrCreateDatabase("test_database").GetOrCreateTable
+		string withoutPostgresTests = Environment.GetEnvironmentVariable("WITHOUT_POSTGRES_TESTS") ?? "OFF";
+
+		if (withoutPostgresTests == "OFF")
+		{
+			string host = Environment.GetEnvironmentVariable("POSTGRES_HOST") ?? "127.0.0.1";
+			string password = Environment.GetEnvironmentVariable("POSTGRES_PASSWORD") ?? "secret";
+
+			settings.ConstructDatabase<PostgresDatabase>("test_database", $"host={host} port=5432 dbname=test_database user=postgres password={password}").GetOrCreateTable
+			(
+				"test_table",
+				"CREATE TABLE IF NOT EXISTS test_table (" +
+				"id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY, " +
+				"name VARCHAR(255) NOT NULL, " +
+				"amount INTEGER NOT NULL)"
+			);
+		}
+
+		settings.GetOrCreateDatabase<SqliteDatabase>("test_database").GetOrCreateTable
 		(
 			"test_table",
 			"CREATE TABLE IF NOT EXISTS test_table (" +

@@ -34,15 +34,42 @@ namespace framework
 			}
 		) : holders.front();
 
-		std::lock_guard<std::mutex> lock(databasesMutex);
+		std::shared_lock<std::shared_mutex> lock(databasesMutex);
 		auto it = databases.find(databaseName);
 
 		if (it == databases.end())
 		{
-			it = databases.emplace(databaseName, database::createDatabase(name, databaseName)).first;
+			lock.unlock();
+
+			std::unique_lock<std::shared_mutex> writeLock(databasesMutex);
+
+			return databases.emplace(databaseName, database::createDatabase(name, databaseName)).first->second;
 		}
 
 		return it->second;
+	}
+
+	std::shared_ptr<database::Database> DatabasesManager::constructDatabase(std::string_view databaseName, std::string_view constructData, std::string_view databaseImplementationName)
+	{
+		auto& [name, databases] = databaseImplementationName.size() ? *std::ranges::find_if
+		(
+			holders,
+			[databaseImplementationName](const DatabasesHolder& holder)
+			{
+				return holder.databaseImplementationName == databaseImplementationName;
+			}
+		) : holders.front();
+
+		std::lock_guard<std::shared_mutex> lock(databasesMutex);
+		
+		if (auto it = databases.find(databaseName); it != databases.end())
+		{
+			it->second = database::createDatabase(name, constructData);
+		}
+		else
+		{
+			return databases.emplace(databaseName, database::createDatabase(name, constructData)).first->second;
+		}
 	}
 
 	std::shared_ptr<database::Database> DatabasesManager::getDatabase(std::string_view databaseName, std::string_view databaseImplementationName) const
@@ -56,7 +83,7 @@ namespace framework
 			}
 		)->databases : holders.front().databases;
 
-		std::lock_guard<std::mutex> lock(databasesMutex);
+		std::shared_lock<std::shared_mutex> lock(databasesMutex);
 		auto it = databases.find(databaseName);
 
 		if (it == databases.end())

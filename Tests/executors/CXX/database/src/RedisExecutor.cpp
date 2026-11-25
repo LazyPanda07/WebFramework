@@ -8,12 +8,12 @@ void RedisExecutor::init(const framework::utility::ExecutorSettings& settings)
 	return;
 #endif
 
-	settings.getOrCreateDatabase<framework::RedisDatabase>("127.0.0.1:10010:password").getOrCreateTable("", "");
+	settings.constructDatabase<framework::RedisDatabase>("test_database", "127.0.0.1:10010:password").getOrCreateTable("", "");
 }
 
 void RedisExecutor::doGet(framework::HttpRequest& request, framework::HttpResponse& response)
 {
-	framework::Table connect = request.getTable<framework::RedisDatabase>("127.0.0.1:10010:password", "");
+	framework::Table connect = request.getTable<framework::RedisDatabase>("test_database", "");
 	framework::JsonBuilder result;
 	
 	{
@@ -45,7 +45,7 @@ void RedisExecutor::doGet(framework::HttpRequest& request, framework::HttpRespon
 
 void RedisExecutor::doPut(framework::HttpRequest& request, framework::HttpResponse& response)
 {
-	framework::Table connect = request.getTable<framework::RedisDatabase>("127.0.0.1:10010:password", "");
+	framework::Table connect = request.getTable<framework::RedisDatabase>("test_database", "");
 	
 	connect.execute("SET", framework::utility::database::makeSqlValues("string", "qwe"));
 	connect.execute("SET", framework::utility::database::makeSqlValues("int", 5));

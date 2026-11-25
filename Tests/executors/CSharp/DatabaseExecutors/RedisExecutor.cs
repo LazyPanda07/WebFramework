@@ -10,13 +10,13 @@ public class RedisExecutor : StatelessExecutor
 
 		if (withoutRedisTests == "OFF")
 		{
-			settings.GetOrCreateDatabase<RedisDatabase>("127.0.0.1:10010:password").GetOrCreateTable("", "");
+			settings.ConstructDatabase<RedisDatabase>("test_database", "127.0.0.1:10010:password").GetOrCreateTable("", "");
 		}
 	}
 
 	public override void DoGet(HttpRequest request, HttpResponse response)
 	{
-		Table connect = request.GetTable<RedisDatabase>("127.0.0.1:10010:password", "");
+		Table connect = request.GetTable<RedisDatabase>("test_database", "");
 
 		Dictionary<string, object> result = new()
 		{
@@ -31,7 +31,7 @@ public class RedisExecutor : StatelessExecutor
 
 	public override void DoPut(HttpRequest request, HttpResponse response)
 	{
-		Table connect = request.GetTable<RedisDatabase>("127.0.0.1:10010:password", "");
+		Table connect = request.GetTable<RedisDatabase>("test_database", "");
 
 		connect.ExecuteQuery("SET", WebFrameworkUtility.MakeSqlValues("string", "qwe"));
 		connect.ExecuteQuery("SET", WebFrameworkUtility.MakeSqlValues("int", 5));

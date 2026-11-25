@@ -1065,6 +1065,28 @@ DatabaseObject getOrCreateDatabaseRequest(HttpRequestObject request, const char*
 	return nullptr;
 }
 
+DatabaseObject constructDatabaseRequest(HttpRequestObject request, const char* databaseName, const char* constructData, const char* implementationName, Exception* exception)
+{
+	try
+	{
+		return static_cast<framework::interfaces::IHttpRequest*>(request)->constructDatabase(databaseName, constructData, implementationName);
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return nullptr;
+}
+
 DatabaseObject getDatabaseRequest(HttpRequestObject request, const char* databaseName, const char* implementationName, Exception* exception)
 {
 	try
@@ -1367,6 +1389,30 @@ DatabaseObject getOrCreateDatabaseExecutorSettings(ExecutorSettings executorsSet
 		framework::utility::JSONSettingsParser::ExecutorSettings& settings = *static_cast<framework::utility::JSONSettingsParser::ExecutorSettings*>(executorsSettings);
 
 		return settings.databases.emplace_back(new framework::DatabaseImplementation(settings.frameworkInstance.getDatabasesManager().getOrCreateDatabase(databaseName, implementationName)));
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return nullptr;
+}
+
+DatabaseObject constructDatabaseExecutorSettings(ExecutorSettings executorsSettings, const char* databaseName, const char* constructData, const char* implementationName, Exception* exception)
+{
+	try
+	{
+		framework::utility::JSONSettingsParser::ExecutorSettings& settings = *static_cast<framework::utility::JSONSettingsParser::ExecutorSettings*>(executorsSettings);
+
+		return settings.databases.emplace_back(new framework::DatabaseImplementation(settings.frameworkInstance.getDatabasesManager().constructDatabase(databaseName, constructData, implementationName)));
 	}
 	catch (const framework::exceptions::AlreadyLoggedException& e)
 	{

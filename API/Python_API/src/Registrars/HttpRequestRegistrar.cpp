@@ -86,7 +86,7 @@ file_name : str
 			)
 			.def
 			(
-				"send_dynamic_file", 
+				"send_dynamic_file",
 				[](framework::HttpRequest& self, std::string_view filePath, framework::HttpResponse& response, py::dict arguments, std::string_view fileName)
 				{
 					py::module_ json = py::module_::import("json");
@@ -231,6 +231,34 @@ file_name : str
 					}
 				},
 				"database_name"_a, "database_implementation_class"_a = py::none()
+			)
+			.def
+			(
+				"construct_database",
+				[](framework::HttpRequest& self, std::string_view databaseName, std::string_view constructData, py::handle databaseImplementationClass)
+				{
+					if (databaseImplementationClass.is_none() || databaseImplementationClass.is(py::type::of<framework::DefaultDatabase>()))
+					{
+						return self.constructDatabase<framework::DefaultDatabase>(databaseName, constructData);
+					}
+					else if (databaseImplementationClass.is(py::type::of<framework::SqliteDatabase>()))
+					{
+						return self.constructDatabase<framework::SqliteDatabase>(databaseName, constructData);
+					}
+					else if (databaseImplementationClass.is(py::type::of<framework::PostgresDatabase>()))
+					{
+						return self.constructDatabase<framework::PostgresDatabase>(databaseName, constructData);
+					}
+					else if (databaseImplementationClass.is(py::type::of<framework::RedisDatabase>()))
+					{
+						return self.constructDatabase<framework::RedisDatabase>(databaseName, constructData);
+					}
+					else
+					{
+						throw std::runtime_error(std::format("Wrong database_implementation_class: {}", py::repr(databaseImplementationClass).cast<std::string>()));
+					}
+				},
+				"database_name"_a, "construct_data"_a, "database_implementation_class"_a = py::none()
 			)
 			.def
 			(

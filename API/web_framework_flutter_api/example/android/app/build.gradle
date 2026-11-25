@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace = "com.lazypanda07.web_framework_flutter_api_example"
-    ndkVersion = "29.0.14206865"
+    ndkVersion = "30.0.16248370"
 
     compileSdk = 36
 

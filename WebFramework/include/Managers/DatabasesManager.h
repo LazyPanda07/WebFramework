@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <shared_mutex>
 
 #include <Strings.h>
 #include <Database.h>
@@ -24,7 +25,7 @@ namespace framework
 
 	private:
 		std::vector<DatabasesHolder> holders;
-		mutable std::mutex databasesMutex;
+		mutable std::shared_mutex databasesMutex;
 
 	public:
 		DatabasesManager() = default;
@@ -32,6 +33,8 @@ namespace framework
 		void initDatabaseImplementation(const std::vector<std::string>& databases);
 
 		std::shared_ptr<database::Database> getOrCreateDatabase(std::string_view databaseName, std::string_view databaseImplementationName);
+
+		std::shared_ptr<database::Database> constructDatabase(std::string_view databaseName, std::string_view constructData, std::string_view databaseImplementationName);
 		
 		std::shared_ptr<database::Database> getDatabase(std::string_view databaseName, std::string_view databaseImplementationName) const;
 

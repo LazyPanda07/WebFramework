@@ -20,8 +20,6 @@ public class MultiUserExecutor : HeavyOperationStatefulExecutor
 		}
 
 		throw new NotImplementedException($"Wrong databaseImplementation: {databaseImplementation}");
-
-		return request.GetTable(databaseName, tableName);
 	}
 
 	public MultiUserExecutor()
@@ -31,6 +29,20 @@ public class MultiUserExecutor : HeavyOperationStatefulExecutor
 
 	public override void Init(ExecutorSettings settings)
 	{
+		string withoutPostgresTests = Environment.GetEnvironmentVariable("WITHOUT_POSTGRES_TESTS") ?? "OFF";
+
+		if (withoutPostgresTests == "OFF")
+		{
+			string host = Environment.GetEnvironmentVariable("POSTGRES_HOST") ?? "127.0.0.1";
+			string password = Environment.GetEnvironmentVariable("POSTGRES_PASSWORD") ?? "secret";
+
+			settings.ConstructDatabase<PostgresDatabase>("test_database", $"host={host} port=5432 dbname=test_database user=postgres password={password}").GetOrCreateTable
+			(
+				"test_table",
+				"CREATE TABLE IF NOT EXISTS multi_user (id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY, user_id TEXT NOT NULL, data TEXT NOT NULL)"
+			);
+		}
+
 		settings.GetOrCreateDatabase("test_database").GetOrCreateTable("multi_user", "CREATE TABLE IF NOT EXISTS multi_user (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id TEXT NOT NULL, data TEXT NOT NULL)");
 	}
 

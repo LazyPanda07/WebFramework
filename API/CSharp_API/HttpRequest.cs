@@ -177,6 +177,9 @@ public sealed partial class HttpRequest(nint implementation)
 	private static partial IntPtr getOrCreateDatabaseRequest(IntPtr implementation, string databaseName, string implementationName, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
+	private static partial IntPtr constructDatabaseRequest(IntPtr implementation, string databaseName, string constructData, string implementationName, ref IntPtr exception);
+
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
 	private static partial IntPtr getDatabaseRequest(IntPtr implementation, string databaseName, string implementationName, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
@@ -1241,6 +1244,27 @@ public sealed partial class HttpRequest(nint implementation)
 	{
 		IntPtr exception = IntPtr.Zero;
 		IntPtr result = getOrCreateDatabaseRequest(implementation, databaseName, T.ImplementationName, ref exception);
+
+		if (exception != IntPtr.Zero)
+		{
+			throw new WebFrameworkException(exception);
+		}
+
+		return new(result);
+	}
+
+	/// <summary>
+	/// Always create a new database instance
+	/// </summary>
+	/// <typeparam name="T">The type of the database implementation to use. Must implement the IDatabaseImplementation interface.</typeparam>
+	/// <param name="databaseName">The name of the database to retrieve or create. This value cannot be null or empty.</param>
+	/// <param name="constructData">Connect string or other construction data for database.</param>
+	/// <returns>A Database instance representing the created or retrieved database.</returns>
+	/// <exception cref="WebFrameworkException">Thrown if an error occurs while attempting to get or create the database.</exception>
+	public Database ConstructDatabase<T>(string databaseName, string constructData) where T : IDatabaseImplementation
+	{
+		IntPtr exception = IntPtr.Zero;
+		IntPtr result = constructDatabaseRequest(implementation, databaseName, constructData, T.ImplementationName, ref exception);
 
 		if (exception != IntPtr.Zero)
 		{

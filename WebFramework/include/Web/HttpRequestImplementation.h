@@ -296,6 +296,8 @@ namespace framework
 
 		interfaces::IDatabase* getOrCreateDatabase(const char* databaseName, const char* databaseImplementationName) override;
 
+		interfaces::IDatabase* constructDatabase(const char* databaseName, const char* constructData, const char* databaseImplementationName) override;
+
 		interfaces::IDatabase* getDatabase(const char* databaseName, const char* databaseImplementationName) const override;
 
 		~HttpRequestImplementation();

@@ -16,13 +16,40 @@ DEFINE_EXECUTOR(MultiUserExecutor, HEAVY_OPERATION_STATEFUL_EXECUTOR)
 DEFINE_EXECUTOR_INIT(MultiUserExecutor)
 {
 	MultiUserExecutor* self = (MultiUserExecutor*)executor;
-	database_t database;
-	table_t table;
 
 	wf_generate_uuid(&self->uuid);
 
-	wf_get_or_create_database_executor_settings(settings, "test_database", DEFAULT_DATABASE_IMPLEMENTATION_NAME, &database);
-	wf_get_or_create_table(database, "multi_user", "CREATE TABLE IF NOT EXISTS multi_user (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id TEXT NOT NULL, data TEXT NOT NULL)", &table);
+#ifndef WITHOUT_POSTGRES_TESTS
+	{
+		database_t database;
+		table_t table;
+		const char* host = "127.0.0.1";
+		const char* password = "secret";
+		char* overrideHost = getenv("POSTGRES_HOST");
+		char* overridePassword = getenv("POSTGRES_PASSWORD");
+
+		if (overrideHost)
+		{
+			host = overrideHost;
+		}
+
+		if (overridePassword)
+		{
+			password = overridePassword;
+		}
+
+		wf_construct_database_executor_settings(settings, "test_database", printf("host=%s port=5432 dbname=test_database user=postgres password=%s", host, password), POSTGRES_DATABASE_IMPLEMENTATION_NAME, &database);
+		wf_get_or_create_table(database, "multi_user", "CREATE TABLE IF NOT EXISTS multi_user (id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY, user_id TEXT NOT NULL, data TEXT NOT NULL)", &table);
+	}
+#endif
+
+	{
+		database_t database;
+		table_t table;
+
+		wf_get_or_create_database_executor_settings(settings, "test_database", SQLITE_DATABASE_IMPLEMENTATION_NAME, &database);
+		wf_get_or_create_table(database, "multi_user", "CREATE TABLE IF NOT EXISTS multi_user (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id TEXT NOT NULL, data TEXT NOT NULL)", &table);
+	}
 }
 
 DEFINE_EXECUTOR_METHOD(MultiUserExecutor, GET_METHOD, request, response)

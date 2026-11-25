@@ -163,7 +163,7 @@ namespace registrar
 				{
 					py::module_ json = py::module_::import("json");
 					framework::JsonParser parser(json.attr("dumps")(arguments).cast<std::string>());
-					
+
 					self.processDynamicFile(fileData, parser.getParsedData());
 				},
 				"file_data"_a, "arguments"_a
@@ -181,6 +181,10 @@ namespace registrar
 					{
 						return self.getOrCreateDatabase<framework::SqliteDatabase>(databaseName);
 					}
+					else if (databaseImplementationClass.is(py::type::of<framework::PostgresDatabase>()))
+					{
+						return self.getOrCreateDatabase<framework::PostgresDatabase>(databaseName);
+					}
 					else if (databaseImplementationClass.is(py::type::of<framework::RedisDatabase>()))
 					{
 						return self.getOrCreateDatabase<framework::RedisDatabase>(databaseName);
@@ -194,6 +198,34 @@ namespace registrar
 			)
 			.def
 			(
+				"construct_database",
+				[](const framework::utility::ExecutorSettings& self, std::string_view databaseName, std::string_view constructData, py::handle databaseImplementationClass)
+				{
+					if (databaseImplementationClass.is_none() || databaseImplementationClass.is(py::type::of<framework::DefaultDatabase>()))
+					{
+						return self.constructDatabase<framework::DefaultDatabase>(databaseName, constructData);
+					}
+					else if (databaseImplementationClass.is(py::type::of<framework::SqliteDatabase>()))
+					{
+						return self.constructDatabase<framework::SqliteDatabase>(databaseName, constructData);
+					}
+					else if (databaseImplementationClass.is(py::type::of<framework::PostgresDatabase>()))
+					{
+						return self.constructDatabase<framework::PostgresDatabase>(databaseName, constructData);
+					}
+					else if (databaseImplementationClass.is(py::type::of<framework::RedisDatabase>()))
+					{
+						return self.constructDatabase<framework::RedisDatabase>(databaseName, constructData);
+					}
+					else
+					{
+						throw std::runtime_error(std::format("Wrong database_implementation_class: {}", py::repr(databaseImplementationClass).cast<std::string>()));
+					}
+				},
+				"database_name"_a, "construct_data"_a, "database_implementation_class"_a = py::none()
+			)
+			.def
+			(
 				"get_database",
 				[](const framework::utility::ExecutorSettings& self, std::string_view databaseName, py::handle databaseImplementationClass)
 				{
@@ -204,6 +236,10 @@ namespace registrar
 					else if (databaseImplementationClass.is(py::type::of<framework::SqliteDatabase>()))
 					{
 						return self.getDatabase<framework::SqliteDatabase>(databaseName);
+					}
+					else if (databaseImplementationClass.is(py::type::of<framework::PostgresDatabase>()))
+					{
+						return self.getDatabase<framework::PostgresDatabase>(databaseName);
 					}
 					else if (databaseImplementationClass.is(py::type::of<framework::RedisDatabase>()))
 					{

@@ -12,7 +12,27 @@ MultiUserExecutor::MultiUserExecutor() :
 
 void MultiUserExecutor::init(const framework::utility::ExecutorSettings& settings)
 {
-	settings.getOrCreateDatabase("test_database").getOrCreateTable("multi_user", "CREATE TABLE IF NOT EXISTS multi_user (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id TEXT NOT NULL, data TEXT NOT NULL)");
+#ifndef WITHOUT_POSTGRES_TESTS
+	std::string host = "127.0.0.1";
+	std::string password = "secret";
+
+	if (char* overrideHost = std::getenv("POSTGRES_HOST"))
+	{
+		host = overrideHost;
+	}
+
+	if (char* overridePassword = std::getenv("POSTGRES_PASSWORD"))
+	{
+		password = overridePassword;
+	}
+
+	settings.constructDatabase<framework::PostgresDatabase>("test_database", std::format("host={} port=5432 dbname=test_database user=postgres password={}", host, password)).getOrCreateTable
+	(
+		"multi_user", "CREATE TABLE IF NOT EXISTS multi_user (id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY, user_id TEXT NOT NULL, data TEXT NOT NULL)"
+	);
+#endif
+
+	settings.getOrCreateDatabase<framework::SqliteDatabase>("test_database").getOrCreateTable("multi_user", "CREATE TABLE IF NOT EXISTS multi_user (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id TEXT NOT NULL, data TEXT NOT NULL)");
 }
 
 void MultiUserExecutor::doGet(framework::HttpRequest& request, framework::HttpResponse& response)

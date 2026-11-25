@@ -220,17 +220,28 @@ web_framework_exception_t wf_get_executor_load_type(executor_settings_t implemen
  * @brief Tries to get database or create if can't get
  * @param implementation executor_settings_t instance
  * @param databaseName database_t name
- * @param databaseName Macro from databases/implementations
+ * @param implementationName Macro from databases/implementations
  * @param result database_t instance
  * @return Error if occurred
  */
 web_framework_exception_t wf_get_or_create_database_executor_settings(executor_settings_t implementation, const char* database_name, const char* implementationName, database_t* result);
 
 /**
+ * @brief Tries to get database or create if can't get
+ * @param implementation executor_settings_t instance
+ * @param databaseName database_t name
+ * @param construct_data Connect string or other construction data for database
+ * @param implementationName Macro from databases/implementations
+ * @param result database_t instance
+ * @return Error if occurred
+ */
+web_framework_exception_t wf_construct_database_executor_settings(executor_settings_t implementation, const char* database_name, const char* construct_data, const char* implementationName, database_t* result);
+
+/**
  * @brief Get database
  * @param implementation executor_settings_t instance
  * @param databaseName database_t name
- * @param databaseName Macro from databases/implementations
+ * @param implementationName Macro from databases/implementations
  * @param result database_t instance
  * @return Error if occurred
  */
@@ -240,7 +251,7 @@ web_framework_exception_t wf_get_database_executor_settings(executor_settings_t 
  * @brief Tries to get table from database or create if can't get
  * @param implementation executor_settings_t instance
  * @param databaseName database_t name
- * @param databaseName Macro from databases/implementations
+ * @param implementationName Macro from databases/implementations
  * @param tableName Name of table
  * @param createTableQuery Create table query if can't get table
  * @param result table_t instance
@@ -252,7 +263,7 @@ web_framework_exception_t wf_get_or_create_table_executor_settings(executor_sett
  * @brief Get table from database
  * @param implementation executor_settings_t instance
  * @param databaseName database_t name
- * @param databaseName Macro from databases/implementations
+ * @param implementationName Macro from databases/implementations
  * @param tableName Name of table
  * @param result table_t instance
  * @return Error if occurred

@@ -322,6 +322,9 @@ namespace framework
 		Database getOrCreateDatabase(std::string_view databaseName);
 
 		template<DatabaseImplementation T = DefaultDatabase>
+		Database constructDatabase(std::string_view databaseName, std::string_view constructData);
+
+		template<DatabaseImplementation T = DefaultDatabase>
 		Database getDatabase(std::string_view databaseName) const;
 
 		template<DatabaseImplementation T = DefaultDatabase>
@@ -902,6 +905,12 @@ namespace framework
 	inline Database HttpRequest::getOrCreateDatabase(std::string_view databaseName)
 	{
 		return Database(implementation->getOrCreateDatabase(databaseName.data(), T::databaseImplementationName.data()));
+	}
+
+	template<DatabaseImplementation T>
+	inline Database HttpRequest::constructDatabase(std::string_view databaseName, std::string_view constructData)
+	{
+		return Database(implementation->constructDatabase(databaseName.data(), constructData.data(), T::databaseImplementationName.data()));
 	}
 
 	template<DatabaseImplementation T>
