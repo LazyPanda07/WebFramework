@@ -4,6 +4,7 @@
 
 #include <Implementations/SqliteTable.h>
 #include <Implementations/PostgresTable.h>
+#include <Strings.h>
 
 #include "Databases/SQLResultImplementation.h"
 
@@ -128,10 +129,24 @@ namespace framework
 
 std::string replaceSqliteToPostgres(std::string_view input)
 {
+	std::string result(input);
+	
+	for (size_t i = 0, placeholderIndex = 1; i < result.size(); i++)
+	{
+		if (result[i] == '?')
+		{
+			result[i] = '$';
 
+			result.insert(i + 1, std::to_string(placeholderIndex++));
+		}
+	}
+
+	return result;
 }
 
 std::string replacePostgresToSqlite(std::string_view input)
 {
+	// TODO: implementation
 
+	return "";
 }
