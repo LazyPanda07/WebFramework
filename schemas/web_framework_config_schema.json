@@ -218,11 +218,6 @@
             }
           ]
         },
-        "adaptSqlPlaceholders": {
-          "description": "Replace placeholders in SQL query with specific database",
-          "type": "boolean",
-          "default": false
-        },
         "resourcesThreads": {
           "type": "integer",
           "description": "Number of threads to send files",

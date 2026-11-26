@@ -70,13 +70,28 @@ public class CRUDExecutor : StatelessExecutor
 
 	public override void DoGet(HttpRequest request, HttpResponse response)
 	{
-		response.SetBody
-		(
-			new
-			{
-				data = GetDatabase("test_database", request).GetTable("test_table").ExecuteQuery<TableData>("SELECT * FROM test_table WHERE name = ?", WebFrameworkUtility.MakeSqlValues("glue"))
-			}
-		);
+		string databaseImplementation = request.GetRouteParameter<string>("databaseImplementation");
+
+		if (databaseImplementation == SqliteDatabase.ImplementationName)
+		{
+			response.SetBody
+			(
+				new
+				{
+					data = GetDatabase("test_database", request).GetTable("test_table").ExecuteQuery<TableData>("SELECT * FROM test_table WHERE name = ?", WebFrameworkUtility.MakeSqlValues("glue"))
+				}
+			);
+		}
+		else if (databaseImplementation == PostgresDatabase.ImplementationName)
+		{
+			response.SetBody
+			(
+				new
+				{
+					data = GetDatabase("test_database", request).GetTable("test_table").ExecuteQuery<TableData>("SELECT * FROM test_table WHERE name = $1", WebFrameworkUtility.MakeSqlValues("glue"))
+				}
+			);
+		}
 	}
 
 	public override void DoPut(HttpRequest request, HttpResponse response)
@@ -84,20 +99,43 @@ public class CRUDExecutor : StatelessExecutor
 		Database database = GetDatabase("test_database", request);
 		Table table = database.GetTable("test_table");
 		Random random = new((int)DateTime.Now.Ticks);
+		string databaseImplementation = request.GetRouteParameter<string>("databaseImplementation");
 
-		table.ExecuteQuery
-		(
-			"INSERT INTO test_table (name, amount) VALUES(?, ?)",
-			WebFrameworkUtility.MakeSqlValues("glue", -1)
-		);
-
-		for (int i = 0; i < 10; i++)
+		if (databaseImplementation == SqliteDatabase.ImplementationName)
 		{
 			table.ExecuteQuery
 			(
 				"INSERT INTO test_table (name, amount) VALUES(?, ?)",
-				WebFrameworkUtility.MakeSqlValues("glue", random.Next() % 200)
+				WebFrameworkUtility.MakeSqlValues("glue", -1)
 			);
+		}
+		else if (databaseImplementation == PostgresDatabase.ImplementationName)
+		{
+			table.ExecuteQuery
+			(
+				"INSERT INTO test_table (name, amount) VALUES($1, $2)",
+				WebFrameworkUtility.MakeSqlValues("glue", -1)
+			);
+		}
+
+		for (int i = 0; i < 10; i++)
+		{
+			if (databaseImplementation == SqliteDatabase.ImplementationName)
+			{
+				table.ExecuteQuery
+				(
+					"INSERT INTO test_table (name, amount) VALUES(?, ?)",
+					WebFrameworkUtility.MakeSqlValues("glue", random.Next() % 200)
+				);
+			}
+			else if (databaseImplementation == PostgresDatabase.ImplementationName)
+			{
+				table.ExecuteQuery
+				(
+					"INSERT INTO test_table (name, amount) VALUES($1, $2)",
+					WebFrameworkUtility.MakeSqlValues("glue", random.Next() % 200)
+				);
+			}
 		}
 	}
 
@@ -105,22 +143,49 @@ public class CRUDExecutor : StatelessExecutor
 	{
 		Database database = GetDatabase("test_database", request);
 		Table table = database.GetTable("test_table");
+		string databaseImplementation = request.GetRouteParameter<string>("databaseImplementation");
 
-		table.ExecuteQuery
-		(
-			"UPDATE test_table " +
-			"SET name = ? " +
-			"WHERE amount = ?",
-			WebFrameworkUtility.MakeSqlValues("empty", -1)
-		);
+		if (databaseImplementation == SqliteDatabase.ImplementationName)
+		{
+			table.ExecuteQuery
+			(
+				"UPDATE test_table " +
+				"SET name = ? " +
+				"WHERE amount = ?",
+				WebFrameworkUtility.MakeSqlValues("empty", -1)
+			);
+		}
+		else if (databaseImplementation == PostgresDatabase.ImplementationName)
+		{
+			table.ExecuteQuery
+			(
+				"UPDATE test_table " +
+				"SET name = $1 " +
+				"WHERE amount = $2",
+				WebFrameworkUtility.MakeSqlValues("empty", -1)
+			);
+		}
 
-		response.SetBody
-		(
-			new
-			{
-				data = table.ExecuteQuery<TableData>("SELECT * FROM test_table WHERE name = ?", WebFrameworkUtility.MakeSqlValues("empty"))
-			}
-		);
+		if (databaseImplementation == SqliteDatabase.ImplementationName)
+		{
+			response.SetBody
+			(
+				new
+				{
+					data = table.ExecuteQuery<TableData>("SELECT * FROM test_table WHERE name = ?", WebFrameworkUtility.MakeSqlValues("empty"))
+				}
+			);
+		}
+		else if (databaseImplementation == PostgresDatabase.ImplementationName)
+		{
+			response.SetBody
+			(
+				new
+				{
+					data = table.ExecuteQuery<TableData>("SELECT * FROM test_table WHERE name = $1", WebFrameworkUtility.MakeSqlValues("empty"))
+				}
+			);
+		}
 	}
 
 	public override void DoDelete(HttpRequest request, HttpResponse response)

@@ -5,9 +5,9 @@
 static framework::Table getTable(std::string_view databaseName, std::string_view tableName, framework::HttpRequest& request);
 
 MultiUserExecutor::MultiUserExecutor() :
-    userId(framework::utility::uuid::generateUuid())
+	userId(framework::utility::uuid::generateUuid())
 {
-	
+
 }
 
 void MultiUserExecutor::init(const framework::utility::ExecutorSettings& settings)
@@ -38,12 +38,21 @@ void MultiUserExecutor::init(const framework::utility::ExecutorSettings& setting
 void MultiUserExecutor::doGet(framework::HttpRequest& request, framework::HttpResponse& response)
 {
 	framework::Table table = getTable("test_database", "multi_user", request);
+	std::string databaseImplementation = request.getRouteParameter<std::string>("databaseImplementation");
 
-	framework::SqlResult result = table.execute
-	(
-		"SELECT * FROM multi_user WHERE user_id = ?",
-		framework::utility::database::makeSqlValues(userId)
-	);
+	framework::SqlResult result = databaseImplementation == framework::SqliteDatabase::databaseImplementationName ?
+		table.execute
+		(
+			"SELECT * FROM multi_user WHERE user_id = ?",
+			framework::utility::database::makeSqlValues(userId)
+		)
+		:
+		table.execute
+		(
+			"SELECT * FROM multi_user WHERE user_id = $1",
+			framework::utility::database::makeSqlValues(userId)
+		);
+
 	std::vector<framework::JsonObject> data;
 
 	for (const auto& value : result)
@@ -63,12 +72,24 @@ void MultiUserExecutor::doGet(framework::HttpRequest& request, framework::HttpRe
 void MultiUserExecutor::doPut(framework::HttpRequest& request, framework::HttpResponse& response)
 {
 	framework::Table table = getTable("test_database", "multi_user", request);
+	std::string databaseImplementation = request.getRouteParameter<std::string>("databaseImplementation");
 
-	table.execute
-	(
-		"INSERT INTO multi_user (user_id, data) VALUES(?, ?)",
-		framework::utility::database::makeSqlValues(userId, request.getJson().get<std::string>("data"))
-	);
+	if (databaseImplementation == framework::SqliteDatabase::databaseImplementationName)
+	{
+		table.execute
+		(
+			"INSERT INTO multi_user (user_id, data) VALUES(?, ?)",
+			framework::utility::database::makeSqlValues(userId, request.getJson().get<std::string>("data"))
+		);
+	}
+	else if (databaseImplementation == framework::PostgresDatabase::databaseImplementationName)
+	{
+		table.execute
+		(
+			"INSERT INTO multi_user (user_id, data) VALUES($1, $2)",
+			framework::utility::database::makeSqlValues(userId, request.getJson().get<std::string>("data"))
+		);
+	}
 }
 
 DEFINE_EXECUTOR(MultiUserExecutor)

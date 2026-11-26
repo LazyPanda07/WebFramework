@@ -16,7 +16,14 @@ jobs:
       matrix:
         config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
 
+    env:
+      postgres-version: 17
+      POSTGRES_PASSWORD: root
+
     steps:
+    - name: Start Postgres
+      run: docker run -d -e POSTGRES_PASSWORD=${{ env.POSTGRES_PASSWORD }} -e POSTGRES_USER=postgres -e POSTGRES_DB=test_database -p 5432:5432 postgres:${{ env.postgres-version }}
+
     - uses: actions/checkout@v7
       with:
         submodules: recursive

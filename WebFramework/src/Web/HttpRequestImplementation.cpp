@@ -646,21 +646,21 @@ namespace framework
 	{
 		WebFramework& instance = serverReference.getFrameworkInstance();
 
-		return databases.emplace_back(new DatabaseImplementation(instance.getDatabasesManager().getOrCreateDatabase(databaseName, databaseImplementationName), instance.getAdaptSqlPlaceholders()));
+		return databases.emplace_back(new DatabaseImplementation(instance.getDatabasesManager().getOrCreateDatabase(databaseName, databaseImplementationName)));
 	}
 
 	interfaces::IDatabase* HttpRequestImplementation::constructDatabase(const char* databaseName, const char* constructData, const char* databaseImplementationName)
 	{
 		WebFramework& instance = serverReference.getFrameworkInstance();
 
-		return databases.emplace_back(new DatabaseImplementation(instance.getDatabasesManager().constructDatabase(databaseName, constructData, databaseImplementationName), instance.getAdaptSqlPlaceholders()));
+		return databases.emplace_back(new DatabaseImplementation(instance.getDatabasesManager().constructDatabase(databaseName, constructData, databaseImplementationName)));
 	}
 
 	interfaces::IDatabase* HttpRequestImplementation::getDatabase(const char* databaseName, const char* databaseImplementationName) const
 	{
 		WebFramework& instance = serverReference.getFrameworkInstance();
 
-		return databases.emplace_back(new DatabaseImplementation(instance.getDatabasesManager().getDatabase(databaseName, databaseImplementationName), instance.getAdaptSqlPlaceholders()));
+		return databases.emplace_back(new DatabaseImplementation(instance.getDatabasesManager().getDatabase(databaseName, databaseImplementationName)));
 	}
 
 	HttpRequestImplementation::~HttpRequestImplementation()

@@ -1390,7 +1390,7 @@ DatabaseObject getOrCreateDatabaseExecutorSettings(ExecutorSettings executorsSet
 
 		return settings.databases.emplace_back
 		(
-			new framework::DatabaseImplementation(settings.frameworkInstance.getDatabasesManager().getOrCreateDatabase(databaseName, implementationName), settings.frameworkInstance.getAdaptSqlPlaceholders())
+			new framework::DatabaseImplementation(settings.frameworkInstance.getDatabasesManager().getOrCreateDatabase(databaseName, implementationName))
 		);
 	}
 	catch (const framework::exceptions::AlreadyLoggedException& e)
@@ -1417,7 +1417,7 @@ DatabaseObject constructDatabaseExecutorSettings(ExecutorSettings executorsSetti
 
 		return settings.databases.emplace_back
 		(
-			new framework::DatabaseImplementation(settings.frameworkInstance.getDatabasesManager().constructDatabase(databaseName, constructData, implementationName), settings.frameworkInstance.getAdaptSqlPlaceholders())
+			new framework::DatabaseImplementation(settings.frameworkInstance.getDatabasesManager().constructDatabase(databaseName, constructData, implementationName))
 		);
 	}
 	catch (const framework::exceptions::AlreadyLoggedException& e)
@@ -1444,7 +1444,7 @@ DatabaseObject getDatabaseExecutorSettings(ExecutorSettings executorsSettings, c
 
 		return settings.databases.emplace_back
 		(
-			new framework::DatabaseImplementation(settings.frameworkInstance.getDatabasesManager().getDatabase(databaseName, implementationName), settings.frameworkInstance.getAdaptSqlPlaceholders())
+			new framework::DatabaseImplementation(settings.frameworkInstance.getDatabasesManager().getDatabase(databaseName, implementationName))
 		);
 	}
 	catch (const framework::exceptions::AlreadyLoggedException& e)
@@ -1471,7 +1471,7 @@ TableObject getOrCreateTableExecutorSettings(ExecutorSettings executorsSettings,
 
 		return settings.databases.emplace_back
 		(
-			new framework::DatabaseImplementation(settings.frameworkInstance.getDatabasesManager().getOrCreateDatabase(databaseName, implementationName), settings.frameworkInstance.getAdaptSqlPlaceholders())
+			new framework::DatabaseImplementation(settings.frameworkInstance.getDatabasesManager().getOrCreateDatabase(databaseName, implementationName))
 		)->getOrCreateTable(tableName, createTableQuery);
 	}
 	catch (const framework::exceptions::AlreadyLoggedException& e)
@@ -1498,7 +1498,7 @@ TableObject getTableExecutorSettings(ExecutorSettings executorsSettings, const c
 
 		return settings.databases.emplace_back
 		(
-			new framework::DatabaseImplementation(settings.frameworkInstance.getDatabasesManager().getDatabase(databaseName, implementationName), settings.frameworkInstance.getAdaptSqlPlaceholders())
+			new framework::DatabaseImplementation(settings.frameworkInstance.getDatabasesManager().getDatabase(databaseName, implementationName))
 		)->get(tableName);
 	}
 	catch (const framework::exceptions::AlreadyLoggedException& e)
@@ -1667,7 +1667,7 @@ DatabaseObject getOrCreateDatabaseTaskExecutorContext(TaskExecutorContextObject 
 
 		return context.databases.emplace_back
 		(
-			new framework::DatabaseImplementation(context.frameworkInstance.getDatabasesManager().getOrCreateDatabase(databaseName, implementationName), context.frameworkInstance.getAdaptSqlPlaceholders())
+			new framework::DatabaseImplementation(context.frameworkInstance.getDatabasesManager().getOrCreateDatabase(databaseName, implementationName))
 		);
 	}
 	catch (const framework::exceptions::AlreadyLoggedException& e)
@@ -1694,7 +1694,7 @@ DatabaseObject getDatabaseTaskExecutorContext(TaskExecutorContextObject taskExec
 
 		return context.databases.emplace_back
 		(
-			new framework::DatabaseImplementation(context.frameworkInstance.getDatabasesManager().getDatabase(databaseName, implementationName), context.frameworkInstance.getAdaptSqlPlaceholders())
+			new framework::DatabaseImplementation(context.frameworkInstance.getDatabasesManager().getDatabase(databaseName, implementationName))
 		);
 	}
 	catch (const framework::exceptions::AlreadyLoggedException& e)
@@ -1721,7 +1721,7 @@ TableObject getOrCreateTableTaskExecutorContext(TaskExecutorContextObject taskEx
 
 		return context.databases.emplace_back
 		(
-			new framework::DatabaseImplementation(context.frameworkInstance.getDatabasesManager().getOrCreateDatabase(databaseName, implementationName), context.frameworkInstance.getAdaptSqlPlaceholders())
+			new framework::DatabaseImplementation(context.frameworkInstance.getDatabasesManager().getOrCreateDatabase(databaseName, implementationName))
 		)->getOrCreateTable(tableName, createTableQuery);
 	}
 	catch (const framework::exceptions::AlreadyLoggedException& e)
@@ -1748,7 +1748,7 @@ TableObject getTableTaskExecutorContext(TaskExecutorContextObject taskExecutorCo
 
 		return context.databases.emplace_back
 		(
-			new framework::DatabaseImplementation(context.frameworkInstance.getDatabasesManager().getDatabase(databaseName, implementationName), context.frameworkInstance.getAdaptSqlPlaceholders())
+			new framework::DatabaseImplementation(context.frameworkInstance.getDatabasesManager().getDatabase(databaseName, implementationName))
 		)->get(tableName);
 	}
 	catch (const framework::exceptions::AlreadyLoggedException& e)

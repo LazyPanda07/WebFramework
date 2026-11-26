@@ -440,8 +440,6 @@ namespace framework
 	{
 		std::vector<std::string> databases;
 
-		webFrameworkSettings.tryGet<bool>(json_settings::adaptSqlPlaceholdersKey, adaptSqlPlaceholders);
-
 		if (std::vector<json::JsonObject> temp; webFrameworkSettings.tryGet<std::vector<json::JsonObject>>(json_settings::databasesKey, temp))
 		{
 			databases = json::utility::JsonArrayWrapper(temp).as<std::string>();
@@ -644,8 +642,7 @@ namespace framework
 	WebFramework::WebFramework(const utility::Config& webFrameworkConfig) :
 		config(webFrameworkConfig),
 		serverException(nullptr),
-		jwtSecretName(json_settings_values::jwtSecretVariableNameValue),
-		adaptSqlPlaceholders(false)
+		jwtSecretName(json_settings_values::jwtSecretVariableNameValue)
 	{
 		this->initLogging();
 
@@ -779,11 +776,6 @@ namespace framework
 	task_broker::TaskExecutorsManager& WebFramework::getTaskExecutorsManager()
 	{
 		return taskExecutorsManager;
-	}
-
-	bool WebFramework::getAdaptSqlPlaceholders() const
-	{
-		return adaptSqlPlaceholders;
 	}
 
 	WebFramework::~WebFramework()

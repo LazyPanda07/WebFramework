@@ -8,25 +8,12 @@
 
 #include "Databases/SQLResultImplementation.h"
 
-static std::string replaceSqliteToPostgres(std::string_view input);
-
-static std::string replacePostgresToSqlite(std::string_view input);
-
 namespace framework
 {
-	TableImplementation::TableImplementation(database::Table* table, bool adaptSqlPlaceholders) :
-		table(table),
-		adaptSqlPlaceholders(adaptSqlPlaceholders),
-		type(PreferredPlaceholders::none)
+	TableImplementation::TableImplementation(database::Table* table) :
+		table(table)
 	{
-		if (dynamic_cast<database::PostgresTable*>(table))
-		{
-			type = PreferredPlaceholders::postgres;
-		}
-		else if (dynamic_cast<database::SqliteTable*>(table))
-		{
-			type = PreferredPlaceholders::sqlite;
-		}
+		
 	}
 
 	interfaces::ISQLResult* TableImplementation::execute(const char* query, const interfaces::ISQLValue** values, size_t size)
@@ -81,39 +68,7 @@ namespace framework
 			}
 		}
 
-		if (adaptSqlPlaceholders && type != PreferredPlaceholders::none)
-		{
-			std::string_view input(query);
-			std::string outputQuery;
-
-			switch (type)
-			{
-			case framework::TableImplementation::PreferredPlaceholders::sqlite:
-				if (input.contains("$1"))
-				{
-					outputQuery = replacePostgresToSqlite(input);
-				}
-
-				break;
-
-			case framework::TableImplementation::PreferredPlaceholders::postgres:
-				if (input.contains('?'))
-				{
-					outputQuery = replaceSqliteToPostgres(input);
-				}
-
-				break;
-
-			default:
-				break;
-			}
-
-			return new SQLResultImplementation(table->execute<database::RawQuery>(temp, outputQuery.empty() ? query : outputQuery.data()));
-		}
-		else
-		{
-			return new SQLResultImplementation(table->execute<database::RawQuery>(temp, query));
-		}
+		return new SQLResultImplementation(table->execute<database::RawQuery>(temp, query));
 	}
 
 	void TableImplementation::deleteResult(interfaces::ISQLResult* ptr) const
@@ -125,28 +80,4 @@ namespace framework
 	{
 		return table->getTableName().data();
 	}
-}
-
-std::string replaceSqliteToPostgres(std::string_view input)
-{
-	std::string result(input);
-	
-	for (size_t i = 0, placeholderIndex = 1; i < result.size(); i++)
-	{
-		if (result[i] == '?')
-		{
-			result[i] = '$';
-
-			result.insert(i + 1, std::to_string(placeholderIndex++));
-		}
-	}
-
-	return result;
-}
-
-std::string replacePostgresToSqlite(std::string_view input)
-{
-	// TODO: implementation
-
-	return "";
 }

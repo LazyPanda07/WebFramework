@@ -11,20 +11,10 @@ namespace framework
 	class TableImplementation : public interfaces::ITable
 	{
 	private:
-		enum class PreferredPlaceholders : uint8_t
-		{
-			none,
-			sqlite,
-			postgres
-		};
-
-	private:
 		database::Table* table;
-		bool adaptSqlPlaceholders;
-		PreferredPlaceholders type;
 
 	public:
-		TableImplementation(database::Table* table, bool adaptSqlPlaceholders);
+		TableImplementation(database::Table* table);
 
 		interfaces::ISQLResult* execute(const char* query, const interfaces::ISQLValue** values, size_t size) override;
 

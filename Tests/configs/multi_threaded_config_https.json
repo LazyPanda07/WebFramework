@@ -37,7 +37,6 @@
       "postgres",
       "redis"
     ],
-    "adaptSqlPlaceholders": true,
     "binaryAssets": [
       "assets.sba"
     ]

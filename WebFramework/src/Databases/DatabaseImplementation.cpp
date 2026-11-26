@@ -9,9 +9,8 @@
 
 namespace framework
 {
-	DatabaseImplementation::DatabaseImplementation(std::shared_ptr<database::Database> database, bool adaptSqlPlaceholders) :
-		database(database),
-		adaptSqlPlaceholders(adaptSqlPlaceholders)
+	DatabaseImplementation::DatabaseImplementation(std::shared_ptr<database::Database> database) :
+		database(database)
 	{
 
 	}
@@ -23,7 +22,7 @@ namespace framework
 
 		if (outTable && result)
 		{
-			*outTable = tables.emplace_back(new TableImplementation(table, adaptSqlPlaceholders));
+			*outTable = tables.emplace_back(new TableImplementation(table));
 		}
 
 		return result;
@@ -31,7 +30,7 @@ namespace framework
 
 	interfaces::ITable* DatabaseImplementation::get(const char* tableName) const
 	{
-		return tables.emplace_back(new TableImplementation(database->get(tableName).get(), adaptSqlPlaceholders));
+		return tables.emplace_back(new TableImplementation(database->get(tableName).get()));
 	}
 
 	interfaces::ITable* DatabaseImplementation::getOrCreateTable(const char* tableName, const char* createTableQuery)
@@ -47,8 +46,7 @@ namespace framework
 						tableName,
 						database::CreateTableQuery(createTableQuery),
 						database.get()
-					),
-					adaptSqlPlaceholders
+					)
 				)
 			);
 		}
@@ -63,8 +61,7 @@ namespace framework
 						tableName,
 						database::RawQuery(createTableQuery),
 						database.get()
-					),
-					adaptSqlPlaceholders
+					)
 				)
 			);
 		}

@@ -62,43 +62,79 @@ class CRUDExecutor(StatelessExecutor):
         )
 
     def do_get(self, request, response):
-        response.set_body({
-            "data": request.get_table("test_database", "test_table", get_database_class(request)).execute(
-                "SELECT * FROM test_table WHERE name = ?",
-                TableData, make_sql_values("glue"))
-        })
+        database_implementation = request.get_string_route_parameter("databaseImplementation")
+
+        if database_implementation == SqliteDatabase.database_implementation_name:
+            response.set_body({
+                "data": request.get_table("test_database", "test_table", get_database_class(request)).execute(
+                    "SELECT * FROM test_table WHERE name = ?",
+                    TableData, make_sql_values("glue"))
+            })
+        elif database_implementation == PostgresDatabase.database_implementation_name:
+            response.set_body({
+                "data": request.get_table("test_database", "test_table", get_database_class(request)).execute(
+                    "SELECT * FROM test_table WHERE name = $1",
+                    TableData, make_sql_values("glue"))
+            })
 
     def do_put(self, request, response):
         database = request.get_database("test_database", get_database_class(request))
         table = database.get_table("test_table")
+        database_implementation = request.get_string_route_parameter("databaseImplementation")
 
         random.seed(time.time())
 
-        table.execute(
-            "INSERT INTO test_table (name, amount) VALUES(?, ?)",
-            make_sql_values("glue", -1)
-        )
-
-        for i in range(10):
+        if database_implementation == SqliteDatabase.database_implementation_name:
             table.execute(
                 "INSERT INTO test_table (name, amount) VALUES(?, ?)",
-                make_sql_values("glue", random.randint(1, 200))
+                make_sql_values("glue", -1)
             )
+        elif database_implementation == PostgresDatabase.database_implementation_name:
+            table.execute(
+                "INSERT INTO test_table (name, amount) VALUES($1, $2)",
+                make_sql_values("glue", -1)
+            )
+
+        for i in range(10):
+            if database_implementation == SqliteDatabase.database_implementation_name:
+                table.execute(
+                    "INSERT INTO test_table (name, amount) VALUES(?, ?)",
+                    make_sql_values("glue", random.randint(1, 200))
+                )
+            elif database_implementation == PostgresDatabase.database_implementation_name:
+                table.execute(
+                    "INSERT INTO test_table (name, amount) VALUES($1, $2)",
+                    make_sql_values("glue", random.randint(1, 200))
+                )
 
     def do_patch(self, request, response):
         database = request.get_database("test_database", get_database_class(request))
         table = database.get_table("test_table")
+        database_implementation = request.get_string_route_parameter("databaseImplementation")
 
-        table.execute(
-            "UPDATE test_table "
-            "SET name = ? "
-            "WHERE amount = ?",
-            make_sql_values("empty", -1)
-        )
+        if database_implementation == SqliteDatabase.database_implementation_name:
+            table.execute(
+                "UPDATE test_table "
+                "SET name = ? "
+                "WHERE amount = ?",
+                make_sql_values("empty", -1)
+            )
+        elif database_implementation == PostgresDatabase.database_implementation_name:
+            table.execute(
+                "UPDATE test_table "
+                "SET name = $1 "
+                "WHERE amount = $2",
+                make_sql_values("empty", -1)
+            )
 
-        response.set_body({
-            "data": table.execute("SELECT * FROM test_table WHERE name = ?", TableData, make_sql_values("empty"))
-        })
+        if database_implementation == SqliteDatabase.database_implementation_name:
+            response.set_body({
+                "data": table.execute("SELECT * FROM test_table WHERE name = ?", TableData, make_sql_values("empty"))
+            })
+        elif database_implementation == PostgresDatabase.database_implementation_name:
+            response.set_body({
+                "data": table.execute("SELECT * FROM test_table WHERE name = $1", TableData, make_sql_values("empty"))
+            })
 
     def do_delete(self, request, response):
         request.get_database("test_database", get_database_class(request)).get_table("test_table").execute(
@@ -130,11 +166,23 @@ class MultiUserExecutor(HeavyOperationStatefulExecutor):
     def do_get(self, request, response):
         table = request.get_table("test_database", "multi_user", get_database_class(request))
         data = []
+        result: SqlResult
+        database_implementation = request.get_string_route_parameter("databaseImplementation")
 
-        result = table.execute(
-            "SELECT * FROM multi_user WHERE user_id = ?",
-            make_sql_values(self._user_id)
-        )
+        if database_implementation == SqliteDatabase.database_implementation_name:
+            result = table.execute(
+                "SELECT * FROM multi_user WHERE user_id = ?",
+                make_sql_values(self._user_id)
+            )
+        elif database_implementation == PostgresDatabase.database_implementation_name:
+            result = table.execute(
+                "SELECT * FROM multi_user WHERE user_id = $1",
+                make_sql_values(self._user_id)
+            )
+        else:
+            request.throw_exception(f"Wrong databaseImplementation: {database_implementation}",
+                                    ResponseCodes.BAD_REQUEST)
+            return
 
         for value in result:
             data.append({
@@ -149,11 +197,18 @@ class MultiUserExecutor(HeavyOperationStatefulExecutor):
 
     def do_put(self, request, response):
         table = request.get_table("test_database", "multi_user", get_database_class(request))
+        database_implementation = request.get_string_route_parameter("databaseImplementation")
 
-        table.execute(
-            "INSERT INTO multi_user (user_id, data) VALUES(?, ?)",
-            make_sql_values(self._user_id, request.get_json()["data"])
-        )
+        if database_implementation == SqliteDatabase.database_implementation_name:
+            table.execute(
+                "INSERT INTO multi_user (user_id, data) VALUES(?, ?)",
+                make_sql_values(self._user_id, request.get_json()["data"])
+            )
+        elif database_implementation == PostgresDatabase.database_implementation_name:
+            table.execute(
+                "INSERT INTO multi_user (user_id, data) VALUES($1, $2)",
+                make_sql_values(self._user_id, request.get_json()["data"])
+            )
 
 
 class RedisExecutor(StatelessExecutor):

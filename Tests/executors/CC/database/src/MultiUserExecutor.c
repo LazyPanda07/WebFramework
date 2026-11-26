@@ -70,7 +70,14 @@ DEFINE_EXECUTOR_METHOD(MultiUserExecutor, GET_METHOD, request, response)
 
 	wf_set_sql_value_string(value, wf_get_data_from_string(self->uuid));
 
-	wf_execute_query(table, "SELECT * FROM multi_user WHERE user_id = ?", &value, 1, &result);
+	if (!strcmp(database_implementation, SQLITE_DATABASE_IMPLEMENTATION_NAME))
+	{
+		wf_execute_query(table, "SELECT * FROM multi_user WHERE user_id = ?", &value, 1, &result);
+	}
+	else if (!strcmp(database_implementation, POSTGRES_DATABASE_IMPLEMENTATION_NAME))
+	{
+		wf_execute_query(table, "SELECT * FROM multi_user WHERE user_id = $1", &value, 1, &result);
+	}
 
 	wf_iterate_sql_result(result, initBuffer, callback, &data);
 
@@ -112,7 +119,14 @@ DEFINE_EXECUTOR_METHOD(MultiUserExecutor, PUT_METHOD, request, response)
 	wf_set_sql_value_string(values[0], wf_get_data_from_string(self->uuid));
 	wf_set_sql_value_string(values[1], data);
 
-	wf_execute_query(table, "INSERT INTO multi_user (user_id, data) VALUES(?, ?)", values, 2, &result);
+	if (!strcmp(database_implementation, SQLITE_DATABASE_IMPLEMENTATION_NAME))
+	{
+		wf_execute_query(table, "INSERT INTO multi_user (user_id, data) VALUES(?, ?)", values, 2, &result);
+	}
+	else if (!strcmp(database_implementation, POSTGRES_DATABASE_IMPLEMENTATION_NAME))
+	{
+		wf_execute_query(table, "INSERT INTO multi_user (user_id, data) VALUES($1, $2)", values, 2, &result);
+	}
 
 	wf_delete_sql_value(values[0]);
 	wf_delete_sql_value(values[1]);

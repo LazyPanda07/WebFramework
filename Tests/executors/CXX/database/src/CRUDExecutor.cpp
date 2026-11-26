@@ -80,20 +80,43 @@ void CRUDExecutor::doPut(framework::HttpRequest& request, framework::HttpRespons
 	framework::Database database = getDatabase("test_database", request);
 	framework::Table table = database.getTable("test_table");
 	std::mt19937_64 random(std::time(nullptr));
+	std::string databaseImplementation = request.getRouteParameter<std::string>("databaseImplementation");
 
-	table.execute
-	(
-		"INSERT INTO test_table (name, amount) VALUES(?, ?)",
-		framework::utility::database::makeSqlValues("glue", -1)
-	);
-
-	for (size_t i = 0; i < 10; i++)
+	if (databaseImplementation == framework::SqliteDatabase::databaseImplementationName)
 	{
 		table.execute
 		(
 			"INSERT INTO test_table (name, amount) VALUES(?, ?)",
-			framework::utility::database::makeSqlValues("glue", random() % 200)
+			framework::utility::database::makeSqlValues("glue", -1)
 		);
+	}
+	else if (databaseImplementation == framework::PostgresDatabase::databaseImplementationName)
+	{
+		table.execute
+		(
+			"INSERT INTO test_table (name, amount) VALUES($1, $2)",
+			framework::utility::database::makeSqlValues("glue", -1)
+		);
+	}
+
+	for (size_t i = 0; i < 10; i++)
+	{
+		if (databaseImplementation == framework::SqliteDatabase::databaseImplementationName)
+		{
+			table.execute
+			(
+				"INSERT INTO test_table (name, amount) VALUES(?, ?)",
+				framework::utility::database::makeSqlValues("glue", random() % 200)
+			);
+		}
+		else if (databaseImplementation == framework::PostgresDatabase::databaseImplementationName)
+		{
+			table.execute
+			(
+				"INSERT INTO test_table (name, amount) VALUES($1, $2)",
+				framework::utility::database::makeSqlValues("glue", random() % 200)
+			);
+		}
 	}
 }
 
@@ -101,19 +124,47 @@ void CRUDExecutor::doPatch(framework::HttpRequest& request, framework::HttpRespo
 {
 	framework::Database database = getDatabase("test_database", request);
 	framework::Table table = database.getTable("test_table");
+	std::string databaseImplementation = request.getRouteParameter<std::string>("databaseImplementation");
 
-	table.execute
-	(
-		"UPDATE test_table "
-		"SET name = ? "
-		"WHERE amount = ?",
-		framework::utility::database::makeSqlValues("empty", -1)
-	);
-	std::vector<TableData> result = table.execute<TableData>
+	if (databaseImplementation == framework::SqliteDatabase::databaseImplementationName)
+	{
+		table.execute
 		(
-			"SELECT * FROM test_table WHERE name = ?",
-			framework::utility::database::makeSqlValues("empty")
+			"UPDATE test_table "
+			"SET name = ? "
+			"WHERE amount = ?",
+			framework::utility::database::makeSqlValues("empty", -1)
 		);
+	}
+	else if (databaseImplementation == framework::PostgresDatabase::databaseImplementationName)
+	{
+		table.execute
+		(
+			"UPDATE test_table "
+			"SET name = $1 "
+			"WHERE amount = $2",
+			framework::utility::database::makeSqlValues("empty", -1)
+		);
+	}
+
+	std::vector<TableData> result;
+
+	if (databaseImplementation == framework::SqliteDatabase::databaseImplementationName)
+	{
+		result = table.execute<TableData>
+			(
+				"SELECT * FROM test_table WHERE name = ?",
+				framework::utility::database::makeSqlValues("empty")
+			);
+	}
+	else if (databaseImplementation == framework::PostgresDatabase::databaseImplementationName)
+	{
+		result = table.execute<TableData>
+			(
+				"SELECT * FROM test_table WHERE name = $1",
+				framework::utility::database::makeSqlValues("empty")
+			);
+	}
 
 	std::vector<framework::JsonObject> data;
 

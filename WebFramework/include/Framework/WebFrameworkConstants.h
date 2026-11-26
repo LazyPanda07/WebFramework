@@ -40,7 +40,6 @@ namespace json_settings
 	inline constexpr std::string_view largeBodySizeThresholdKey = "largeBodySizeThreshold";
 	inline constexpr std::string_view largeBodyPacketSizeKey = "largeBodyPacketSize";
 	inline constexpr std::string_view databasesKey = "databases";
-	inline constexpr std::string_view adaptSqlPlaceholdersKey = "adaptSqlPlaceholders";
 	inline constexpr std::string_view resourcesThreadsKey = "resourcesThreads";
 	inline constexpr std::string_view runtimesKey = "runtimes";
 	inline constexpr std::string_view validationKey = "validation";

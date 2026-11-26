@@ -79,7 +79,15 @@ DEFINE_EXECUTOR_METHOD(CRUDExecutor, GET_METHOD, request, response)
 
 	wf_set_sql_value_string(value, "glue");
 
-	wf_execute_query(table, "SELECT * FROM test_table WHERE name = ?", &value, 1, &result);
+	if (!strcmp(database_implementation, SQLITE_DATABASE_IMPLEMENTATION_NAME))
+	{
+		wf_execute_query(table, "SELECT * FROM test_table WHERE name = ?", &value, 1, &result);
+	}
+	else if (!strcmp(database_implementation, POSTGRES_DATABASE_IMPLEMENTATION_NAME))
+	{
+		wf_execute_query(table, "SELECT * FROM test_table WHERE name = $1", &value, 1, &result);
+	}
+
 	wf_iterate_sql_result(result, initBuffer, callback, &data);
 
 	wf_append_json_builder_object(builder, "data", &data);
@@ -120,13 +128,27 @@ DEFINE_EXECUTOR_METHOD(CRUDExecutor, PUT_METHOD, request, response)
 	wf_set_sql_value_string(values[0], "glue");
 	wf_set_sql_value_int(values[1], -1);
 
-	wf_execute_query(table, "INSERT INTO test_table (name, amount) VALUES(?, ?)", values, 2, &result);
+	if (!strcmp(database_implementation, SQLITE_DATABASE_IMPLEMENTATION_NAME))
+	{
+		wf_execute_query(table, "INSERT INTO test_table (name, amount) VALUES(?, ?)", values, 2, &result);
+	}
+	else if (!strcmp(database_implementation, POSTGRES_DATABASE_IMPLEMENTATION_NAME))
+	{
+		wf_execute_query(table, "INSERT INTO test_table (name, amount) VALUES($1, $2)", values, 2, &result);
+	}
 
 	for (size_t i = 0; i < 10; i++)
 	{
 		wf_set_sql_value_int(values[1], rand() % 200);
 
-		wf_execute_query(table, "INSERT INTO test_table (name, amount) VALUES(?, ?)", values, 2, &result);
+		if (!strcmp(database_implementation, SQLITE_DATABASE_IMPLEMENTATION_NAME))
+		{
+			wf_execute_query(table, "INSERT INTO test_table (name, amount) VALUES(?, ?)", values, 2, &result);
+		}
+		else if (!strcmp(database_implementation, POSTGRES_DATABASE_IMPLEMENTATION_NAME))
+		{
+			wf_execute_query(table, "INSERT INTO test_table (name, amount) VALUES($1, $2)", values, 2, &result);
+		}
 	}
 
 	free(values);
@@ -161,25 +183,50 @@ DEFINE_EXECUTOR_METHOD(CRUDExecutor, PATCH_METHOD, request, response)
 	wf_set_sql_value_string(values[0], "empty");
 	wf_set_sql_value_int(values[1], -1);
 
-	wf_execute_query
-	(
-		table,
-		"UPDATE test_table "
-		"SET name = ? "
-		"WHERE amount = ?",
-		values,
-		2,
-		&result
-	);
+	if (!strcmp(database_implementation, SQLITE_DATABASE_IMPLEMENTATION_NAME))
+	{
+		wf_execute_query
+		(
+			table,
+			"UPDATE test_table "
+			"SET name = ? "
+			"WHERE amount = ?",
+			values,
+			2,
+			&result
+		);
 
-	wf_execute_query
-	(
-		table,
-		"SELECT * FROM test_table WHERE name = ?",
-		values,
-		1,
-		&result
-	);
+		wf_execute_query
+		(
+			table,
+			"SELECT * FROM test_table WHERE name = ?",
+			values,
+			1,
+			&result
+		);
+	}
+	else if (!strcmp(database_implementation, POSTGRES_DATABASE_IMPLEMENTATION_NAME))
+	{
+		wf_execute_query
+		(
+			table,
+			"UPDATE test_table "
+			"SET name = $1 "
+			"WHERE amount = $2",
+			values,
+			2,
+			&result
+		);
+
+		wf_execute_query
+		(
+			table,
+			"SELECT * FROM test_table WHERE name = $1",
+			values,
+			1,
+			&result
+		);
+	}
 
 	wf_iterate_sql_result(result, initBuffer, callback, &data);
 
