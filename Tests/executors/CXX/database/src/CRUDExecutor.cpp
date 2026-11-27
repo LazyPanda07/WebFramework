@@ -58,8 +58,18 @@ void CRUDExecutor::doGet(framework::HttpRequest& request, framework::HttpRespons
 {
 	framework::Database database = getDatabase("test_database", request);
 	framework::Table table = database.getTable("test_table");
-	std::vector<TableData> result = table.execute<TableData>("SELECT * FROM test_table WHERE name = ?", framework::utility::database::makeSqlValues("glue"));
+	std::string databaseImplementation = request.getRouteParameter<std::string>("databaseImplementation");
+	std::vector<TableData> result;
 	std::vector<framework::JsonObject> data;
+
+	if (databaseImplementation == framework::SqliteDatabase::databaseImplementationName)
+	{
+		result = table.execute<TableData>("SELECT * FROM test_table WHERE name = ?", framework::utility::database::makeSqlValues("glue"));
+	}
+	else if (databaseImplementation == framework::PostgresDatabase::databaseImplementationName)
+	{
+		result = table.execute<TableData>("SELECT * FROM test_table WHERE name = $1", framework::utility::database::makeSqlValues("glue"));
+	}
 
 	for (const TableData& value : result)
 	{
