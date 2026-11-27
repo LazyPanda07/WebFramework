@@ -82,7 +82,7 @@ public sealed partial class ExecutorSettings(IntPtr implementation)
 	private static partial IntPtr getOrCreateDatabaseExecutorSettings(IntPtr implementation, string databaseName, string implementationName, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static partial IntPtr getConstructDatabaseExecutorSettings(IntPtr implementation, string databaseName, string constructData, string implementationName, ref IntPtr exception);
+	private static partial IntPtr constructDatabaseExecutorSettings(IntPtr implementation, string databaseName, string constructData, string implementationName, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
 	private static partial IntPtr getDatabaseExecutorSettings(IntPtr implementation, string databaseName, string implementationName, ref IntPtr exception);
@@ -457,7 +457,7 @@ public sealed partial class ExecutorSettings(IntPtr implementation)
 	public Database ConstructDatabase<T>(string databaseName, string constructData) where T : IDatabaseImplementation
 	{
 		IntPtr exception = IntPtr.Zero;
-		IntPtr result = getConstructDatabaseExecutorSettings(implementation, databaseName, constructData, T.ImplementationName, ref exception);
+		IntPtr result = constructDatabaseExecutorSettings(implementation, databaseName, constructData, T.ImplementationName, ref exception);
 
 		if (exception != IntPtr.Zero)
 		{
