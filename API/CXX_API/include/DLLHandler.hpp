@@ -2,6 +2,8 @@
 
 #include <filesystem>
 #include <utility>
+#include <array>
+#include <string>
 #include <vector>
 #include <format>
 #include <fstream>
@@ -28,10 +30,25 @@ namespace framework::utility
 
 	class DllHandler
 	{
+	public:
+		static inline constexpr std::array<std::string_view, 4> baseLibraryNames =
+		{
+			"FileManager",
+			"Localization",
+			"Log",
+			"sqlite3"
+		};
+
+		static inline constexpr std::array<std::string_view, 1> windowsOnlyLibraryNames =
+		{
+			"libpq"
+		};
+
 	private:
 		static inline std::unique_ptr<DllHandler> instance;
 
 	private:
+		std::vector<HMODULE> dependencies;
 		HMODULE handle;
 
 	private:
@@ -133,8 +150,60 @@ namespace framework::utility
 
 	inline DllHandler::DllHandler(const std::filesystem::path& pathToDLL)
 	{
+#ifndef __ANDROID__
+		std::filesystem::path directoryPath = pathToDLL.parent_path();
+
 #ifdef __LINUX__
-		handle = dlopen(pathToDLL.string().data(), RTLD_LAZY);
+		constexpr std::string_view libraryPrefix = "lib";
+		constexpr std::string_view libraryExtension = ".so";
+		constexpr char separator = '/';
+#else
+		constexpr std::string_view libraryPrefix = "";
+		constexpr std::string_view libraryExtension = ".dll";
+		constexpr char separator = '\\';
+#endif
+
+		for (std::string_view libraryName : DllHandler::baseLibraryNames)
+		{
+			HMODULE temp;
+			std::string libraryPath = std::format("{}{}{}{}{}", directoryPath.string(), separator, libraryPrefix, libraryName, libraryExtension);
+
+#ifdef __LINUX__
+			temp = dlopen(libraryPath.data(), RTLD_NOW | RTLD_GLOBAL);
+#else
+			temp = LoadLibraryA(libraryPath.data());
+#endif
+
+			if (!temp)
+			{
+#ifdef __LINUX__
+				throw std::runtime_error(std::format("Can't load {} or its dependencies", libraryPath));
+#else
+				throw std::runtime_error(std::format("Can't load {} or its dependencies, GetLastError(): {}", libraryPath, GetLastError()));
+#endif
+			}
+		}
+
+#ifndef __LINUX__
+		for (std::string_view libraryName : DllHandler::windowsOnlyLibraryNames)
+		{
+			HMODULE temp;
+			std::filesystem::path libraryPath = directoryPath / libraryName;
+
+			libraryPath += ".dll";
+
+			temp = LoadLibraryA(libraryPath.string().data());
+
+			if (!temp)
+			{
+				throw std::runtime_error(std::format("Can't load {} or its dependencies, GetLastError(): {}", libraryPath.string(), GetLastError()));
+			}
+		}
+#endif
+#endif
+
+#ifdef __LINUX__
+		handle = dlopen(pathToDLL.string().data(), RTLD_NOW | RTLD_GLOBAL);
 #else
 		handle = LoadLibraryA(pathToDLL.string().data());
 #endif
@@ -144,7 +213,7 @@ namespace framework::utility
 #ifdef __LINUX__
 			throw std::runtime_error(std::format("Can't load {} or its dependencies", pathToDLL.string()));
 #else
-			throw std::runtime_error(std::format("GetLastError(): {}", GetLastError()));
+			throw std::runtime_error(std::format("Can't load {} or its dependencies, GetLastError(): {}", pathToDLL.string(), GetLastError()));
 #endif
 		}
 	}
