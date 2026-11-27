@@ -26,8 +26,6 @@ inline constexpr std::array<std::string_view, databases> databaseImplementations
 
 TEST(Database, Insert)
 {
-	std::cout << "Databases: " << databases << ' ' << databaseImplementations.size() << std::endl;
-
 	for (std::string_view name : databaseImplementations)
 	{
 		streams::IOSocketStream stream = utility::createSocketStream();
@@ -54,7 +52,7 @@ TEST(Database, Select)
 
 		stream >> response;
 
-		ASSERT_EQ(web::HttpParser(response).getJson().get<std::vector<json::JsonObject>>("data").size(), 11) << response;
+		ASSERT_EQ(web::HttpParser(response).getJson().get<std::vector<json::JsonObject>>("data").size(), 11) << response << std::endl << name;
 	}
 }
 

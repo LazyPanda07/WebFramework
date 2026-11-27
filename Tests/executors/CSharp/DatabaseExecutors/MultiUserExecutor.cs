@@ -65,6 +65,10 @@ public class MultiUserExecutor : HeavyOperationStatefulExecutor
 				WebFrameworkUtility.MakeSqlValues(userId)
 			);
 		}
+		else
+		{
+			throw new NotImplementedException($"Not implemented databaseImplementation: {databaseImplementation}");
+		}
 
 		List<object> jsonData = [];
 

@@ -26,19 +26,18 @@ void MultiUserExecutor::doGet(framework::HttpRequest& request, framework::HttpRe
 {
 	framework::Table table = getTable("test_database", "multi_user", request);
 	std::string databaseImplementation = request.getRouteParameter<std::string>("databaseImplementation");
+	std::string sqlRequest;
 
-	framework::SqlResult result = databaseImplementation == framework::SqliteDatabase::databaseImplementationName ?
-		table.execute
-		(
-			"SELECT * FROM multi_user WHERE user_id = ?",
-			framework::utility::database::makeSqlValues(userId)
-		)
-		:
-		table.execute
-		(
-			"SELECT * FROM multi_user WHERE user_id = $1",
-			framework::utility::database::makeSqlValues(userId)
-		);
+	if (databaseImplementation == framework::SqliteDatabase::databaseImplementationName)
+	{
+		sqlRequest = "SELECT * FROM multi_user WHERE user_id = ?";
+	}
+	else if (databaseImplementation == framework::PostgresDatabase::databaseImplementationName)
+	{
+		sqlRequest = "SELECT * FROM multi_user WHERE user_id = $1";
+	}
+
+	framework::SqlResult result = table.execute(sqlRequest, framework::utility::database::makeSqlValues(userId));
 
 	std::vector<framework::JsonObject> data;
 
