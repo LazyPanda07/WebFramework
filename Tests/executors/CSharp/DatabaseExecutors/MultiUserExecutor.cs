@@ -33,17 +33,14 @@ public class MultiUserExecutor : HeavyOperationStatefulExecutor
 
 		if (withoutPostgresTests == "OFF")
 		{
-			string host = Environment.GetEnvironmentVariable("POSTGRES_HOST") ?? "127.0.0.1";
-			string password = Environment.GetEnvironmentVariable("POSTGRES_PASSWORD") ?? "root";
-
-			settings.ConstructDatabase<PostgresDatabase>("test_database", $"host={host} port=5432 dbname=test_database user=postgres password={password}").GetOrCreateTable
+			settings.GetDatabase<PostgresDatabase>("test_database").GetOrCreateTable
 			(
-				"test_table",
+				"multi_user",
 				"CREATE TABLE IF NOT EXISTS multi_user (id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY, user_id TEXT NOT NULL, data TEXT NOT NULL)"
 			);
 		}
 
-		settings.GetOrCreateDatabase("test_database").GetOrCreateTable("multi_user", "CREATE TABLE IF NOT EXISTS multi_user (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id TEXT NOT NULL, data TEXT NOT NULL)");
+		settings.GetOrCreateDatabase<SqliteDatabase>("test_database").GetOrCreateTable("multi_user", "CREATE TABLE IF NOT EXISTS multi_user (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id TEXT NOT NULL, data TEXT NOT NULL)");
 	}
 
 	public override void DoGet(HttpRequest request, HttpResponse response)

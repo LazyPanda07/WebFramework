@@ -150,15 +150,8 @@ class MultiUserExecutor(HeavyOperationStatefulExecutor):
         without_postgres_tests = os.getenv("WITHOUT_POSTGRES_TESTS", "OFF")
 
         if without_postgres_tests == "OFF":
-            host = os.getenv("POSTGRES_HOST", "127.0.0.1")
-            password = os.getenv("POSTGRES_PASSWORD", "root")
-
-            settings.construct_database("test_database",
-                                        f"host={host} port=5432 dbname=test_database user=postgres password={password}",
-                                        PostgresDatabase).get_or_create_table(
-                "test_table",
-                "CREATE TABLE IF NOT EXISTS multi_user (id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY, user_id TEXT NOT NULL, data TEXT NOT NULL)"
-            )
+            settings.get_database("test_database", PostgresDatabase).get_or_create_table("multi_user",
+                                                                                         "CREATE TABLE IF NOT EXISTS multi_user (id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY, user_id TEXT NOT NULL, data TEXT NOT NULL)")
 
         settings.get_or_create_database("test_database", SqliteDatabase).get_or_create_table("multi_user",
                                                                                              "CREATE TABLE IF NOT EXISTS multi_user (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id TEXT NOT NULL, data TEXT NOT NULL)")
