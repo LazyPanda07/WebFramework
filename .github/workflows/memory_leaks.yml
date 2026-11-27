@@ -36,6 +36,9 @@ jobs:
       with:
         submodules: recursive
         
+    - name: Override host container
+      run: echo "POSTGRES_HOST=postgres" >> ${GITHUB_ENV}
+
     - name: Build
       run: |
           mkdir build

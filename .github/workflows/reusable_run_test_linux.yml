@@ -75,7 +75,7 @@ jobs:
           --health-retries 10
 
     steps:
-    - name: Override host for Linux container
+    - name: Override host container
       run: echo "POSTGRES_HOST=postgres" >> ${GITHUB_ENV}
       
     - name: Prepare download artifact name from Linux

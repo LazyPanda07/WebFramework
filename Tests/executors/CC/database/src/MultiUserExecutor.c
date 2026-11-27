@@ -27,6 +27,7 @@ DEFINE_EXECUTOR_INIT(MultiUserExecutor)
 		const char* password = "root";
 		char* overrideHost = getenv("POSTGRES_HOST");
 		char* overridePassword = getenv("POSTGRES_PASSWORD");
+		char buffer[128];
 
 		if (overrideHost)
 		{
@@ -38,7 +39,22 @@ DEFINE_EXECUTOR_INIT(MultiUserExecutor)
 			password = overridePassword;
 		}
 
-		wf_construct_database_executor_settings(settings, "test_database", printf("host=%s port=5432 dbname=test_database user=postgres password=%s", host, password), POSTGRES_DATABASE_IMPLEMENTATION_NAME, &database);
+		memset(buffer, 0, sizeof(buffer));
+
+		snprintf(buffer, "host=%s port=5432 dbname=test_database user=postgres password=%s", sizeof(buffer), host, password);
+
+		web_framework_exception_t exception = wf_construct_database_executor_settings(settings, "test_database", buffer, POSTGRES_DATABASE_IMPLEMENTATION_NAME, &database);
+
+		if (exception)
+		{
+			printf(wf_get_error_message(exception));
+			fflush(stdout);
+
+			wf_delete_web_framework_exception(exception);
+
+			raise(SIGSEGV);
+		}
+
 		wf_get_or_create_table(database, "multi_user", "CREATE TABLE IF NOT EXISTS multi_user (id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY, user_id TEXT NOT NULL, data TEXT NOT NULL)", &table);
 	}
 #endif

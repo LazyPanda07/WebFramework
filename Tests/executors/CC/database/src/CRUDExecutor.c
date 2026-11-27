@@ -11,7 +11,7 @@ DEFINE_DEFAULT_EXECUTOR(CRUDExecutor, STATELESS_EXECUTOR)
 
 DEFINE_EXECUTOR_INIT(CRUDExecutor)
 {
-#ifdef WITHOUT_POSTGRES_TESTS
+#ifndef WITHOUT_POSTGRES_TESTS
 	{
 		database_t database;
 		table_t table;
@@ -19,6 +19,7 @@ DEFINE_EXECUTOR_INIT(CRUDExecutor)
 		const char* password = "root";
 		char* overrideHost = getenv("POSTGRES_HOST");
 		char* overridePassword = getenv("POSTGRES_PASSWORD");
+		char buffer[128];
 
 		if (overrideHost)
 		{
@@ -30,7 +31,11 @@ DEFINE_EXECUTOR_INIT(CRUDExecutor)
 			password = overridePassword;
 		}
 
-		web_framework_exception_t exception = wf_construct_database_executor_settings(settings, "test_database", printf("host=%s port=5432 dbname=test_database user=postgres password=%s", host, password), POSTGRES_DATABASE_IMPLEMENTATION_NAME, &database);
+		memset(buffer, 0, sizeof(buffer));
+
+		snprintf(buffer, "host=%s port=5432 dbname=test_database user=postgres password=%s", sizeof(buffer), host, password);
+
+		web_framework_exception_t exception = wf_construct_database_executor_settings(settings, "test_database", buffer, POSTGRES_DATABASE_IMPLEMENTATION_NAME, &database);
 
 		if (exception)
 		{
