@@ -33,7 +33,7 @@ DEFINE_EXECUTOR_INIT(CRUDExecutor)
 
 		memset(buffer, 0, sizeof(buffer));
 
-		snprintf(buffer, "host=%s port=5432 dbname=test_database user=postgres password=%s", sizeof(buffer), host, password);
+		snprintf(buffer, sizeof(buffer), "host=%s port=5432 dbname=test_database user=postgres password=%s", host, password);
 
 		web_framework_exception_t exception = wf_construct_database_executor_settings(settings, "test_database", buffer, POSTGRES_DATABASE_IMPLEMENTATION_NAME, &database);
 
