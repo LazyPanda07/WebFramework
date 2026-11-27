@@ -70,14 +70,10 @@ jobs:
           Set-Service postgresql-x64-${{ env.postgres-version }} -StartupType Manual
           Start-Service postgresql-x64-${{ env.postgres-version }}
 
-    - name: Start Postgres on Linux
-      if: ${{ inputs.os == 'ubuntu-latest' || inputs.os == 'ubuntu-26.04-arm' }}
-      run: docker run -d -e POSTGRES_PASSWORD=${{ env.POSTGRES_PASSWORD }} -e POSTGRES_USER=postgres -e POSTGRES_DB=test_database -p 5432:5432 postgres:${{ env.postgres-version }}
-
-    - name: Override host for Linux container
-      if: ${{ inputs.os == 'ubuntu-latest' }}
-      run: echo "POSTGRES_HOST=postgres" >> ${GITHUB_ENV}
-
+    - name: Start Postgres on LinuxARM
+      if: ${{ inputs.os == 'ubuntu-26.04-arm' }}
+      run: sudo docker run -d -e POSTGRES_PASSWORD=${{ env.POSTGRES_PASSWORD }} -e POSTGRES_USER=postgres -e POSTGRES_DB=test_database -p 5432:5432 postgres:${{ env.postgres-version }}
+      
     - name: Prepare download artifact name from Windows
       if: ${{ inputs.os == 'windows-latest' }}
       shell: bash
@@ -86,16 +82,7 @@ jobs:
         echo "DOWNLOAD_ARTIFACT_NAME=Windows" >> ${GITHUB_ENV}
         echo "DOWNLOAD_EXECUTORS_ARTIFACT_NAME=WindowsExecutors-${{ inputs.executors-api }}" >> ${GITHUB_ENV}
         echo "DOWNLOAD_TESTS_ARTIFACT_NAME=WindowsTests" >> ${GITHUB_ENV}
-
-    - name: Prepare download artifact name from Linux
-      if: ${{ inputs.os == 'ubuntu-latest' }}
-      shell: bash
-      run: |
-        echo "CURRENT_OS=Linux" >> ${GITHUB_ENV}
-        echo "DOWNLOAD_ARTIFACT_NAME=Linux" >> ${GITHUB_ENV}
-        echo "DOWNLOAD_EXECUTORS_ARTIFACT_NAME=LinuxExecutors-${{ inputs.executors-api }}" >> ${GITHUB_ENV}
-        echo "DOWNLOAD_TESTS_ARTIFACT_NAME=LinuxTests" >> ${GITHUB_ENV}
-    
+        
     - name: Prepare download artifact name from LinuxARM
       if: ${{ inputs.os == 'ubuntu-26.04-arm' }}
       shell: bash
@@ -173,8 +160,8 @@ jobs:
         tag: ${{ env.windows-redis-version }}
         fileName: Redis-${{ env.windows-redis-version }}-Windows-x64-msys2.zip
 
-    - name: Install Redis on Linux
-      if: ${{ inputs.os == 'ubuntu-latest' || inputs.os == 'ubuntu-26.04-arm' }}
+    - name: Install Redis on LinuxARM
+      if: ${{ inputs.os == 'ubuntu-26.04-arm' }}
       run: |
         sudo apt update
         sudo apt install -y redis-server
@@ -220,8 +207,8 @@ jobs:
       if: ${{ inputs.os == 'windows-latest' }}
       run: python -m pip install wait-for-service[redis]
 
-    - name: Install wait-for-service[redis] in Linux
-      if: ${{ inputs.os == 'ubuntu-latest' || inputs.os == 'ubuntu-26.04-arm' }}
+    - name: Install wait-for-service[redis] in LinuxARM
+      if: ${{ inputs.os == 'ubuntu-26.04-arm' }}
       run: python3 -m pip install wait-for-service[redis]
 
     - name: Append .net runtime
@@ -271,8 +258,8 @@ jobs:
         wait-for-service redis://localhost:10010
         .\${{ inputs.test-script }} ${{ inputs.web-framework-config }}
     
-    - name: Run ${{ inputs.test-script }} ${{ inputs.web-framework-config }} tests on Linux
-      if: ${{ inputs.os == 'ubuntu-latest' || inputs.os == 'ubuntu-26.04-arm' }}
+    - name: Run ${{ inputs.test-script }} ${{ inputs.web-framework-config }} tests on LinuxARM
+      if: ${{ inputs.os == 'ubuntu-26.04-arm' }}
       working-directory: Tests
       shell: bash
       run: |

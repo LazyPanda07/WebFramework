@@ -15,15 +15,23 @@ jobs:
     strategy:
       matrix:
         config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
-
-    env:
-      postgres-version: 17
-      POSTGRES_PASSWORD: root
+        
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: root
+          POSTGRES_DB: test_database
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d test_database"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
 
     steps:
-    - name: Start Postgres
-      run: docker run -d -e POSTGRES_PASSWORD=${{ env.POSTGRES_PASSWORD }} -e POSTGRES_USER=postgres -e POSTGRES_DB=test_database -p 5432:5432 postgres:${{ env.postgres-version }}
-
     - uses: actions/checkout@v7
       with:
         submodules: recursive

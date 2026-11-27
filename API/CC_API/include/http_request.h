@@ -440,7 +440,7 @@ web_framework_exception_t wf_get_route_double_parameter(http_request_t implement
  * @param result Route parameter value
  * @return Error if occurred
  */
-web_framework_exception_t wf_get_route_string_parameter(http_request_t implementation, const char* route_parameter_name, char const** result);
+web_framework_exception_t wf_get_route_string_parameter(http_request_t implementation, const char* route_parameter_name, char** result);
 
 /**
  * @brief Retrieves a JWT string from the specified HTTP request implementation.

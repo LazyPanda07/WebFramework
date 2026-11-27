@@ -1,0 +1,216 @@
+name: "Run Linux test"
+
+
+on:
+  workflow_call:
+    inputs:
+      image:
+        description: "Custom Docker image"
+        required: false
+        type: string
+      executors-api:
+        description: "Executors build API"
+        required: true
+        type: string
+      web-framework-config:
+        description: "WebFramework config"
+        required: true
+        type: string
+      test-script:
+        description: "Script for running tests"
+        required: true
+        type: string
+      python-version:
+        description: "Python version"
+        required: false
+        type: string
+        default: ''
+      dotnet:
+        description: ".NET option"
+        required: false
+        type: boolean
+        default: false
+      download-web-framework-name:
+        description: "Download WebFramework artifact name"
+        required: false
+        type: string
+        default: ''
+      download-executors-name:
+        description: "Download executors artifact name"
+        required: false
+        type: string
+        default: ''
+      download-tests-name:
+        description: "Download tests artifact name"
+        required: false
+        type: string
+        default: ''
+
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    container: 
+      image: ${{ inputs.image }}
+    env:
+      actual-python-version: ''
+      runtimes: ''
+      windows-redis-version: 8.0.5
+      postgres-version: 17
+      POSTGRES_PASSWORD: root
+
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: root
+          POSTGRES_DB: test_database
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d test_database"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
+    steps:
+    - name: Override host for Linux container
+      run: echo "POSTGRES_HOST=postgres" >> ${GITHUB_ENV}
+      
+    - name: Prepare download artifact name from Linux
+      shell: bash
+      run: |
+        echo "CURRENT_OS=Linux" >> ${GITHUB_ENV}
+        echo "DOWNLOAD_ARTIFACT_NAME=Linux" >> ${GITHUB_ENV}
+        echo "DOWNLOAD_EXECUTORS_ARTIFACT_NAME=LinuxExecutors-${{ inputs.executors-api }}" >> ${GITHUB_ENV}
+        echo "DOWNLOAD_TESTS_ARTIFACT_NAME=LinuxTests" >> ${GITHUB_ENV}
+    
+    - name: Prepare download artifact name from Python
+      if: ${{ inputs.python-version != '' }}
+      shell: bash
+      run: |
+        echo "DOWNLOAD_ARTIFACT_NAME=${DOWNLOAD_ARTIFACT_NAME}-WITH_PYTHON_EXECUTORS=ON-BUILD_PYTHON_API=ON-${{ inputs.python-version }}" >> ${GITHUB_ENV}
+        echo "actual-python-version=${{ inputs.python-version }}" >> ${GITHUB_ENV}
+
+    - name: Prepare download artifact name if Python test script using
+      if: ${{ inputs.python-version == '' && contains(inputs.test-script, 'python') }}
+      shell: bash
+      run: |
+        echo "DOWNLOAD_ARTIFACT_NAME=${DOWNLOAD_ARTIFACT_NAME}-WITH_PYTHON_EXECUTORS=ON-BUILD_PYTHON_API=ON-3.15" >> ${GITHUB_ENV}
+        echo "actual-python-version=3.15" >> ${GITHUB_ENV}
+
+    - name: Prepare download artifact name if no Python and no test script using
+      if: ${{ inputs.python-version == '' && !contains(inputs.test-script, 'python') }}
+      shell: bash
+      run: echo "DOWNLOAD_ARTIFACT_NAME=${DOWNLOAD_ARTIFACT_NAME}-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF-" >> ${GITHUB_ENV}
+
+    - name: Prepare download artifact name from .NET
+      if: ${{ inputs.dotnet == true }}
+      shell: bash
+      run: echo "DOWNLOAD_ARTIFACT_NAME=${DOWNLOAD_ARTIFACT_NAME}-WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=ON" >> ${GITHUB_ENV}
+      
+    - name: Prepare download artifact name if C# test script using
+      if: ${{ inputs.dotnet == false && contains(inputs.test-script, 'csharp') }}
+      shell: bash
+      run: echo "DOWNLOAD_ARTIFACT_NAME=${DOWNLOAD_ARTIFACT_NAME}-WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=ON" >> ${GITHUB_ENV}
+
+    - name: Prepare download artifact name if no C# and no test script using
+      if: ${{ inputs.dotnet == false && !contains(inputs.test-script, 'csharp') }}
+      shell: bash
+      run: echo "DOWNLOAD_ARTIFACT_NAME=${DOWNLOAD_ARTIFACT_NAME}-WITH_DOTNET_EXECUTORS=OFF-BUILD_CSHARP_API=OFF" >> ${GITHUB_ENV}
+
+    - name: Prepare download artifact name from CC ON
+      if: ${{ inputs.executors-api == 'CC' }}
+      shell: bash
+      run: echo "DOWNLOAD_ARTIFACT_NAME=${DOWNLOAD_ARTIFACT_NAME}-BUILD_CC_API=ON" >> ${GITHUB_ENV}
+    
+    - name: Prepare download artifact name from CC OFF
+      if: ${{ inputs.executors-api != 'CC' }}
+      shell: bash
+      run: echo "DOWNLOAD_ARTIFACT_NAME=${DOWNLOAD_ARTIFACT_NAME}-BUILD_CC_API=OFF" >> ${GITHUB_ENV}
+
+    - name: Finish download artifact name
+      if: ${{ inputs.download-web-framework-name != '' }}
+      shell: bash
+      run: echo "DOWNLOAD_ARTIFACT_NAME=${{ inputs.download-web-framework-name }}" >> ${GITHUB_ENV}
+
+    - name: Finish download executors name
+      if: ${{ inputs.download-executors-name != '' }}
+      shell: bash
+      run: echo "DOWNLOAD_EXECUTORS_ARTIFACT_NAME=${{ inputs.download-executors-name }}" >> ${GITHUB_ENV}
+
+    - name: Finish download tests artifact name
+      if: ${{ inputs.download-tests-name != '' }}
+      shell: bash
+      run: echo "DOWNLOAD_TESTS_ARTIFACT_NAME=${{ inputs.download-tests-name }}" >> ${GITHUB_ENV}
+      
+    - name: Install Redis on Linux
+      run: |
+        sudo apt update
+        sudo apt install -y redis-server
+        
+    - name: Download ${{ env.DOWNLOAD_ARTIFACT_NAME }}
+      uses: actions/download-artifact@v8
+      with:
+        name: ${{ env.DOWNLOAD_ARTIFACT_NAME }}
+        path: WebFrameworkLibrary
+
+    - name: Download ${{ env.DOWNLOAD_TESTS_ARTIFACT_NAME }}
+      uses: actions/download-artifact@v8
+      with:
+        name: ${{ env.DOWNLOAD_TESTS_ARTIFACT_NAME }}
+        path: Tests
+
+    - name: Download ${{ env.DOWNLOAD_EXECUTORS_ARTIFACT_NAME }}
+      uses: actions/download-artifact@v8
+      with:
+        name: ${{ env.DOWNLOAD_EXECUTORS_ARTIFACT_NAME }}
+        path: Executors
+
+    - name: Install Python
+      if: ${{ env.actual-python-version != '' }}
+      uses: actions/setup-python@v6
+      continue-on-error: true
+      with:
+        python-version: "${{ env.actual-python-version }}"
+        
+    - name: Install Python API
+      if: ${{ env.actual-python-version != '' }}
+      shell: bash
+      run: |
+        python -m pip install --upgrade pip
+        python -m pip install WebFrameworkLibrary/api/python_api/dist/*.whl
+        echo "runtimes=--runtimes python" >> ${GITHUB_ENV}
+        
+    - name: Install wait-for-service[redis] in Linux
+      run: python3 -m pip install wait-for-service[redis]
+
+    - name: Append .net runtime
+      if: ${{ inputs.dotnet == true || contains(inputs.test-script, 'csharp') }}
+      shell: bash
+      run: echo "runtimes=${{ env.runtimes }} --runtimes .net" >> ${GITHUB_ENV}
+
+    - name: Merge artifacts
+      shell: bash
+      run: |
+          cp -r Executors/* Tests
+
+          if [ -d "WebFrameworkLibrary/lib" ];
+          then
+            cp -r WebFrameworkLibrary/lib/* Tests  
+          fi
+          
+          if [ -d "WebFrameworkLibrary/dll" ];
+          then
+            cp -rf WebFrameworkLibrary/dll/* Tests
+          fi
+          
+    - name: Run ${{ inputs.test-script }} ${{ inputs.web-framework-config }} tests
+      working-directory: Tests
+      shell: bash
+      run: |
+        export RUNTIMES="${{ env.runtimes }}"
+        redis-server --port 10010 --requirepass password & sleep 1
+        wait-for-service redis://localhost:10010
+        source ${{ inputs.test-script }} ${{ inputs.web-framework-config }}

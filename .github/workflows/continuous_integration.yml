@@ -454,9 +454,8 @@ jobs:
             - { api: Python, python-version: "3.13", dotnet: false }
             - { api: CSharp, python-version: "", dotnet: true }
 
-    uses: ./.github/workflows/reusable_run_test.yml
+    uses: ./.github/workflows/reusable_run_test_linux.yml
     with:
-      os: ubuntu-latest
       image: ghcr.io/lazypanda07/ubuntu-cxx23:26.04
       executors-api: ${{ matrix.executors.api }}
       web-framework-config: ${{ matrix.config }}
@@ -479,9 +478,8 @@ jobs:
             - { api: Python, python-version: "3.13", dotnet: false }
             - { api: CSharp, python-version: "", dotnet: true }
 
-    uses: ./.github/workflows/reusable_run_test.yml
+    uses: ./.github/workflows/reusable_run_test_linux.yml
     with:
-      os: ubuntu-latest
       image: ghcr.io/lazypanda07/ubuntu-cxx23:26.04
       executors-api: ${{ matrix.executors.api }}
       web-framework-config: ${{ matrix.config }}

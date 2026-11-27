@@ -3,13 +3,15 @@
 #include <time.h>
 #include <signal.h>
 
+#include <web_framework_exception.h>
+
 #include "SQLUtility.h"
 
 DEFINE_DEFAULT_EXECUTOR(CRUDExecutor, STATELESS_EXECUTOR)
 
 DEFINE_EXECUTOR_INIT(CRUDExecutor)
 {
-#ifndef WITHOUT_POSTGRES_TESTS
+#ifdef WITHOUT_POSTGRES_TESTS
 	{
 		database_t database;
 		table_t table;
@@ -28,7 +30,18 @@ DEFINE_EXECUTOR_INIT(CRUDExecutor)
 			password = overridePassword;
 		}
 
-		wf_construct_database_executor_settings(settings, "test_database", printf("host=%s port=5432 dbname=test_database user=postgres password=%s", host, password), POSTGRES_DATABASE_IMPLEMENTATION_NAME, &database);
+		web_framework_exception_t exception = wf_construct_database_executor_settings(settings, "test_database", printf("host=%s port=5432 dbname=test_database user=postgres password=%s", host, password), POSTGRES_DATABASE_IMPLEMENTATION_NAME, &database);
+
+		if (exception)
+		{
+			printf(wf_get_error_message(exception));
+			fflush(stdout);
+
+			wf_delete_web_framework_exception(exception);
+
+			raise(SIGSEGV);
+		}
+
 		wf_get_or_create_table
 		(
 			database,

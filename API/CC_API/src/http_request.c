@@ -708,7 +708,7 @@ web_framework_exception_t wf_get_route_double_parameter(http_request_t implement
 	return exception;
 }
 
-web_framework_exception_t wf_get_route_string_parameter(http_request_t implementation, const char* routeParameterName, char const** result)
+web_framework_exception_t wf_get_route_string_parameter(http_request_t implementation, const char* routeParameterName, char** result)
 {
 	web_framework_exception_t exception = NULL;
 
