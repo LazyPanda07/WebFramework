@@ -138,7 +138,7 @@ namespace framework::utility
 				return std::format("{}{}{}{}", absolutePath.string(), prefix, fileName, extension);
 			};
 
-		std::filesystem::path realPath = makePathToDLL(pathToDLL.empty() ? "WebFramework" : std::filesystem::absolute(pathToDLL));
+		std::filesystem::path realPath = makePathToDLL(pathToDLL.empty() ? "WebFramework" : pathToDLL);
 
 		if (realPath.is_absolute() && !std::filesystem::exists(realPath))
 		{
@@ -150,60 +150,8 @@ namespace framework::utility
 
 	inline DllHandler::DllHandler(const std::filesystem::path& pathToDLL)
 	{
-#ifndef __ANDROID__
-		std::filesystem::path directoryPath = pathToDLL.parent_path();
-
 #ifdef __LINUX__
-		constexpr std::string_view libraryPrefix = "lib";
-		constexpr std::string_view libraryExtension = ".so";
-		constexpr char separator = '/';
-#else
-		constexpr std::string_view libraryPrefix = "";
-		constexpr std::string_view libraryExtension = ".dll";
-		constexpr char separator = '\\';
-#endif
-
-		for (std::string_view libraryName : DllHandler::baseLibraryNames)
-		{
-			HMODULE temp;
-			std::string libraryPath = std::format("{}{}{}{}{}", directoryPath.string(), separator, libraryPrefix, libraryName, libraryExtension);
-
-#ifdef __LINUX__
-			temp = dlopen(libraryPath.data(), RTLD_NOW | RTLD_GLOBAL);
-#else
-			temp = LoadLibraryA(libraryPath.data());
-#endif
-
-			if (!temp)
-			{
-#ifdef __LINUX__
-				throw std::runtime_error(std::format("Can't load {} or its dependencies", libraryPath));
-#else
-				throw std::runtime_error(std::format("Can't load {} or its dependencies, GetLastError(): {}", libraryPath, GetLastError()));
-#endif
-			}
-		}
-
-#ifndef __LINUX__
-		for (std::string_view libraryName : DllHandler::windowsOnlyLibraryNames)
-		{
-			HMODULE temp;
-			std::filesystem::path libraryPath = directoryPath / libraryName;
-
-			libraryPath += ".dll";
-
-			temp = LoadLibraryA(libraryPath.string().data());
-
-			if (!temp)
-			{
-				throw std::runtime_error(std::format("Can't load {} or its dependencies, GetLastError(): {}", libraryPath.string(), GetLastError()));
-			}
-		}
-#endif
-#endif
-
-#ifdef __LINUX__
-		handle = dlopen(pathToDLL.string().data(), RTLD_NOW | RTLD_GLOBAL);
+		handle = dlopen(pathToDLL.string().data(), RTLD_LAZY);
 #else
 		handle = LoadLibraryA(pathToDLL.string().data());
 #endif

@@ -94,7 +94,7 @@ jobs:
   flutter-package:
     runs-on: ubuntu-latest
     container:
-      image: lazypanda07/ubuntu_cxx20:android
+      image: ghcr.io/lazypanda07/ubuntu-cxx23:android
 
     steps:
     - uses: actions/checkout@v7
@@ -109,6 +109,14 @@ jobs:
         extract: true
         fileName: Windows-WITH_PYTHON_EXECUTORS.OFF-BUILD_PYTHON_API.OFF--WITH_DOTNET_EXECUTORS.ON-BUILD_CSHARP_API.OFF-BUILD_CC_API.OFF.zip
 
+    - name: Get Linux latest release
+      uses: robinraju/release-downloader@v1.12
+      with:
+        repository: ${{ github.repository }}
+        latest: true
+        extract: true
+        fileName: Linux-WITH_PYTHON_EXECUTORS.OFF-BUILD_PYTHON_API.OFF--WITH_DOTNET_EXECUTORS.ON-BUILD_CSHARP_API.OFF-BUILD_CC_API.OFF.zip
+
     - name: Get Android latest release
       uses: robinraju/release-downloader@v1.12
       with:
@@ -121,6 +129,7 @@ jobs:
       run: |
           mkdir -p API/web_framework_flutter_api/assets/lib/arm64-v8a
           cp -r Windows-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=OFF-BUILD_CC_API=OFF/dll/*.dll API/web_framework_flutter_api/assets/lib
+          cp -r Linux-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=OFF-BUILD_CC_API=OFF/lib/*.so API/web_framework_flutter_api/assets/lib
           cp -r Android/lib/arm64-v8a/*.so API/web_framework_flutter_api/assets/lib/arm64-v8a
 
     - name: Dry run
@@ -246,7 +255,7 @@ jobs:
   dev-deb-package-test:
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/lazypanda07/ubuntu_cxx20:24.04
+      image: ghcr.io/lazypanda07/ubuntu-cxx23:26.04
     needs: [deb-package]
     strategy:
       matrix:
