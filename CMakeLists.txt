@@ -188,6 +188,12 @@ if (UNIX)
 			${PROJECT_NAME} PRIVATE
 			-rdynamic
 		)
+
+		set_target_properties(
+			${PROJECT_NAME} PROPERTIES
+			BUILD_RPATH  "$ORIGIN"
+			INSTALL_RPATH "$ORIGIN"
+        )
 	endif()
 elseif (WIN32)
 	add_definitions(-DNOMINMAX)
